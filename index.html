@@ -437,6 +437,7 @@
     let auraScore = 0;
     let currentOrderId = null;
     let isAdminAuthenticated = false;
+    let adminPin = null; // On stocke le code admin pour faire les requêtes
 
     let supabase = null;
     try {
@@ -587,15 +588,14 @@
     });
 
     // =====================================================================
-    // ENVOI DE LA COMMANDE A SUPABASE (Avec messages d'erreur)
+    // ENVOI DE LA COMMANDE A SUPABASE (RPC)
+    // Le navigateur ne valide RIEN, il envoie et affiche l'erreur si besoin.
     // =====================================================================
     document.getElementById('checkoutBtn').onclick = async (e) => {
-      const name = document.getElementById('clientName').value.trim();
-      const loc = document.getElementById('clientLocation').value.trim();
-      if(!name || !loc) return alert("N'oublie pas ton prénom et où tu es !");
-
-      localStorage.setItem('buhanor_name', name);
-      localStorage.setItem('buhanor_location', loc);
+      const name = document.getElementById('clientName').value;
+      const loc = document.getElementById('clientLocation').value;
+      
+      // On ne fait plus de "if(!name || !loc)" ici. C'est Supabase qui va refuser.
 
       if (!supabase) return alert("Erreur : Connexion Supabase impossible.");
 
@@ -604,28 +604,21 @@
       btn.textContent = "Envoi..."; btn.disabled = true;
 
       try {
-        // Envoi des données
-        const { data, error } = await supabase.from('orders').insert([
-          { 
-            name: name, 
-            location: loc, 
-            items: cart, // On envoie le tableau d'objets directement
-            total: total, 
-            statuts: 'received' // Attention à l'orthographe exacte
-          }
-        ]).select();
+        // Appel de la fonction sécurisée Supabase (RPC)
+        const { data, error } = await supabase.rpc('create_order', {
+          client_name: name,
+          client_location: loc,
+          order_items: cart,
+          order_total: total
+        });
 
-        if (error) {
-          console.error("Erreur Supabase:", error);
-          // Affiche un message clair si le RLS est activé
-          if (error.code === '42501' || error.message.includes('row-level security')) {
-            throw new Error("La sécurité de la base de données bloque l'envoi. Va dans Supabase > Authentication > Policies et désactive le RLS sur 'orders'.");
-          }
-          throw error;
-        }
+        if (error) throw error; // Si Supabase refuse (ex: prénom vide), on capture l'erreur.
 
-        // Succès : on récupère l'ID généré
-        currentOrderId = data[0].id;
+        // Succès
+        currentOrderId = data; // L'ID UUID retourné par Supabase
+        localStorage.setItem('buhanor_name', name);
+        localStorage.setItem('buhanor_location', loc);
+        
         cart = [];
         window.updateCartUI();
         document.getElementById('cartDrawer').classList.remove('open');
@@ -636,7 +629,8 @@
         window.listenToClientOrder(currentOrderId);
 
       } catch (err) {
-        alert("Impossible d'envoyer la commande :\n\n" + err.message);
+        // Ici, on affiche l'erreur renvoyée par le serveur PostgreSQL !
+        alert("Impossible d'envoyer la commande :\n" + err.message);
       } finally {
         btn.textContent = "Valider et Envoyer"; btn.disabled = false;
       }
@@ -660,62 +654,58 @@
     document.getElementById('closeTracker').onclick = () => document.getElementById('trackerOverlay').classList.remove('open');
 
     // =====================================================================
-    // ACCÈS ADMIN (Code secret)
+    // ACCÈS ADMIN (Code secret géré par Supabase)
     // =====================================================================
     let clickCount = 0;
     let clickTimer = null;
     const secretLogo = document.getElementById('secretLogo');
     const adminPanel = document.getElementById('adminPanel');
 
-    secretLogo.addEventListener('click', () => {
+    secretLogo.addEventListener('click', async () => {
       clickCount++;
-      if (clickCount === 1) {
-        clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
-      }
+      if (clickCount === 1) clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
+      
       if (clickCount === 3) {
         clearTimeout(clickTimer);
         clickCount = 0;
         
         const pin = prompt("Accès réservé à l'équipe. Entrez le code :");
-        if (pin === '1234') {
-          isAdminAuthenticated = true;
-          adminPanel.classList.add('open');
-          window.fetchAdminOrders();
-        } else if (pin !== null) {
-          alert("Code incorrect.");
+        if (pin) {
+          // On demande à Supabase de vérifier le code !
+          try {
+            btnLoading = true;
+            const { data, error } = await supabase.rpc('get_admin_orders', { admin_pin: pin });
+            
+            if (error) {
+              alert("Accès refusé : Code incorrect.");
+            } else {
+              adminPin = pin; // On garde le code en mémoire
+              isAdminAuthenticated = true;
+              adminPanel.classList.add('open');
+              renderAdmin(data); // On affiche les commandes reçues
+            }
+          } catch(err) {
+            alert("Erreur de connexion.");
+          }
         }
       }
     });
 
-    // =====================================================================
-    // SON D'ALERTE (Ding)
-    // =====================================================================
+    // Son d'alerte
     function playNotificationSound() {
       try {
         const context = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = context.createOscillator();
-        const gainNode = context.createGain();
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(800, context.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(1200, context.currentTime + 0.1);
-        gainNode.gain.setValueAtTime(0.5, context.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.3);
-        oscillator.connect(gainNode);
-        gainNode.connect(context.destination);
-        oscillator.start();
-        oscillator.stop(context.currentTime + 0.3);
-      } catch(e) { console.log("Audio bloqué."); }
+        const osc = context.createOscillator(); const gain = context.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(800, context.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, context.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.5, context.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.3);
+        osc.connect(gain); gain.connect(context.destination); osc.start(); osc.stop(context.currentTime + 0.3);
+      } catch(e) {}
     }
 
-    // =====================================================================
-    // ADMIN DASHBOARD
-    // =====================================================================
-    window.fetchAdminOrders = async function() {
-      if(!supabase) return document.getElementById('adminBody').innerHTML = "<p style='color:white;'>Erreur : Pas de connexion Supabase.</p>";
-      const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
-      if(error) return console.error(error);
-      
-      document.getElementById('adminBody').innerHTML = data.map(order => `
+    // Admin Dashboard
+    function renderAdmin(orders) {
+      document.getElementById('adminBody').innerHTML = orders.map(order => `
         <div class="admin-card">
           <div class="admin-card-header"><h3>${order.name}</h3><span>${order.total} F</span></div>
           <div class="admin-location">📍 ${order.location}</div>
@@ -726,22 +716,28 @@
             : `<button class="admin-btn btn-done" onclick="window.archiveOrder('${order.id}')">Terminé</button>`}
           </div>
         </div>`).join('') || "<p style='color:white;'>Aucune commande.</p>";
-    };
+    }
 
     window.updateOrderStatus = async (id, newStatus) => {
-      if(!supabase) return;
-      const { error } = await supabase.from('orders').update({ statuts: newStatus }).eq('id', id);
+      if(!supabase || !adminPin) return;
+      const { error } = await supabase.rpc('update_order_status', { admin_pin: adminPin, order_id: id, new_status: newStatus });
       if(error) alert("Erreur de mise à jour : " + error.message);
       else window.fetchAdminOrders();
     };
 
     window.archiveOrder = async (id) => {
-      if(!supabase) return;
-      await supabase.from('orders').delete().eq('id', id);
-      window.fetchAdminOrders();
+      if(!supabase || !adminPin) return;
+      const { error } = await supabase.rpc('delete_admin_order', { admin_pin: adminPin, order_id: id });
+      if(!error) window.fetchAdminOrders();
     };
 
-    // Écouteur temps réel (Admin)
+    window.fetchAdminOrders = async function() {
+      if(!supabase || !adminPin) return;
+      const { data, error } = await supabase.rpc('get_admin_orders', { admin_pin: adminPin });
+      if(!error) renderAdmin(data);
+    };
+
+    // Écouteur temps réel Admin
     if(supabase) {
       supabase.channel('admin-realtime').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, (payload) => {
         playNotificationSound();

@@ -471,7 +471,8 @@
     let supabase = null;
     try {
       if (window.supabase) {
-        supabase = window.supabase.createClient('https://qwibaiifvp1ewvmebzu.supabase.co', 'sb_publishable_D3Xu5YdZh-ST3vyniiPF0Q_nhjFPIah');
+        // CORRECTION DE L'URL ICI
+        supabase = window.supabase.createClient('https://qwibaiifvplewvmbezbu.supabase.co', 'sb_publishable_D3Xu5YdZh-ST3vyniiPF0Q_nhjFPIah');
       }
     } catch(e) { console.log("Supabase non chargé."); }
 
@@ -661,7 +662,6 @@
         window.listenToClientOrder(currentOrderId);
 
       } catch (err) {
-        // Si "Failed to fetch", c'est un problème réseau.
         if (err.message === 'TypeError: Failed to fetch' || err.message.includes('fetch')) {
           alert("Problème de connexion réseau. Vérifie que ton projet Supabase n'est pas en pause et réessaie.");
         } else {

@@ -5,18 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Buhanor Crousti · Commande</title>
   
-  <!-- Balises PWA (Pour installer sur l'écran d'accueil) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Buhanor">
   <meta name="theme-color" content="#160C06">
-  <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=192&q=80">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
   
-  <!-- SDK Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -38,17 +35,14 @@
     img { display: block; max-width: 100%; }
     button { font-family: inherit; cursor: pointer; border: none; }
 
-    /* Bannière d'erreur si le JS plante */
     #js-error-banner { display: none; position: fixed; top: 0; left: 0; right: 0; background: red; color: white; padding: 1rem; z-index: 99999; text-align: center; font-weight: bold; }
 
-    /* ===== MARQUEE ===== */
     .marquee-container { background: var(--ink); color: var(--yellow); overflow: hidden; padding: 0.65rem 0; border-bottom: 2px solid var(--ink); position: relative; z-index: 60; }
     .marquee-track { display: flex; gap: 2rem; white-space: nowrap; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.15em; width: max-content; animation: scrollMarquee 25s linear infinite; }
     .marquee-track span { display: inline-flex; align-items: center; gap: 0.5rem; }
     .marquee-track span::before { content: '✦'; color: var(--orange); }
     @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    /* ===== COMPTEUR D'AURA ===== */
     .aura-widget { position: fixed; bottom: 1rem; left: 1rem; background: var(--ink); color: var(--yellow); padding: 0.6rem 1.2rem; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; border: 2px solid var(--yellow); box-shadow: 4px 4px 0 var(--orange); z-index: 80; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s; }
     .aura-widget.pulse { animation: auraPulse 0.3s ease-out; }
     @keyframes auraPulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -56,7 +50,6 @@
     .floating-aura { position: fixed; font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--orange); -webkit-text-stroke: 1.5px var(--ink); text-shadow: 3px 3px 0 var(--yellow); pointer-events: none; z-index: 9999; transform: translate(-50%, -50%) rotate(var(--rot)); animation: floatUp 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem; }
     @keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); } 100% { opacity: 0; transform: translate(-50%, -200%) rotate(var(--rot)) scale(1.5); } }
 
-    /* ===== HEADER ===== */
     header { position: sticky; top: 0; z-index: 50; background: rgba(251, 243, 230, 0.88); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
     .header-inner { max-width: 1280px; margin: 0 auto; padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; color: var(--ink); white-space: nowrap; cursor: pointer; }
@@ -70,7 +63,6 @@
     .cart-btn svg { width: 1.1rem; height: 1.1rem; stroke: currentColor; fill: none; stroke-width: 2; }
     .cart-count { background: var(--orange); color: white; border-radius: 999px; min-width: 20px; height: 20px; padding: 0 6px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
 
-    /* ===== HERO ===== */
     .hero { max-width: 1280px; margin: 0 auto; padding: 3.5rem 1.5rem 5rem; display: grid; grid-template-columns: 1.05fr 1fr; gap: 2rem; align-items: center; position: relative; overflow: hidden; }
     .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--yellow); color: var(--ink); font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 0.15em; padding: 0.4rem 0.9rem; border-radius: 999px; width: fit-content; margin-bottom: 1.2rem; transform: rotate(-2deg); box-shadow: 3px 3px 0 var(--ink); }
     .hero h1 { font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 0.82; color: var(--ink); margin-bottom: 1.2rem; }
@@ -91,7 +83,6 @@
     .sticker.top { top: 4%; right: 0; background: var(--ink); color: var(--yellow); box-shadow: 4px 4px 0 var(--orange); transform: rotate(8deg); }
     .sticker.bottom { bottom: 4%; left: 0; background: var(--orange); color: white; box-shadow: 4px 4px 0 var(--yellow); transform: rotate(-6deg); }
 
-    /* ===== PROMESSE ===== */
     .promesse { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .promesse-item { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem 1rem; }
     .promesse-item + .promesse-item { border-left: 1px solid var(--line); }
@@ -100,7 +91,6 @@
     .promesse-item h4 { font-size: 1.15rem; color: var(--ink); margin-bottom: 0.1rem; }
     .promesse-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
 
-    /* ===== APÉRO ===== */
     .apero { background: var(--ink); color: var(--cream); padding: 4.5rem 1.5rem; position: relative; overflow: hidden; margin-top: 2rem; }
     .apero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(242, 177, 52, 0.15) 1px, transparent 1px); background-size: 24px 24px; opacity: 0.5; pointer-events: none; }
     .apero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center; position: relative; z-index: 1; }
@@ -115,7 +105,6 @@
     .apero-days { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.4rem; }
     .apero-day { border: 1.5px solid var(--yellow); color: var(--yellow); padding: 0.35rem 1rem; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.1em; font-size: 0.9rem; }
 
-    /* ===== MENU ===== */
     .menu-section { max-width: 1280px; margin: 0 auto; padding: 4rem 1.5rem 3rem; }
     .menu-header { text-align: center; margin-bottom: 2rem; }
     .menu-header .eyebrow { font-family: 'Bebas Neue', sans-serif; font-size: 0.95rem; letter-spacing: 0.25em; color: var(--orange); margin-bottom: 0.5rem; }
@@ -147,7 +136,6 @@
     .qty-ctrl button.plus { background: var(--orange); color: white; }
     .qty-ctrl .num { font-weight: 800; font-size: 0.85rem; min-width: 18px; text-align: center; }
 
-    /* ===== BAR À JUS ===== */
     .juice-bar { position: relative; padding: 5rem 1.5rem 5rem; background: radial-gradient(ellipse 600px 400px at 12% 15%, rgba(0, 168, 160, 0.08), transparent 60%), radial-gradient(ellipse 550px 420px at 88% 88%, rgba(255, 203, 71, 0.15), transparent 60%), linear-gradient(180deg, #FFF9EE 0%, #FDF4E5 40%, #E8F7F4 100%); color: var(--ink); overflow: hidden; margin-top: 2rem; }
     .bar-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
     .bar-head { text-align: center; margin-bottom: 2rem; }
@@ -191,7 +179,6 @@
     .bar-signature { text-align: center; margin-top: 2.5rem; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: var(--lagoon); }
     .bar-signature strong { font-weight: 500; color: var(--mango); }
 
-    /* ===== FOOTER ===== */
     footer { background: var(--ink); color: var(--cream); padding: 3.5rem 1.5rem 2rem; position: relative; overflow: hidden; }
     footer::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(242, 177, 52, 0.12) 1px, transparent 1px); background-size: 24px 24px; opacity: 0.4; pointer-events: none; }
     .foot-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; position: relative; }
@@ -202,7 +189,6 @@
     .foot-col svg { width: 14px; height: 14px; stroke: var(--yellow); stroke-width: 2; fill: none; flex-shrink: 0; }
     .foot-bottom { max-width: 1280px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255, 249, 238, 0.08); text-align: center; font-size: 0.75rem; color: rgba(255, 249, 238, 0.4); position: relative; }
 
-    /* ===== CART DRAWER ===== */
     .cart-drawer { position: fixed; inset: 0; z-index: 100; display: none; }
     .cart-drawer.open { display: block; }
     .cart-backdrop { position: absolute; inset: 0; background: rgba(22, 12, 6, 0.55); backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s; }
@@ -228,7 +214,6 @@
     .checkout-btn { width: 100%; padding: 1.05rem; background: var(--orange); color: white; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: 0.08em; transition: 0.2s; }
     .checkout-btn:hover { background: var(--ink); transform: translateY(-1px); }
 
-    /* ===== TRACKER CLIENT ===== */
     .tracker-overlay { position: fixed; inset: 0; z-index: 200; background: var(--paper); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
     .tracker-overlay.open { display: flex; }
     .tracker-content { max-width: 500px; width: 100%; background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); position: relative; }
@@ -247,7 +232,6 @@
     .step-text p { font-size: 0.8rem; color: var(--muted); }
     @keyframes pulseIcon { 0% { box-shadow: 0 0 0 0 rgba(232, 83, 31, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(232, 83, 31, 0); } 100% { box-shadow: 0 0 0 0 rgba(232, 83, 31, 0); } }
 
-    /* ===== ADMIN DASHBOARD (Caché) ===== */
     .admin-panel { position: fixed; inset: 0; z-index: 300; background: var(--ink); color: white; display: none; flex-direction: column; }
     .admin-panel.open { display: flex; }
     .admin-head { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; }
@@ -288,7 +272,6 @@
 
 <header>
   <div class="header-inner">
-    <!-- L'accès admin est caché ici : 3 clics rapides sur le logo -->
     <div class="logo" id="secretLogo">Buhanor <em>Crousti</em></div>
     <div class="search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
@@ -421,7 +404,6 @@
   </div>
 </div>
 
-<!-- L'ancien bouton a été supprimé, le panneau est caché -->
 <div class="admin-panel" id="adminPanel">
   <div class="admin-head"><h2>Commandes en direct</h2><button class="admin-close" onclick="document.getElementById('adminPanel').classList.remove('open')">&times;</button></div>
   <div class="admin-body" id="adminBody"></div>
@@ -454,7 +436,7 @@
     let activeCategory = 'Tous';
     let auraScore = 0;
     let currentOrderId = null;
-    let isAdminAuthenticated = false; // Sécurité Admin
+    let isAdminAuthenticated = false;
 
     let supabase = null;
     try {
@@ -463,7 +445,6 @@
       }
     } catch(e) { console.log("Supabase non chargé, mode démo actif."); }
 
-    // --- 1. MÉMORISATION LOCALSTORAGE (Prénom + Emplacement) ---
     const savedName = localStorage.getItem('buhanor_name');
     const savedLoc = localStorage.getItem('buhanor_location');
     if(savedName) document.getElementById('clientName').value = savedName;
@@ -605,12 +586,14 @@
       }
     });
 
+    // =====================================================================
+    // ENVOI DE LA COMMANDE A SUPABASE (Avec messages d'erreur)
+    // =====================================================================
     document.getElementById('checkoutBtn').onclick = async (e) => {
       const name = document.getElementById('clientName').value.trim();
       const loc = document.getElementById('clientLocation').value.trim();
       if(!name || !loc) return alert("N'oublie pas ton prénom et où tu es !");
 
-      // Sauvegarde locale
       localStorage.setItem('buhanor_name', name);
       localStorage.setItem('buhanor_location', loc);
 
@@ -621,9 +604,27 @@
       btn.textContent = "Envoi..."; btn.disabled = true;
 
       try {
-        const { data, error } = await supabase.from('orders').insert([{ name, location: loc, items: cart, total, statuts: 'received' }]).select();
-        if (error) throw error;
+        // Envoi des données
+        const { data, error } = await supabase.from('orders').insert([
+          { 
+            name: name, 
+            location: loc, 
+            items: cart, // On envoie le tableau d'objets directement
+            total: total, 
+            statuts: 'received' // Attention à l'orthographe exacte
+          }
+        ]).select();
 
+        if (error) {
+          console.error("Erreur Supabase:", error);
+          // Affiche un message clair si le RLS est activé
+          if (error.code === '42501' || error.message.includes('row-level security')) {
+            throw new Error("La sécurité de la base de données bloque l'envoi. Va dans Supabase > Authentication > Policies et désactive le RLS sur 'orders'.");
+          }
+          throw error;
+        }
+
+        // Succès : on récupère l'ID généré
         currentOrderId = data[0].id;
         cart = [];
         window.updateCartUI();
@@ -635,7 +636,7 @@
         window.listenToClientOrder(currentOrderId);
 
       } catch (err) {
-        alert("Erreur : " + err.message);
+        alert("Impossible d'envoyer la commande :\n\n" + err.message);
       } finally {
         btn.textContent = "Valider et Envoyer"; btn.disabled = false;
       }
@@ -658,9 +659,8 @@
 
     document.getElementById('closeTracker').onclick = () => document.getElementById('trackerOverlay').classList.remove('open');
 
-
     // =====================================================================
-    // 2. SÉCURISATION ACCÈS ADMIN (Code PIN & Logo Secret)
+    // ACCÈS ADMIN (Code secret)
     // =====================================================================
     let clickCount = 0;
     let clickTimer = null;
@@ -670,15 +670,14 @@
     secretLogo.addEventListener('click', () => {
       clickCount++;
       if (clickCount === 1) {
-        clickTimer = setTimeout(() => { clickCount = 0; }, 1500); // Reset après 1.5s
+        clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
       }
       if (clickCount === 3) {
         clearTimeout(clickTimer);
         clickCount = 0;
         
-        // Demander le code PIN
         const pin = prompt("Accès réservé à l'équipe. Entrez le code :");
-        if (pin === '1234') { // Tu peux changer ce code
+        if (pin === '1234') {
           isAdminAuthenticated = true;
           adminPanel.classList.add('open');
           window.fetchAdminOrders();
@@ -689,34 +688,27 @@
     });
 
     // =====================================================================
-    // 3. NOTIFICATION SONORE ADMIN
+    // SON D'ALERTE (Ding)
     // =====================================================================
     function playNotificationSound() {
-      // Utilisation de l'API Audio pour un "Ding" sans fichier externe
       try {
         const context = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = context.createOscillator();
         const gainNode = context.createGain();
-        
         oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(800, context.currentTime); // Fréquence haute
-        oscillator.frequency.exponentialRampToValueAtTime(1200, context.currentTime + 0.1); // Glisse vers le haut
-        
+        oscillator.frequency.setValueAtTime(800, context.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(1200, context.currentTime + 0.1);
         gainNode.gain.setValueAtTime(0.5, context.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.3);
-        
         oscillator.connect(gainNode);
         gainNode.connect(context.destination);
-        
         oscillator.start();
         oscillator.stop(context.currentTime + 0.3);
-      } catch(e) {
-        console.log("Impossible de jouer le son (politique navigateur).");
-      }
+      } catch(e) { console.log("Audio bloqué."); }
     }
 
     // =====================================================================
-    // 4. TABLEAU DE BORD ADMIN & TEMPS RÉEL
+    // ADMIN DASHBOARD
     // =====================================================================
     window.fetchAdminOrders = async function() {
       if(!supabase) return document.getElementById('adminBody').innerHTML = "<p style='color:white;'>Erreur : Pas de connexion Supabase.</p>";
@@ -738,8 +730,9 @@
 
     window.updateOrderStatus = async (id, newStatus) => {
       if(!supabase) return;
-      await supabase.from('orders').update({ statuts: newStatus }).eq('id', id);
-      window.fetchAdminOrders();
+      const { error } = await supabase.from('orders').update({ statuts: newStatus }).eq('id', id);
+      if(error) alert("Erreur de mise à jour : " + error.message);
+      else window.fetchAdminOrders();
     };
 
     window.archiveOrder = async (id) => {
@@ -748,17 +741,16 @@
       window.fetchAdminOrders();
     };
 
-    // Écouteur temps réel global (même si l'admin n'est pas encore ouvert)
+    // Écouteur temps réel (Admin)
     if(supabase) {
       supabase.channel('admin-realtime').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, (payload) => {
-        playNotificationSound(); // Joue le son !
+        playNotificationSound();
         if(isAdminAuthenticated && adminPanel.classList.contains('open')) {
           window.fetchAdminOrders();
         }
       }).subscribe();
     }
 
-    // Init
     window.renderMenu();
     window.renderJuiceBar();
     window.updateCartUI();

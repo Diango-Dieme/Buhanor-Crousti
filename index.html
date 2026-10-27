@@ -30,6 +30,7 @@
       font-family: 'Outfit', sans-serif; background: var(--paper); color: var(--ink);
       line-height: 1.5; overflow-x: hidden; width: 100%; max-width: 100vw;
       -webkit-font-smoothing: antialiased; user-select: none;
+      padding-bottom: 5rem; /* Espace pour le bandeau mobile */
     }
     h1, h2, h3, h4 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: 0.02em; line-height: 0.9; }
     img { display: block; max-width: 100%; }
@@ -43,12 +44,31 @@
     .marquee-track span::before { content: '✦'; color: var(--orange); }
     @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    .aura-widget { position: fixed; bottom: 1rem; left: 1rem; background: var(--ink); color: var(--yellow); padding: 0.6rem 1.2rem; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; border: 2px solid var(--yellow); box-shadow: 4px 4px 0 var(--orange); z-index: 80; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s; }
+    .aura-widget { position: fixed; bottom: 5rem; left: 1rem; background: var(--ink); color: var(--yellow); padding: 0.6rem 1.2rem; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; border: 2px solid var(--yellow); box-shadow: 4px 4px 0 var(--orange); z-index: 80; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s; }
     .aura-widget.pulse { animation: auraPulse 0.3s ease-out; }
     @keyframes auraPulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
     .aura-widget svg { width: 18px; height: 18px; fill: var(--yellow); }
     .floating-aura { position: fixed; font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--orange); -webkit-text-stroke: 1.5px var(--ink); text-shadow: 3px 3px 0 var(--yellow); pointer-events: none; z-index: 9999; transform: translate(-50%, -50%) rotate(var(--rot)); animation: floatUp 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem; }
     @keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); } 100% { opacity: 0; transform: translate(-50%, -200%) rotate(var(--rot)) scale(1.5); } }
+
+    /* ===== BANDEAU PANIER MOBILE ===== */
+    .mobile-cart-bar {
+      position: fixed; bottom: 1rem; left: 1rem; right: 1rem;
+      background: var(--ink); color: var(--cream);
+      border-radius: 999px; padding: 0.6rem 0.8rem 0.6rem 1.2rem;
+      display: none; align-items: center; justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 90;
+      transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+    .mobile-cart-bar.visible { transform: translateY(0); }
+    .mobile-cart-info { display: flex; flex-direction: column; line-height: 1.2; }
+    .mobile-cart-info span:first-child { font-size: 0.65rem; color: var(--yellow); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; }
+    .mobile-cart-info span:last-child { font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; letter-spacing: 0.02em; }
+    .mobile-cart-btn {
+      background: var(--orange); color: white; padding: 0.5rem 1.2rem;
+      border-radius: 999px; font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; letter-spacing: 0.08em;
+    }
 
     header { position: sticky; top: 0; z-index: 50; background: rgba(251, 243, 230, 0.88); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
     .header-inner { max-width: 1280px; margin: 0 auto; padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -270,6 +290,15 @@
   <span id="auraCount">0</span> AURA
 </div>
 
+<!-- Bandeau Panier Mobile -->
+<div class="mobile-cart-bar" id="mobileCartBar">
+  <div class="mobile-cart-info">
+    <span id="mobileCartLabel">Votre commande</span>
+    <span id="mobileCartTotal">0 FCFA</span>
+  </div>
+  <button class="mobile-cart-btn" onclick="document.getElementById('cartDrawer').classList.add('open')">Voir →</button>
+</div>
+
 <header>
   <div class="header-inner">
     <div class="logo" id="secretLogo">Buhanor <em>Crousti</em></div>
@@ -437,14 +466,14 @@
     let auraScore = 0;
     let currentOrderId = null;
     let isAdminAuthenticated = false;
-    let adminPin = null; // On stocke le code admin pour faire les requêtes
+    let adminPin = null;
 
     let supabase = null;
     try {
       if (window.supabase) {
         supabase = window.supabase.createClient('https://qwibaiifvp1ewvmebzu.supabase.co', 'sb_publishable_D3Xu5YdZh-ST3vyniiPF0Q_nhjFPIah');
       }
-    } catch(e) { console.log("Supabase non chargé, mode démo actif."); }
+    } catch(e) { console.log("Supabase non chargé."); }
 
     const savedName = localStorage.getItem('buhanor_name');
     const savedLoc = localStorage.getItem('buhanor_location');
@@ -458,6 +487,9 @@
     const cartFoot = document.getElementById('cartFoot');
     const cartTotalEl = document.getElementById('cartTotal');
     const cartCountEl = document.getElementById('cartCount');
+    const mobileCartBar = document.getElementById('mobileCartBar');
+    const mobileCartTotal = document.getElementById('mobileCartTotal');
+    const mobileCartLabel = document.getElementById('mobileCartLabel');
 
     window.renderMenu = function() {
       const filtered = MENU.filter(i => {
@@ -512,6 +544,14 @@
       cartCountEl.textContent = count;
       cartTotalEl.textContent = total.toLocaleString('fr-FR') + ' FCFA';
       
+      if(count > 0) {
+        mobileCartBar.classList.add('visible');
+        mobileCartTotal.textContent = total.toLocaleString('fr-FR') + ' FCFA';
+        mobileCartLabel.textContent = count + (count > 1 ? ' articles' : ' article');
+      } else {
+        mobileCartBar.classList.remove('visible');
+      }
+
       if(cart.length > 0) {
         cartFoot.style.display = 'block';
         cartBody.innerHTML = cart.map(item => `
@@ -587,15 +627,9 @@
       }
     });
 
-    // =====================================================================
-    // ENVOI DE LA COMMANDE A SUPABASE (RPC)
-    // Le navigateur ne valide RIEN, il envoie et affiche l'erreur si besoin.
-    // =====================================================================
     document.getElementById('checkoutBtn').onclick = async (e) => {
       const name = document.getElementById('clientName').value;
       const loc = document.getElementById('clientLocation').value;
-      
-      // On ne fait plus de "if(!name || !loc)" ici. C'est Supabase qui va refuser.
 
       if (!supabase) return alert("Erreur : Connexion Supabase impossible.");
 
@@ -604,7 +638,6 @@
       btn.textContent = "Envoi..."; btn.disabled = true;
 
       try {
-        // Appel de la fonction sécurisée Supabase (RPC)
         const { data, error } = await supabase.rpc('create_order', {
           client_name: name,
           client_location: loc,
@@ -612,10 +645,9 @@
           order_total: total
         });
 
-        if (error) throw error; // Si Supabase refuse (ex: prénom vide), on capture l'erreur.
+        if (error) throw error;
 
-        // Succès
-        currentOrderId = data; // L'ID UUID retourné par Supabase
+        currentOrderId = data;
         localStorage.setItem('buhanor_name', name);
         localStorage.setItem('buhanor_location', loc);
         
@@ -629,8 +661,12 @@
         window.listenToClientOrder(currentOrderId);
 
       } catch (err) {
-        // Ici, on affiche l'erreur renvoyée par le serveur PostgreSQL !
-        alert("Impossible d'envoyer la commande :\n" + err.message);
+        // Si "Failed to fetch", c'est un problème réseau.
+        if (err.message === 'TypeError: Failed to fetch' || err.message.includes('fetch')) {
+          alert("Problème de connexion réseau. Vérifie que ton projet Supabase n'est pas en pause et réessaie.");
+        } else {
+          alert("Impossible d'envoyer la commande :\n" + err.message);
+        }
       } finally {
         btn.textContent = "Valider et Envoyer"; btn.disabled = false;
       }
@@ -653,9 +689,6 @@
 
     document.getElementById('closeTracker').onclick = () => document.getElementById('trackerOverlay').classList.remove('open');
 
-    // =====================================================================
-    // ACCÈS ADMIN (Code secret géré par Supabase)
-    // =====================================================================
     let clickCount = 0;
     let clickTimer = null;
     const secretLogo = document.getElementById('secretLogo');
@@ -671,27 +704,23 @@
         
         const pin = prompt("Accès réservé à l'équipe. Entrez le code :");
         if (pin) {
-          // On demande à Supabase de vérifier le code !
           try {
-            btnLoading = true;
             const { data, error } = await supabase.rpc('get_admin_orders', { admin_pin: pin });
-            
             if (error) {
               alert("Accès refusé : Code incorrect.");
             } else {
-              adminPin = pin; // On garde le code en mémoire
+              adminPin = pin;
               isAdminAuthenticated = true;
               adminPanel.classList.add('open');
-              renderAdmin(data); // On affiche les commandes reçues
+              renderAdmin(data);
             }
           } catch(err) {
-            alert("Erreur de connexion.");
+            alert("Erreur de connexion. Vérifie le réseau.");
           }
         }
       }
     });
 
-    // Son d'alerte
     function playNotificationSound() {
       try {
         const context = new (window.AudioContext || window.webkitAudioContext)();
@@ -703,7 +732,6 @@
       } catch(e) {}
     }
 
-    // Admin Dashboard
     function renderAdmin(orders) {
       document.getElementById('adminBody').innerHTML = orders.map(order => `
         <div class="admin-card">
@@ -737,7 +765,6 @@
       if(!error) renderAdmin(data);
     };
 
-    // Écouteur temps réel Admin
     if(supabase) {
       supabase.channel('admin-realtime').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, (payload) => {
         playNotificationSound();

@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
   
   <!-- SDK Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -19,115 +19,245 @@
       --ink: #160C06; --paper: #FBF3E6; --cream: #FFF9EE;
       --orange: #E8531F; --orange-deep: #B33A0F; --yellow: #F2B134;
       --muted: #8A7562; --line: rgba(22, 12, 6, 0.08);
-      --lagoon: #00A8A0;
+      --lagoon: #00A8A0; --sun: #FFCB47; --mango: #FF8C42;
     }
     html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
     body {
       font-family: 'Outfit', sans-serif; background: var(--paper); color: var(--ink);
       line-height: 1.5; overflow-x: hidden; width: 100%; max-width: 100vw;
+      -webkit-font-smoothing: antialiased;
     }
     h1, h2, h3, h4 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: 0.02em; line-height: 0.9; }
     img { display: block; max-width: 100%; }
     button { font-family: inherit; cursor: pointer; border: none; }
 
     /* ===== MARQUEE ===== */
-    .marquee-container { background: var(--ink); color: var(--yellow); overflow: hidden; padding: 0.65rem 0; }
+    .marquee-container { background: var(--ink); color: var(--yellow); overflow: hidden; padding: 0.65rem 0; border-bottom: 2px solid var(--ink); position: relative; z-index: 60; }
     .marquee-track { display: flex; gap: 2rem; white-space: nowrap; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.15em; width: max-content; animation: scrollMarquee 25s linear infinite; }
-    .marquee-track span::before { content: '✦'; color: var(--orange); margin-right: 0.5rem; }
+    .marquee-track span { display: inline-flex; align-items: center; gap: 0.5rem; }
+    .marquee-track span::before { content: '✦'; color: var(--orange); }
     @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
+    /* ===== COMPTEUR D'AURA (Gen-Z) ===== */
+    .aura-widget { position: fixed; bottom: 1rem; left: 1rem; background: var(--ink); color: var(--yellow); padding: 0.6rem 1.2rem; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; border: 2px solid var(--yellow); box-shadow: 4px 4px 0 var(--orange); z-index: 80; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s; }
+    .aura-widget.pulse { animation: auraPulse 0.3s ease-out; }
+    @keyframes auraPulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    .aura-widget svg { width: 18px; height: 18px; fill: var(--yellow); }
+
+    /* ===== ANIMATION AURA AU CLIC ===== */
+    .floating-aura { position: fixed; font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--orange); -webkit-text-stroke: 1.5px var(--ink); text-shadow: 3px 3px 0 var(--yellow); pointer-events: none; z-index: 9999; transform: translate(-50%, -50%) rotate(var(--rot)); animation: floatUp 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem; }
+    @keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); } 100% { opacity: 0; transform: translate(-50%, -200%) rotate(var(--rot)) scale(1.5); } }
+
+    .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+
     /* ===== HEADER ===== */
-    header { position: sticky; top: 0; z-index: 50; background: rgba(251, 243, 230, 0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
-    .header-inner { max-width: 1280px; margin: 0 auto; padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
-    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; color: var(--ink); }
+    header { position: sticky; top: 0; z-index: 50; background: rgba(251, 243, 230, 0.88); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+    .header-inner { max-width: 1280px; margin: 0 auto; padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; color: var(--ink); white-space: nowrap; }
     .logo em { font-style: normal; color: var(--orange); }
-    .cart-btn { display: flex; align-items: center; gap: 0.5rem; background: var(--ink); color: var(--cream); padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem; }
+    .search { flex: 1; max-width: 360px; position: relative; }
+    .search input { width: 100%; padding: 0.65rem 1rem 0.65rem 2.6rem; border-radius: 999px; border: 1.5px solid var(--line); background: var(--cream); font-family: inherit; font-size: 0.9rem; outline: none; transition: 0.25s; }
+    .search input:focus { border-color: var(--orange); }
+    .search svg { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); width: 1rem; height: 1rem; stroke: var(--muted); fill: none; stroke-width: 2; }
+    .cart-btn { display: flex; align-items: center; gap: 0.5rem; background: var(--ink); color: var(--cream); padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem; transition: 0.25s; flex-shrink: 0; }
+    .cart-btn:hover { background: var(--orange); transform: translateY(-1px); }
     .cart-btn svg { width: 1.1rem; height: 1.1rem; stroke: currentColor; fill: none; stroke-width: 2; }
-    .cart-count { background: var(--orange); color: white; border-radius: 999px; padding: 0.1rem 0.5rem; font-size: 0.7rem; }
+    .cart-count { background: var(--orange); color: white; border-radius: 999px; min-width: 20px; height: 20px; padding: 0 6px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
 
     /* ===== HERO ===== */
-    .hero { max-width: 1280px; margin: 0 auto; padding: 3rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
-    .hero h1 { font-size: clamp(3rem, 6vw, 5rem); line-height: 0.85; margin-bottom: 1rem; }
-    .hero h1 span { color: var(--orange); }
-    .hero p { color: var(--muted); margin-bottom: 2rem; }
-    .hero-img { border-radius: 50%; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 8px solid white; aspect-ratio: 1; object-fit: cover; }
-    .btn-main { background: var(--orange); color: white; padding: 1rem 2rem; border-radius: 999px; font-family: 'Bebas Neue'; font-size: 1.2rem; text-decoration: none; display: inline-block; }
+    .hero { max-width: 1280px; margin: 0 auto; padding: 3.5rem 1.5rem 5rem; display: grid; grid-template-columns: 1.05fr 1fr; gap: 2rem; align-items: center; position: relative; overflow: hidden; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--yellow); color: var(--ink); font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 0.15em; padding: 0.4rem 0.9rem; border-radius: 999px; width: fit-content; margin-bottom: 1.2rem; transform: rotate(-2deg); box-shadow: 3px 3px 0 var(--ink); }
+    .hero h1 { font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 0.82; color: var(--ink); margin-bottom: 1.2rem; }
+    .hero h1 .accent { display: inline-block; color: var(--orange); position: relative; z-index: 1; }
+    .hero h1 .accent::after { content: ''; position: absolute; left: -4px; right: -4px; bottom: 0.08em; height: 0.16em; background: var(--yellow); z-index: -1; transform: skewX(-8deg) rotate(-1deg); }
+    .hero p { color: var(--muted); font-size: 1.05rem; max-width: 440px; margin-bottom: 2rem; line-height: 1.65; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .hero-cta { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--orange); color: white; text-decoration: none; padding: 0.95rem 1.8rem; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; font-size: 1.25rem; letter-spacing: 0.08em; box-shadow: 5px 5px 0 var(--ink); transition: 0.2s; }
+    .hero-cta:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); background: var(--orange-deep); }
+    .hero-cta svg { width: 1.1rem; height: 1.1rem; stroke: currentColor; stroke-width: 2.5; fill: none; }
+    .hero-cta.secondary { background: white; color: #007A75; border: 2px solid var(--lagoon); box-shadow: 5px 5px 0 var(--lagoon); }
+    .hero-cta.secondary:hover { background: var(--lagoon); color: white; box-shadow: 7px 7px 0 #FFCB47; }
+    .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; aspect-ratio: 1/1; max-width: 100%; min-width: 0; }
+    .hero-visual .glow { position: absolute; inset: 0; background: radial-gradient(circle at 50% 55%, var(--yellow), transparent 60%); opacity: 0.5; filter: blur(40px); z-index: 0; }
+    .hero-visual .plate { position: relative; width: 82%; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; box-shadow: 0 40px 70px -25px rgba(22, 12, 6, 0.4), 0 0 0 8px var(--cream), 0 0 0 10px var(--ink); z-index: 1; }
+    .hero-visual .plate img { width: 100%; height: 100%; object-fit: cover; }
+    .sticker { position: absolute; font-family: 'Bebas Neue', sans-serif; padding: 0.7rem 1.2rem; font-size: 1rem; letter-spacing: 0.1em; border-radius: 999px; z-index: 2; }
+    .sticker.top { top: 4%; right: 0; background: var(--ink); color: var(--yellow); box-shadow: 4px 4px 0 var(--orange); transform: rotate(8deg); }
+    .sticker.bottom { bottom: 4%; left: 0; background: var(--orange); color: white; box-shadow: 4px 4px 0 var(--yellow); transform: rotate(-6deg); }
 
-    /* ===== MENU ===== */
-    .menu-section { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    /* ===== PROMESSE ===== */
+    .promesse { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .promesse-item { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem 1rem; }
+    .promesse-item + .promesse-item { border-left: 1px solid var(--line); }
+    .promesse-icon { width: 44px; height: 44px; flex-shrink: 0; background: var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 3px 3px 0 var(--ink); }
+    .promesse-icon svg { width: 20px; height: 20px; stroke: var(--ink); stroke-width: 2; fill: none; }
+    .promesse-item h4 { font-size: 1.15rem; color: var(--ink); margin-bottom: 0.1rem; }
+    .promesse-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+
+    /* ===== APÉRO ===== */
+    .apero { background: var(--ink); color: var(--cream); padding: 4.5rem 1.5rem; position: relative; overflow: hidden; margin-top: 2rem; }
+    .apero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(242, 177, 52, 0.15) 1px, transparent 1px); background-size: 24px 24px; opacity: 0.5; pointer-events: none; }
+    .apero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center; position: relative; z-index: 1; }
+    .stamp { width: 160px; height: 160px; flex-shrink: 0; position: relative; }
+    .stamp svg { width: 100%; height: 100%; animation: spinSlow 20s linear infinite; }
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+    .stamp-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; font-family: 'Bebas Neue', sans-serif; color: var(--yellow); font-size: 1.3rem; letter-spacing: 0.1em; text-align: center; line-height: 1; }
+    .stamp-center small { font-size: 0.65rem; letter-spacing: 0.2em; opacity: 0.7; }
+    .apero h2 { font-size: clamp(2.2rem, 4.5vw, 3.8rem); margin-bottom: 0.9rem; color: var(--cream); line-height: 0.9; }
+    .apero h2 em { font-style: normal; color: var(--yellow); }
+    .apero p { color: rgba(255, 249, 238, 0.72); font-size: 1rem; max-width: 620px; line-height: 1.7; }
+    .apero-days { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.4rem; }
+    .apero-day { border: 1.5px solid var(--yellow); color: var(--yellow); padding: 0.35rem 1rem; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.1em; font-size: 0.9rem; }
+
+    /* ===== MENU FAST FOOD ===== */
+    .menu-section { max-width: 1280px; margin: 0 auto; padding: 4rem 1.5rem 3rem; }
     .menu-header { text-align: center; margin-bottom: 2rem; }
-    .menu-header h2 { font-size: 3rem; }
-    .categories { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-    .cat-btn { background: transparent; border: 1.5px solid var(--line); padding: 0.5rem 1.2rem; border-radius: 999px; font-weight: 600; font-size: 0.8rem; }
-    .cat-btn.active { background: var(--ink); color: var(--yellow); border-color: var(--ink); }
-    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
-    .card { background: white; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--line); }
-    .card-img { height: 180px; position: relative; }
-    .card-img img { width: 100%; height: 100%; object-fit: cover; }
-    .card-price { position: absolute; bottom: 10px; left: 10px; background: var(--yellow); font-family: 'Bebas Neue'; padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 1.1rem; box-shadow: 2px 2px 0 var(--ink); }
-    .card-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; }
-    .card-body h3 { font-size: 1.5rem; margin-bottom: 0.2rem; }
-    .card-body p { font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; flex: 1; }
-    .add-btn { background: var(--ink); color: white; padding: 0.6rem; border-radius: 999px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; }
-    .qty-ctrl { display: flex; align-items: center; justify-content: space-between; background: var(--paper); border-radius: 999px; padding: 0.2rem; }
-    .qty-ctrl button { width: 32px; height: 32px; border-radius: 50%; background: white; font-weight: 800; font-size: 1.2rem; }
+    .menu-header .eyebrow { font-family: 'Bebas Neue', sans-serif; font-size: 0.95rem; letter-spacing: 0.25em; color: var(--orange); margin-bottom: 0.5rem; }
+    .menu-header h2 { font-size: clamp(2.5rem, 5.5vw, 4.5rem); color: var(--ink); margin-bottom: 0.8rem; }
+    .menu-header p { color: var(--muted); font-size: 0.95rem; max-width: 560px; margin: 0 auto; }
+    .categories { display: flex; gap: 0.6rem; padding: 0.5rem 0 2rem; justify-content: center; flex-wrap: wrap; }
+    .cat-btn { background: transparent; border: 1.5px solid var(--line); color: var(--ink); padding: 0.6rem 1.3rem; border-radius: 999px; font-weight: 600; font-size: 0.82rem; transition: 0.25s; white-space: nowrap; }
+    .cat-btn:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-1px); }
+    .cat-btn.active { background: var(--ink); border-color: var(--ink); color: var(--yellow); }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.7rem; }
+    
+    .card { background: var(--cream); border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--line); transition: 0.4s; opacity: 0; transform: translateY(28px); min-width: 0; }
+    .card.reveal { opacity: 1; transform: translateY(0); }
+    .card:hover { transform: translateY(-8px) rotate(-0.5deg); box-shadow: 0 30px 50px -22px rgba(22, 12, 6, 0.3), 0 0 0 1px var(--orange); border-color: transparent; }
+    .card-img { position: relative; aspect-ratio: 4/3; overflow: hidden; background: linear-gradient(135deg, #F2B134, #E8531F); }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+    .card:hover .card-img img { transform: scale(1.09) rotate(1.5deg); }
+    .card-price-tag { position: absolute; bottom: 14px; left: 14px; background: var(--yellow); color: var(--ink); font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; padding: 0.4rem 0.9rem; border-radius: 999px; box-shadow: 2px 2px 0 var(--ink); transform: rotate(-2deg); z-index: 2; transition: 0.3s; }
+    .card:hover .card-price-tag { transform: rotate(2deg) scale(1.05); }
+    .card-body { padding: 1.3rem 1.3rem 0.4rem; flex: 1; }
+    .card-body h3 { font-size: 1.75rem; color: var(--ink); margin-bottom: 0.4rem; }
+    .card-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-foot { padding: 0.9rem 1.3rem 1.3rem; display: flex; justify-content: flex-end; }
+    
+    .add-btn { background: var(--ink); color: var(--cream); padding: 0.65rem 1.15rem; border-radius: 999px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: 0.2s; }
+    .add-btn:hover { background: var(--orange); transform: scale(1.04); }
+    .add-btn svg { width: 14px; height: 14px; stroke: var(--yellow); stroke-width: 2.5; fill: none; }
+    .qty-ctrl { display: inline-flex; align-items: center; gap: 0.35rem; background: var(--paper); padding: 0.25rem; border-radius: 999px; border: 1px solid var(--line); }
+    .qty-ctrl button { width: 30px; height: 30px; border-radius: 50%; background: var(--cream); color: var(--ink); font-weight: 800; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .qty-ctrl button:hover { background: var(--yellow); }
     .qty-ctrl button.plus { background: var(--orange); color: white; }
+    .qty-ctrl .num { font-weight: 800; font-size: 0.85rem; min-width: 18px; text-align: center; }
 
-    /* ===== PANIER ===== */
+    /* ===== BAR À JUS ===== */
+    .juice-bar { position: relative; padding: 5rem 1.5rem 5rem; background: radial-gradient(ellipse 600px 400px at 12% 15%, rgba(0, 168, 160, 0.08), transparent 60%), radial-gradient(ellipse 550px 420px at 88% 88%, rgba(255, 203, 71, 0.15), transparent 60%), linear-gradient(180deg, #FFF9EE 0%, #FDF4E5 40%, #E8F7F4 100%); color: var(--ink); overflow: hidden; margin-top: 2rem; }
+    .bar-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+    .bar-head { text-align: center; margin-bottom: 2rem; }
+    .bar-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.82; color: var(--ink); margin-bottom: 0.4rem; }
+    .sun-word { color: var(--lagoon); position: relative; display: inline-block; }
+    .sun-word::after { content: ''; position: absolute; left: -4px; right: -4px; bottom: 0.06em; height: 0.14em; background: var(--sun); z-index: -1; transform: skewX(-8deg) rotate(-1deg); }
+    .bar-byline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--muted); }
+    .bar-byline em { color: var(--lagoon); font-weight: 500; }
+    .bar-hero { position: relative; max-width: 900px; margin: 0 auto 2.5rem; aspect-ratio: 16 / 9; border-radius: 24px; overflow: hidden; border: 4px solid white; box-shadow: 0 30px 60px -25px rgba(0, 168, 160, 0.4), 0 0 0 2px rgba(0, 168, 160, 0.2); background: linear-gradient(135deg, #E0F7F5, #FFF3CC); }
+    .bar-hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 65%; transition: transform 0.9s; }
+    .bar-hero:hover img { transform: scale(1.04); }
+    .bar-intro { color: var(--muted); font-size: 0.98rem; max-width: 600px; margin: 0 auto 1.5rem; text-align: center; line-height: 1.75; }
+    .bar-notice { display: flex; gap: 0.8rem; align-items: flex-start; max-width: 620px; margin: 0 auto 3rem; padding: 1rem 1.2rem; background: rgba(255, 203, 71, 0.15); border: 1.5px dashed var(--sun); border-radius: 14px; font-size: 0.85rem; line-height: 1.6; }
+    .bar-notice strong { color: var(--mango); font-weight: 700; }
+    .bar-section-head { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1.5rem; }
+    .bar-section-head h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--lagoon); letter-spacing: 0.1em; white-space: nowrap; }
+    .bar-section-head h3 em { font-style: normal; color: var(--mango); }
+    .bar-section-head::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, rgba(0, 168, 160, 0.3), transparent); border-radius: 2px; }
+    
+    .juice-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .juice-card { background: white; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid rgba(0, 168, 160, 0.15); transition: 0.3s; box-shadow: 0 4px 15px rgba(0, 168, 160, 0.05); }
+    .juice-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0, 168, 160, 0.15); border-color: rgba(0, 168, 160, 0.3); }
+    .juice-card-img { position: relative; height: 160px; background: linear-gradient(135deg, #E0F7F5, #FFF3CC); }
+    .juice-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .juice-badge { position: absolute; top: 12px; right: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 6px; backdrop-filter: blur(4px); z-index: 2; }
+    .juice-badge.virgin { background: rgba(232, 243, 236, 0.9); color: #2D6A4F; border: 1px solid rgba(45, 106, 79, 0.2); }
+    .juice-badge.alcohol { background: rgba(255, 236, 236, 0.9); color: #C54343; border: 1px solid rgba(255, 107, 107, 0.3); }
+    .juice-card-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; }
+    .juice-card-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--ink); margin-bottom: 0.2rem; }
+    .juice-card-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-bottom: 1rem; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .juice-card-foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+    .juice-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--mango); }
+    
+    .bar-add { width: 32px; height: 32px; border-radius: 50%; background: var(--lagoon); color: white; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 4px 10px -2px rgba(0, 168, 160, 0.3); }
+    .bar-add:hover { background: var(--mango); transform: scale(1.05); }
+    .bar-qty { display: inline-flex; align-items: center; gap: 0.2rem; padding: 0.2rem; border: 1.5px solid var(--lagoon); border-radius: 999px; background: white; }
+    .bar-qty button { width: 24px; height: 24px; border-radius: 50%; background: transparent; color: var(--lagoon); font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .bar-qty button:hover { background: var(--lagoon); color: white; }
+    .bar-qty span { color: var(--ink); font-size: 0.8rem; font-weight: 700; padding: 0 0.3rem; min-width: 20px; text-align: center; }
+
+    .bar-fruits { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; max-width: 700px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px dashed rgba(0, 168, 160, 0.3); }
+    .bar-fruits-label { width: 100%; text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; color: var(--muted); margin-bottom: 0.9rem; }
+    .bar-fruit-chip { font-family: 'Bebas Neue', sans-serif; font-size: 0.8rem; padding: 0.32rem 0.85rem; border-radius: 999px; background: white; color: var(--lagoon); border: 1.5px solid rgba(0, 168, 160, 0.25); }
+    .bar-signature { text-align: center; margin-top: 2.5rem; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: var(--lagoon); }
+    .bar-signature strong { font-weight: 500; color: var(--mango); }
+
+    /* ===== FOOTER ===== */
+    footer { background: var(--ink); color: var(--cream); padding: 3.5rem 1.5rem 2rem; position: relative; overflow: hidden; }
+    footer::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(242, 177, 52, 0.12) 1px, transparent 1px); background-size: 24px 24px; opacity: 0.4; pointer-events: none; }
+    .foot-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; position: relative; }
+    .foot-brand .logo { color: var(--cream); font-size: 2rem; margin-bottom: 0.7rem; }
+    .foot-brand p { color: rgba(255, 249, 238, 0.55); font-size: 0.85rem; max-width: 320px; line-height: 1.7; }
+    .foot-col h4 { font-size: 1rem; letter-spacing: 0.15em; color: var(--yellow); margin-bottom: 0.9rem; }
+    .foot-col p { font-size: 0.85rem; color: rgba(255, 249, 238, 0.72); margin-bottom: 0.55rem; display: flex; align-items: center; gap: 0.5rem; }
+    .foot-col svg { width: 14px; height: 14px; stroke: var(--yellow); stroke-width: 2; fill: none; flex-shrink: 0; }
+    .foot-bottom { max-width: 1280px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255, 249, 238, 0.08); text-align: center; font-size: 0.75rem; color: rgba(255, 249, 238, 0.4); position: relative; }
+
+    /* ===== CART DRAWER (Panier + Checkout) ===== */
     .cart-drawer { position: fixed; inset: 0; z-index: 100; display: none; }
     .cart-drawer.open { display: block; }
-    .cart-backdrop { position: absolute; inset: 0; background: rgba(22, 12, 6, 0.6); backdrop-filter: blur(4px); }
-    .cart-panel { position: absolute; top: 0; right: 0; height: 100%; width: 100%; max-width: 420px; background: var(--cream); display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s; }
+    .cart-backdrop { position: absolute; inset: 0; background: rgba(22, 12, 6, 0.55); backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s; }
+    .cart-drawer.open .cart-backdrop { opacity: 1; }
+    .cart-panel { position: absolute; top: 0; right: 0; height: 100%; width: 100%; max-width: 430px; background: var(--cream); display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.4s; box-shadow: -20px 0 60px rgba(0,0,0,0.25); }
     .cart-drawer.open .cart-panel { transform: translateX(0); }
-    .cart-head { padding: 1.5rem; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); }
-    .cart-body { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-    .cart-foot { padding: 1.5rem; border-top: 1px solid var(--line); background: var(--paper); }
+    .cart-head { padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .cart-head h3 { font-size: 1.9rem; color: var(--ink); }
+    .close-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--paper); font-size: 1.3rem; color: var(--ink); display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .close-btn:hover { background: var(--orange); color: white; transform: rotate(90deg); }
+    .cart-body { flex: 1; overflow-y: auto; padding: 1.2rem 1.5rem; display: flex; flex-direction: column; gap: 0.9rem; }
     
     .checkout-form { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem; }
-    .checkout-form label { font-weight: 700; font-size: 0.85rem; }
-    .checkout-form input { width: 100%; padding: 0.8rem; border-radius: 12px; border: 1.5px solid var(--line); font-family: inherit; font-size: 1rem; }
+    .checkout-form label { font-weight: 700; font-size: 0.85rem; color: var(--ink); }
+    .checkout-form input { width: 100%; padding: 0.8rem; border-radius: 12px; border: 1.5px solid var(--line); font-family: inherit; font-size: 1rem; outline: none; }
+    .checkout-form input:focus { border-color: var(--orange); }
     .quick-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
-    .quick-tag { background: white; border: 1px solid var(--line); padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.75rem; font-weight: 600; }
-    .quick-tag.active { background: var(--orange); color: white; border-color: var(--orange); }
-    
-    .total-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2rem; margin-bottom: 1rem; }
-    .btn-primary { background: var(--orange); color: white; padding: 1rem; border-radius: 999px; font-family: 'Bebas Neue'; font-size: 1.3rem; width: 100%; }
+    .quick-tag { background: white; border: 1px solid var(--line); padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.75rem; font-weight: 600; transition: 0.2s; }
+    .quick-tag:hover, .quick-tag.active { background: var(--orange); color: white; border-color: var(--orange); }
 
-    /* ===== TRACKER DE COMMANDE ===== */
+    .cart-foot { padding: 1.5rem; border-top: 1px solid var(--line); background: var(--paper); }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-weight: 700; }
+    .cart-total-row span:first-child { color: var(--muted); font-size: 0.9rem; text-transform: uppercase; }
+    .cart-total-row span:last-child { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--ink); }
+    .checkout-btn { width: 100%; padding: 1.05rem; background: var(--orange); color: white; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: 0.08em; transition: 0.2s; }
+    .checkout-btn:hover { background: var(--ink); transform: translateY(-1px); }
+
+    /* ===== TRACKER CLIENT (Suivi) ===== */
     .tracker-overlay { position: fixed; inset: 0; z-index: 200; background: var(--paper); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
     .tracker-overlay.open { display: flex; }
     .tracker-content { max-width: 500px; width: 100%; background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); position: relative; }
-    .tracker-close { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; background: none; display: none; }
+    .tracker-close { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; background: none; display: none; cursor: pointer; }
     .tracker-title { font-size: 2rem; margin-bottom: 0.5rem; }
     .tracker-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
-    
     .tracker-steps { display: flex; flex-direction: column; gap: 1.5rem; position: relative; }
     .tracker-steps::before { content: ''; position: absolute; left: 24px; top: 10px; bottom: 10px; width: 3px; background: var(--line); z-index: 0; }
-    
     .step { display: flex; align-items: flex-start; gap: 1rem; position: relative; z-index: 1; text-align: left; opacity: 0.4; transition: 0.5s; }
     .step.active { opacity: 1; }
     .step.done { opacity: 1; }
-    
     .step-icon { width: 50px; height: 50px; border-radius: 50%; background: white; border: 3px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: 0.5s; }
     .step.active .step-icon { border-color: var(--orange); background: var(--orange); color: white; animation: pulseIcon 2s infinite; }
     .step.done .step-icon { border-color: var(--lagoon); background: var(--lagoon); color: white; }
-    
     .step-text h4 { font-size: 1.3rem; margin-bottom: 0.2rem; }
     .step-text p { font-size: 0.8rem; color: var(--muted); }
-
     @keyframes pulseIcon { 0% { box-shadow: 0 0 0 0 rgba(232, 83, 31, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(232, 83, 31, 0); } 100% { box-shadow: 0 0 0 0 rgba(232, 83, 31, 0); } }
 
     /* ===== ADMIN DASHBOARD ===== */
-    .admin-toggle { position: fixed; bottom: 1rem; right: 1rem; background: var(--ink); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 90; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    .admin-toggle { position: fixed; bottom: 1rem; right: 1rem; background: var(--ink); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 90; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; }
     .admin-toggle svg { width: 24px; height: 24px; stroke: currentColor; fill: none; }
-    
     .admin-panel { position: fixed; inset: 0; z-index: 300; background: var(--ink); color: white; display: none; flex-direction: column; }
     .admin-panel.open { display: flex; }
     .admin-head { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; }
     .admin-head h2 { color: var(--yellow); font-size: 2rem; }
-    .admin-close { background: none; color: white; font-size: 1.5rem; }
+    .admin-close { background: none; color: white; font-size: 1.5rem; cursor: pointer; }
     .admin-body { flex: 1; padding: 1.5rem; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; align-content: start; }
-    
     .admin-card { background: white; color: var(--ink); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
     .admin-card-header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 0.5rem; }
     .admin-card-header h3 { font-size: 1.5rem; }
@@ -135,30 +265,62 @@
     .admin-location { font-size: 0.85rem; font-weight: 700; color: var(--orange); background: #FFF0E8; padding: 0.4rem; border-radius: 6px; display: inline-block; }
     .admin-items { list-style: none; font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.3rem; }
     .admin-actions { display: flex; gap: 0.5rem; margin-top: auto; }
-    .admin-btn { flex: 1; padding: 0.6rem; border-radius: 8px; font-weight: 700; font-size: 0.8rem; color: white; }
+    .admin-btn { flex: 1; padding: 0.6rem; border-radius: 8px; font-weight: 700; font-size: 0.8rem; color: white; cursor: pointer; }
     .btn-prep { background: var(--orange); }
     .btn-ready { background: var(--lagoon); }
     .btn-done { background: var(--muted); }
 
-    @media (max-width: 768px) {
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 960px) {
       .hero { grid-template-columns: 1fr; text-align: center; }
-      .hero-img { max-width: 300px; margin: 0 auto; }
+      .hero-tag { margin-left: auto; margin-right: auto; }
+      .hero p { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-visual { max-width: 420px; margin: 0 auto; }
+      .promesse { grid-template-columns: 1fr; }
+      .promesse-item + .promesse-item { border-left: none; border-top: 1px solid var(--line); }
+      .apero-inner { grid-template-columns: 1fr; text-align: center; gap: 1.5rem; }
+      .stamp { margin: 0 auto; }
+      .apero-days { justify-content: center; }
+      .apero p { margin-left: auto; margin-right: auto; }
+      .foot-inner { grid-template-columns: 1fr; text-align: center; gap: 1.5rem; }
+      .foot-brand p { margin: 0 auto; }
+      .foot-col p { justify-content: center; }
+      .search { display: none; }
+      .bar-hero { aspect-ratio: 4 / 3; }
+    }
+    @media (max-width: 560px) {
+      .logo { font-size: 1.5rem; }
+      .cart-btn span:not(.cart-count) { display: none; }
+      .menu-grid, .juice-grid { grid-template-columns: 1fr; }
+      .bar-title { font-size: 3rem; }
+      .aura-widget { bottom: 5rem; padding: 0.4rem 0.8rem; font-size: 1rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- Header & Marquee -->
+<!-- Bandeau défilant -->
 <div class="marquee-container">
   <div class="marquee-track">
-    <span>COMMANDE 100% NATURELLE</span><span>ZÉRO FRAIS DE LIVRAISON</span><span>CAP SKIRRING</span>
-    <span>COMMANDE 100% NATURELLE</span><span>ZÉRO FRAIS DE LIVRAISON</span><span>CAP SKIRRING</span>
+    <span>GOURMAND</span><span>100% MAISON</span><span>BUHANOR</span><span>JUS</span><span>CROUSTI</span><span>SAVOUREUX</span><span>MIAM MIAM</span><span>SHEESH</span><span>6 7</span><span>APAGNANG</span><span>QUOICOUBEH</span><span>BATTLE D'AURA</span>
+    <span>GOURMAND</span><span>100% MAISON</span><span>BUHANOR</span><span>JUS</span><span>CROUSTI</span><span>SAVOUREUX</span><span>MIAM MIAM</span><span>SHEESH</span><span>6 7</span><span>APAGNANG</span><span>QUOICOUBEH</span><span>BATTLE D'AURA</span>
   </div>
+</div>
+
+<!-- Compteur Aura (Gen-Z) -->
+<div class="aura-widget" id="auraWidget">
+  <svg viewBox="0 0 24 24"><path d="M12 2L15 9H22L16 14L19 21L12 16L5 21L8 14L2 9H9L12 2Z"/></svg>
+  <span id="auraCount">0</span> AURA
 </div>
 
 <header>
   <div class="header-inner">
     <div class="logo">Buhanor <em>Crousti</em></div>
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+      <input type="text" id="searchInput" placeholder="Tacos, burger, crêpes...">
+    </div>
     <button class="cart-btn" id="cartToggle">
       <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6L4 2H2"/></svg>
       <span>Panier</span>
@@ -167,39 +329,148 @@
   </div>
 </header>
 
-<!-- Hero -->
 <section class="hero">
-  <div>
-    <h1>Commandez<br><span>en 15 secondes</span></h1>
-    <p>Pas de compte, pas de prise de tête. Cliquez, ajoutez votre prénom et votre transat, on s'occupe du reste.</p>
-    <a href="#menu" class="btn-main">Voir la carte</a>
+  <div class="hero-content">
+    <div class="hero-tag">★ Cap Skirring · Plage</div>
+    <h1>Croustillant,<br>généreux,<br><span class="accent">gourmand</span>.</h1>
+    <p>Fast-food sur la plage et bar à jus de Moussa qui presse à la commande. Commandez en 15 secondes, on vous apporte tout sur votre transat.</p>
+    <div class="hero-actions">
+      <a href="#menu" class="hero-cta">
+        Voir le menu
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#jus" class="hero-cta secondary">
+        Bar à jus
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
   </div>
-  <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" class="hero-img" alt="Burger">
+  <div class="hero-visual">
+    <div class="glow"></div>
+    <div class="plate">
+      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80" alt="Burger signature">
+    </div>
+    <div class="sticker top">Signature</div>
+    <div class="sticker bottom">★ Fait maison</div>
+  </div>
 </section>
 
-<!-- Menu -->
+<section class="promesse">
+  <div class="promesse-item">
+    <div class="promesse-icon"><svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+    <div><h4>Frais du jour</h4><p>Produits préparés chaque matin</p></div>
+  </div>
+  <div class="promesse-item">
+    <div class="promesse-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+    <div><h4>Fait minute</h4><p>Commandé, jamais réchauffé</p></div>
+  </div>
+  <div class="promesse-item">
+    <div class="promesse-icon"><svg viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+    <div><h4>Généreux</h4><p>Des portions qui rassasient</p></div>
+  </div>
+</section>
+
+<section class="apero">
+  <div class="apero-inner">
+    <div class="stamp">
+      <svg viewBox="0 0 160 160">
+        <defs><path id="stamp-circle" d="M80,80 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0" fill="none" stroke="none"/></defs>
+        <text font-family="'Bebas Neue', sans-serif" font-size="13" letter-spacing="3.5" fill="#F2B134"><textPath href="#stamp-circle">100% CROUSTI · FAIT MAISON · CAP SKIRRING · </textPath></text>
+      </svg>
+      <div class="stamp-center">CROUSTI<small>★ ★ ★</small></div>
+    </div>
+    <div>
+      <h2>L'apéro en famille,<br><em>c'est sacré.</em></h2>
+      <p>Chaque vendredi après-midi, samedi et dimanche, on se retrouve au bord de l'eau. Vous connaissez déjà l'adresse — on vous attend avec du croustillant.</p>
+      <div class="apero-days">
+        <span class="apero-day">Vendredi aprem</span><span class="apero-day">Samedi</span><span class="apero-day">Dimanche</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <main id="menu" class="menu-section">
-  <div class="menu-header"><h2>La Carte</h2></div>
+  <div class="menu-header">
+    <div class="eyebrow">Le menu</div>
+    <h2>À croquer maintenant</h2>
+    <p>Des prix honnêtes, des portions généreuses. Choisissez, ajoutez, et on s'occupe du reste.</p>
+  </div>
   <div class="categories" id="categories">
     <button class="cat-btn active" data-cat="Tous">Tous</button>
-    <button class="cat-btn" data-cat="Burger">Burger</button>
     <button class="cat-btn" data-cat="Tacos">Tacos</button>
-    <button class="cat-btn" data-cat="Jus">Jus</button>
+    <button class="cat-btn" data-cat="Fataya">Fataya</button>
+    <button class="cat-btn" data-cat="Shawarma">Shawarma</button>
+    <button class="cat-btn" data-cat="Burger">Burger</button>
+    <button class="cat-btn" data-cat="Frites">Frites</button>
+    <button class="cat-btn" data-cat="Quesadillas">Quesadillas</button>
     <button class="cat-btn" data-cat="Desserts">Desserts</button>
   </div>
   <div class="menu-grid" id="menuGrid"></div>
 </main>
 
-<!-- Panier -->
+<section class="juice-bar" id="jus">
+  <div class="bar-inner">
+    <div class="bar-head">
+      <h2 class="bar-title">Le Bar à <span class="sun-word">Jus</span></h2>
+      <p class="bar-byline">par <em>Moussa</em></p>
+    </div>
+
+    <div class="bar-hero">
+      <img src="cocktails-coucher-soleil-campement-buhanor-cap-skirring.jpeg" alt="Cocktails au coucher du soleil - Bar à jus de Moussa">
+    </div>
+
+    <p class="bar-intro">Moussa presse chaque jus à la commande, à partir de fruits frais de saison. Sans additifs. Il marie aussi fruits et légumes pour des cocktails étonnants — selon l'arrivage du jour.</p>
+
+    <div class="bar-notice">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      <div><strong>Carte évolutive — rien n'est fixe.</strong> Les fruits changent au fil de l'année. Demandez à Moussa le jus du jour selon la disponibilité réelle.</div>
+    </div>
+
+    <div class="bar-section-head"><h3>Jus <em>naturels</em></h3></div>
+    <div class="juice-grid" id="jusGrid"></div>
+
+    <div class="bar-section-head"><h3>Cocktails <em>de Moussa</em></h3></div>
+    <div class="juice-grid" id="cocktailGrid"></div>
+
+    <div class="bar-fruits">
+      <div class="bar-fruits-label">Selon l'arrivage du jour</div>
+      <span class="bar-fruit-chip">Carotte</span><span class="bar-fruit-chip">Banane</span><span class="bar-fruit-chip">Papaye</span><span class="bar-fruit-chip">Mangue</span><span class="bar-fruit-chip">Orange</span><span class="bar-fruit-chip">Mandarine</span><span class="bar-fruit-chip">Passion</span>
+    </div>
+    <div class="bar-signature">— <strong>Moussa</strong>, votre barman</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <div class="logo">Buhanor <em style="color:var(--yellow);">Crousti</em></div>
+      <p>Fast-food & bar à jus naturels sur la plage de Cap Skirring. Produits frais, préparés minute, ambiance détendue.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Nous trouver</h4>
+      <p><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg> Plage de Cap Skirring</p>
+      <p><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Tous les jours · 11h – 23h</p>
+    </div>
+    <div class="foot-col">
+      <h4>Contact</h4>
+      <p><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg> +221 77 000 00 00</p>
+    </div>
+  </div>
+  <div class="foot-bottom">© 2026 Buhanor Crousti · Cap Skirring</div>
+</footer>
+
+<!-- Panier / Checkout -->
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-backdrop" id="cartBackdrop"></div>
   <div class="cart-panel">
     <div class="cart-head">
-      <h3 style="font-size:1.8rem;">Votre Panier</h3>
-      <button id="closeCart" style="background:none;font-size:1.5rem;">&times;</button>
+      <h3>Panier</h3>
+      <button class="close-btn" id="closeCart">&times;</button>
     </div>
     <div class="cart-body" id="cartBody"></div>
     <div class="cart-foot" id="cartFoot" style="display:none;">
+      
+      <!-- Formulaire de commande -->
       <div class="checkout-form" id="checkoutForm">
         <div>
           <label for="clientName">Votre prénom</label>
@@ -216,21 +487,22 @@
           </div>
         </div>
       </div>
-      <div class="total-row">
+
+      <div class="cart-total-row">
         <span>Total</span>
         <span id="cartTotal">0 FCFA</span>
       </div>
-      <button class="btn-primary" id="checkoutBtn">Valider et Envoyer</button>
+      <button class="checkout-btn" id="checkoutBtn">Valider et Envoyer</button>
     </div>
   </div>
 </div>
 
-<!-- Suivi Client (Tracker) -->
+<!-- Tracker de commande Client -->
 <div class="tracker-overlay" id="trackerOverlay">
   <div class="tracker-content">
     <button class="tracker-close" id="closeTracker">&times;</button>
     <h2 class="tracker-title" id="trackerTitle">Commande Reçue !</h2>
-    <p class="tracker-subtitle" id="trackerSubtitle">Merci <span id="trackerName">Client</span>, on s'occupe de vous !</p>
+    <p class="tracker-subtitle">Merci <span id="trackerName">Client</span>, on s'occupe de vous !</p>
 
     <div class="tracker-steps">
       <div class="step active" id="step1">
@@ -249,7 +521,7 @@
   </div>
 </div>
 
-<!-- Bouton Admin & Panel -->
+<!-- Admin Dashboard -->
 <button class="admin-toggle" id="adminToggle">
   <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
 </button>
@@ -264,88 +536,190 @@
 
 <script>
   // =====================================================================
-  // CONNEXION SUPABASE AVEC TES CLÉS
+  // 1. DONNÉES DU MENU (Fast Food + Jus de Moussa)
   // =====================================================================
-  const SUPABASE_URL = 'https://qwibaiifvp1ewvmebzu.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_D3Xu5YdZh-ST3vyniiPF0Q_nhjFPIah'; 
-  
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // ===== DATA & STATE =====
   const MENU = [
-    { id: 'burger', name: 'Burger', category: 'Burger', price: 1800, desc: 'Steak smashé, cheddar.', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80' },
-    { id: 'tacos', name: 'Tacos', category: 'Tacos', price: 2000, desc: 'Viande, frites, sauce fromagère.', img: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=400&q=80' },
-    { id: 'frites', name: 'Barquette Frite', category: 'Frites', price: 1000, desc: 'Frites croustillantes.', img: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80' },
-    { id: 'bissap', name: 'Bissap', category: 'Jus', price: 1000, desc: 'Hibiscus 100% naturel.', img: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=400&q=80' },
-    { id: 'orange', name: 'Orange', category: 'Jus', price: 1000, desc: 'Pressée minute.', img: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=400&q=80' },
-    { id: 'crepes', name: 'Mini Crêpes', category: 'Desserts', price: 200, desc: 'Chocolat ou confiture.', img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&q=80' }
+    { id: 'tacos', name: 'Tacos', category: 'Tacos', price: 2000, desc: 'French tacos grillé, viande savoureuse, frites croustillantes et sauce fromagère maison.', img: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80' },
+    { id: 'fataya', name: 'Fataya', category: 'Fataya', price: 1000, desc: 'Chaussons dorés farcis à la viande hachée, croustillants, servis avec sauce pimentée.', img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80' },
+    { id: 'shawarma', name: 'Shawarma', category: 'Shawarma', price: 1700, desc: 'Lamelles de viande grillée aux épices orientales, crudités fraîches et sauce ail.', img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=600&q=80' },
+    { id: 'burger', name: 'Burger', category: 'Burger', price: 1800, desc: 'Steak smashé croustillant, double cheddar fondant, pickles et sauce secrète.', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80' },
+    { id: 'frite', name: 'Barquette Frite', category: 'Frites', price: 1000, desc: 'Frites dorées, croustillantes à l\'extérieur et moelleuses à l\'intérieur, légèrement salées.', img: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80' },
+    { id: 'quesadillas', name: 'Quesadillas', category: 'Quesadillas', price: 1500, desc: 'Tortillas grillées au beurre, débordantes de fromage fondu, poulet épicé et poivrons.', img: 'https://images.unsplash.com/photo-1618040996337-56904b7850b9?auto=format&fit=crop&w=600&q=80' },
+    { id: 'poutine', name: 'Frite Poutine', category: 'Frites', price: 2000, desc: 'Frites croustillantes nappées d\'une sauce brune savoureuse et recouvertes de fromage fondant.', img: 'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?auto=format&fit=crop&w=600&q=80' },
+    { id: 'crepes', name: 'Mini Crêpes', category: 'Desserts', price: 200, desc: 'Mini crêpes moelleuses, confiture ou chocolat au choix.', img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=600&q=80' },
+    
+    // Jus
+    { id: 'bissap', name: 'Bissap', category: 'Jus', price: 1000, desc: 'Hibiscus infusé maison. 100% naturel, sans additifs.', img: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=300&q=80' },
+    { id: 'bouye', name: 'Bouye', category: 'Jus', price: 1000, desc: 'Baobab onctueux et rafraîchissant. 100% naturel.', img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=300&q=80' },
+    { id: 'orange', name: 'Orange', category: 'Jus', price: 1000, desc: 'Orange pressée du jour. 100% naturel.', img: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=300&q=80' },
+    { id: 'passion', name: 'Fruit de la passion', category: 'Jus', price: 1000, desc: 'Fruit de la passion frais, légèrement acidulé. 100% naturel.', img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
+    { id: 'mandarine', name: 'Mandarine', category: 'Jus', price: 1000, desc: 'Mandarine pressée, douce et parfumée. 100% naturel.', img: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=300&q=80' },
+    { id: 'jus-du-jour', name: 'Jus du jour', category: 'Jus', price: 1000, desc: 'Le fruit de saison choisi par Moussa. Disponibilité du jour.', img: 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?auto=format&fit=crop&w=300&q=80' },
+    
+    // Cocktails
+    { id: 'cocktail-carotte-mangue', name: 'Carotte-Mangue', category: 'Cocktail', price: 1000, virgin: true, desc: 'Carotte pressée, mangue fraîche et trait d\'orange. Fruit + légume, sans alcool.', img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=300&q=80' },
+    { id: 'cocktail-papaye-banane', name: 'Papaye-Banane', category: 'Cocktail', price: 1000, virgin: true, desc: 'Papaye mûre, banane et lait de coco. Onctueux, fruité, sans alcool.', img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=300&q=80' },
+    { id: 'cocktail-rhum-soleil', name: 'Rhum Soleil', category: 'Cocktail', price: 1000, alcohol: true, desc: 'Rhum, mangue fraîche, fruit de la passion et pointe de gingembre. 18+.', img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=300&q=80' },
+    { id: 'cocktail-whisky-sunset', name: 'Whisky Sunset', category: 'Cocktail', price: 1000, alcohol: true, desc: 'Whisky, carotte pressée, orange et gingembre. Association inattendue. 18+.', img: 'https://images.unsplash.com/photo-1527281400683-1aae777175f8?auto=format&fit=crop&w=300&q=80' }
   ];
 
   let cart = [];
   let activeCategory = 'Tous';
+  let auraScore = 0;
   let currentOrderId = null;
 
-  // DOM Elements
+  // =====================================================================
+  // 2. INITIALISATION UI (S'exécute en premier pour éviter les bugs)
+  // =====================================================================
   const menuGrid = document.getElementById('menuGrid');
+  const jusGrid = document.getElementById('jusGrid');
+  const cocktailGrid = document.getElementById('cocktailGrid');
   const cartDrawer = document.getElementById('cartDrawer');
   const cartBody = document.getElementById('cartBody');
   const cartFoot = document.getElementById('cartFoot');
-  const cartTotalEl = document.getElementById('cartTotal');
-  const cartCountEl = document.getElementById('cartCount');
-  const trackerOverlay = document.getElementById('trackerOverlay');
-  const adminPanel = document.getElementById('adminPanel');
-  const adminBody = document.getElementById('adminBody');
+  const cartTotal = document.getElementById('cartTotal');
+  const cartCount = document.getElementById('cartCount');
+  const mobileCartTotal = document.getElementById('mobileCartTotal'); // Si tu l'ajoutes plus tard
 
   const savedName = localStorage.getItem('buhanor_name');
   if(savedName) document.getElementById('clientName').value = savedName;
 
-  // ===== RENDU DU MENU =====
-  function renderMenu() {
-    const filtered = MENU.filter(item => activeCategory === 'Tous' || item.category === activeCategory);
+  function renderMenu(cascade = true) {
+    const filtered = MENU.filter(i => {
+      if (i.category === 'Jus' || i.category === 'Cocktail') return false;
+      const catMatch = activeCategory === 'Tous' || i.category === activeCategory;
+      const s = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
+      const searchMatch = i.name.toLowerCase().includes(s) || i.desc.toLowerCase().includes(s);
+      return catMatch && searchMatch;
+    });
+
+    if (filtered.length === 0) {
+      menuGrid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;text-align:center;"><h3 style="font-size:1.5rem;">Aucun plat trouvé</h3></div>`;
+      return;
+    }
+
     menuGrid.innerHTML = filtered.map(item => {
       const inCart = cart.find(i => i.id === item.id);
       return `
         <div class="card">
           <div class="card-img">
             <img src="${item.img}" alt="${item.name}" loading="lazy">
-            <span class="card-price">${item.price} F</span>
+            <span class="card-price-tag">${item.price} FCFA</span>
           </div>
           <div class="card-body">
             <h3>${item.name}</h3>
             <p>${item.desc}</p>
+          </div>
+          <div class="card-foot">
             ${inCart ? `
               <div class="qty-ctrl">
                 <button onclick="changeQty('${item.id}', -1)">−</button>
-                <span style="font-weight:800;">${inCart.qty}</span>
+                <span class="num">${inCart.qty}</span>
                 <button class="plus" onclick="changeQty('${item.id}', 1)">+</button>
               </div>
             ` : `
-              <button class="add-btn" onclick="addToCart('${item.id}')">
-                <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" fill="none"><path d="M12 5v14M5 12h14"/></svg> Ajouter
+              <button class="add-btn" onclick="addToCart('${item.id}', event)">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Ajouter
               </button>
             `}
           </div>
-        </div>
-      `;
+        </div>`;
     }).join('');
+
+    if (cascade) {
+      requestAnimationFrame(() => {
+        menuGrid.querySelectorAll('.card').forEach((c, i) => setTimeout(() => c.classList.add('reveal'), i * 50));
+      });
+    } else {
+      menuGrid.querySelectorAll('.card').forEach(c => c.classList.add('reveal'));
+    }
   }
 
-  document.getElementById('categories').addEventListener('click', (e) => {
-    if(e.target.classList.contains('cat-btn')) {
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      activeCategory = e.target.dataset.cat;
-      renderMenu();
-    }
-  });
+  function renderJuiceBar() {
+    const jus = MENU.filter(i => i.category === 'Jus');
+    const cocktails = MENU.filter(i => i.category === 'Cocktail');
+    jusGrid.innerHTML = jus.map(item => juiceCardHTML(item)).join('');
+    cocktailGrid.innerHTML = cocktails.map(item => juiceCardHTML(item)).join('');
+  }
 
-  // ===== GESTION DU PANIER =====
-  window.addToCart = function(id) {
+  function juiceCardHTML(item) {
+    const inCart = cart.find(i => i.id === item.id);
+    let badge = '';
+    if (item.virgin) badge = '<span class="juice-badge virgin">Sans alcool</span>';
+    if (item.alcohol) badge = '<span class="juice-badge alcohol">18+</span>';
+    return `
+      <div class="juice-card">
+        <div class="juice-card-img">
+          <img src="${item.img}" alt="${item.name}" loading="lazy">
+          ${badge}
+        </div>
+        <div class="juice-card-body">
+          <h4 class="juice-card-title">${item.name}</h4>
+          <p class="juice-card-desc">${item.desc}</p>
+          <div class="juice-card-foot">
+            <span class="juice-price">${item.price} FCFA</span>
+            ${inCart ? `
+              <div class="bar-qty">
+                <button onclick="changeQty('${item.id}', -1)">−</button>
+                <span>${inCart.qty}</span>
+                <button onclick="changeQty('${item.id}', 1)">+</button>
+              </div>
+            ` : `
+              <button class="bar-add" onclick="addToCart('${item.id}', event)">+</button>
+            `}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function updateCartUI() {
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const count = cart.reduce((s, i) => s + i.qty, 0);
+    
+    cartCount.textContent = count;
+    cartTotal.textContent = total.toLocaleString('fr-FR') + ' FCFA';
+    
+    if(cart.length > 0) {
+      cartFoot.style.display = 'block';
+      cartBody.innerHTML = cart.map(item => `
+        <div class="cart-item" style="display:flex; align-items:center; gap:0.8rem; background:var(--paper); padding:0.85rem; border-radius:18px;">
+          <img src="${item.img}" style="width:62px;height:62px;border-radius:14px;object-fit:cover; background:var(--yellow);">
+          <div style="flex:1;">
+            <h4 style="font-family:'Bebas Neue'; font-size:1.15rem;">${item.name}</h4>
+            <div style="color:var(--orange); font-weight:700; font-size:0.85rem;">${(item.price * item.qty).toLocaleString('fr-FR')} FCFA</div>
+            <div class="cart-item-ctrl" style="display:flex; align-items:center; gap:0.3rem; margin-top:0.3rem;">
+              <button onclick="changeQty('${item.id}', -1)" style="width:24px;height:24px;border-radius:6px;background:var(--cream);font-weight:800;">−</button>
+              <span style="font-weight:700; font-size:0.8rem; min-width:16px; text-align:center;">${item.qty}</span>
+              <button onclick="changeQty('${item.id}', 1)" style="width:24px;height:24px;border-radius:6px;background:var(--cream);font-weight:800;">+</button>
+            </div>
+          </div>
+          <button onclick="removeItem('${item.id}')" style="background:none;color:var(--muted);padding:0.4rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+          </button>
+        </div>
+      `).join('');
+    } else {
+      cartFoot.style.display = 'none';
+      cartBody.innerHTML = `<div style="text-align:center;padding:3rem 1rem;color:var(--muted);"><div style="font-family:'Bebas Neue'; font-size:1.5rem; color:var(--ink);">Panier vide</div><p style="font-size:0.8rem;">Ajoutez quelques plats pour commencer.</p></div>`;
+    }
+    
+    renderMenu(false);
+    renderJuiceBar();
+  }
+
+  // Actions Panier
+  window.addToCart = function(id, event) {
     const prod = MENU.find(p => p.id === id);
+    if(!prod) return;
     const existing = cart.find(i => i.id === id);
     if(existing) existing.qty++;
     else cart.push({ ...prod, qty: 1 });
-    updateCart();
+    
+    updateCartUI();
+    bumpCounter();
+    
+    // Animation Gen-Z
+    if (event) addAura(100, event);
   }
 
   window.changeQty = function(id, delta) {
@@ -353,43 +727,33 @@
     if(!item) return;
     item.qty += delta;
     if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
-    updateCart();
+    updateCartUI();
   }
 
-  function updateCart() {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const count = cart.reduce((s, i) => s + i.qty, 0);
-    
-    cartCountEl.textContent = count;
-    cartTotalEl.textContent = total + ' FCFA';
-    
-    if(cart.length > 0) {
-      cartFoot.style.display = 'block';
-      cartBody.innerHTML = cart.map(item => `
-        <div style="display:flex; align-items:center; gap:1rem; border-bottom:1px solid var(--line); padding-bottom:0.5rem;">
-          <img src="${item.img}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;">
-          <div style="flex:1;">
-            <h4 style="font-size:1.1rem;">${item.name}</h4>
-            <span style="font-weight:800; color:var(--orange);">${item.price * item.qty} F</span>
-          </div>
-          <div class="qty-ctrl" style="width:90px;">
-            <button onclick="changeQty('${item.id}', -1)">−</button>
-            <span style="font-weight:800;">${item.qty}</span>
-            <button class="plus" onclick="changeQty('${item.id}', 1)">+</button>
-          </div>
-        </div>
-      `).join('');
-    } else {
-      cartFoot.style.display = 'none';
-      cartBody.innerHTML = `<p style="text-align:center;color:var(--muted);margin-top:2rem;">Votre panier est vide.</p>`;
+  window.removeItem = function(id) {
+    cart = cart.filter(i => i.id !== id);
+    updateCartUI();
+  }
+
+  function bumpCounter() {
+    cartCount.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.35)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'ease-out' });
+  }
+
+  // Filtres
+  document.getElementById('categories').addEventListener('click', (e) => {
+    if(e.target.classList.contains('cat-btn')) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      activeCategory = e.target.dataset.cat;
+      renderMenu(true);
     }
-    renderMenu();
+  });
+  
+  if (document.getElementById('searchInput')) {
+    document.getElementById('searchInput').addEventListener('input', () => renderMenu(false));
   }
 
-  document.getElementById('cartToggle').onclick = () => cartDrawer.classList.add('open');
-  document.getElementById('closeCart').onclick = () => cartDrawer.classList.remove('open');
-  document.getElementById('cartBackdrop').onclick = () => cartDrawer.classList.remove('open');
-
+  // Emplacement rapide
   document.getElementById('quickTags').addEventListener('click', (e) => {
     if(e.target.classList.contains('quick-tag')) {
       document.querySelectorAll('.quick-tag').forEach(t => t.classList.remove('active'));
@@ -398,8 +762,68 @@
     }
   });
 
-  // ===== ENVOI DE LA COMMANDE (INSERT SUPABASE) =====
-  document.getElementById('checkoutBtn').onclick = async () => {
+  // Panier Drawer
+  document.getElementById('cartToggle').onclick = () => cartDrawer.classList.add('open');
+  document.getElementById('closeCart').onclick = () => cartDrawer.classList.remove('open');
+  document.getElementById('cartBackdrop').onclick = () => cartDrawer.classList.remove('open');
+
+  // Init UI
+  renderMenu(true);
+  renderJuiceBar();
+  updateCartUI();
+
+  // =====================================================================
+  // 3. ANIMATIONS GEN-Z (AURA)
+  // =====================================================================
+  const AURA_WORDS = [
+    { text: 'AURA +100', emoji: '💀' },
+    { text: '6 7', emoji: '🗣️' },
+    { text: 'APAGNANG', emoji: '🔥' },
+    { text: 'QUOICOUBEH', emoji: '🤫' },
+    { text: 'SHEESH', emoji: '✨' },
+    { text: 'BUSSIN', emoji: '🍔' },
+    { text: 'WESH', emoji: '👑' },
+    { text: 'MIAM MIAM', emoji: '😋' }
+  ];
+
+  function spawnAura(x, y) {
+    const item = AURA_WORDS[Math.floor(Math.random() * AURA_WORDS.length)];
+    const el = document.createElement('div');
+    el.className = 'floating-aura';
+    el.innerHTML = `${item.text} <span>${item.emoji}</span>`;
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.color = ['#FFCB47', '#FF6B6B', '#4FE0B0', '#E8531F', '#A855F7'][Math.floor(Math.random() * 5)];
+    el.style.setProperty('--rot', (Math.random() * 30 - 15) + 'deg');
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1200);
+  }
+
+  function addAura(amount, event) {
+    auraScore += amount;
+    const widget = document.getElementById('auraWidget');
+    document.getElementById('auraCount').textContent = auraScore;
+    widget.classList.remove('pulse');
+    void widget.offsetWidth; 
+    widget.classList.add('pulse');
+    if (event) spawnAura(event.clientX, event.clientY - 30);
+  }
+
+  // =====================================================================
+  // 4. CONNEXION SUPABASE & ENVOI DE COMMANDE
+  // =====================================================================
+  let supabase = null;
+  try {
+    if (window.supabase) {
+      const SUPABASE_URL = 'https://qwibaiifvp1ewvmebzu.supabase.co';
+      const SUPABASE_ANON_KEY = 'sb_publishable_D3Xu5YdZh-ST3vyniiPF0Q_nhjFPIah';
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  } catch (error) {
+    console.error("Erreur d'initialisation Supabase :", error);
+  }
+
+  document.getElementById('checkoutBtn').onclick = async (e) => {
     const name = document.getElementById('clientName').value.trim();
     const loc = document.getElementById('clientLocation').value.trim();
     
@@ -408,24 +832,22 @@
       return;
     }
 
+    if (!supabase) {
+      alert("Erreur : Impossible de se connecter au serveur. Vérifie ta connexion.");
+      return;
+    }
+
     localStorage.setItem('buhanor_name', name);
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
     const btn = document.getElementById('checkoutBtn');
     btn.textContent = "Envoi en cours...";
     btn.disabled = true;
+    btn.classList.add('shake');
 
     try {
       const { data, error } = await supabase
         .from('orders')
-        .insert([
-          { 
-            name: name, 
-            location: loc, 
-            items: cart, 
-            total: total, 
-            statuts: 'received' // Attention : 'statuts' avec un 's'
-          }
-        ])
+        .insert([{ name: name, location: loc, items: cart, total: total, statuts: 'received' }])
         .select();
 
       if (error) throw error;
@@ -435,10 +857,11 @@
 
       cartDrawer.classList.remove('open');
       cart = [];
-      updateCart();
+      updateCartUI();
+      addAura(1000, e); // Grosse aura pour la commande
       
       document.getElementById('trackerName').textContent = name;
-      trackerOverlay.classList.add('open');
+      document.getElementById('trackerOverlay').classList.add('open');
       updateTrackerUI('received');
       
       listenToClientOrder(currentOrderId);
@@ -449,10 +872,13 @@
     } finally {
       btn.textContent = "Valider et Envoyer";
       btn.disabled = false;
+      btn.classList.remove('shake');
     }
   };
 
-  // ===== TRACKER UI =====
+  // =====================================================================
+  // 5. TRACKER CLIENT (Suivi en direct)
+  // =====================================================================
   function updateTrackerUI(status) {
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
@@ -478,56 +904,51 @@
     }
   }
 
-  // ÉCOUTE TEMPS RÉEL (Client)
   function listenToClientOrder(orderId) {
+    if (!supabase) return;
     supabase
       .channel('client-order-' + orderId)
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'orders', filter: `id=eq.${orderId}` },
-        (payload) => {
-          updateTrackerUI(payload.new.statuts);
-        }
-      )
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders', filter: `id=eq.${orderId}` }, (payload) => {
+        updateTrackerUI(payload.new.statuts);
+      })
       .subscribe();
   }
 
+  document.getElementById('closeTracker').onclick = () => {
+    document.getElementById('trackerOverlay').classList.remove('open');
+    document.getElementById('closeTracker').style.display = 'none';
+    localStorage.removeItem('buhanor_current_order');
+  };
+
   const savedOrderId = localStorage.getItem('buhanor_current_order');
-  if(savedOrderId) {
+  if(savedOrderId && supabase) {
     currentOrderId = savedOrderId;
     supabase.from('orders').select('statuts, name').eq('id', savedOrderId).single().then(({data}) => {
       if(data && data.statuts !== 'ready') {
         document.getElementById('trackerName').textContent = data.name;
-        trackerOverlay.classList.add('open');
+        document.getElementById('trackerOverlay').classList.add('open');
         updateTrackerUI(data.statuts);
         listenToClientOrder(savedOrderId);
       }
     });
   }
 
-  document.getElementById('closeTracker').onclick = () => {
-    trackerOverlay.classList.remove('open');
-    document.getElementById('closeTracker').style.display = 'none';
-    localStorage.removeItem('buhanor_current_order');
-  };
-
-  // ===== ADMIN DASHBOARD & TEMPS RÉEL =====
+  // =====================================================================
+  // 6. ADMIN DASHBOARD (Tableau de bord Moussa)
+  // =====================================================================
   document.getElementById('adminToggle').onclick = () => {
-    adminPanel.classList.add('open');
-    fetchAdminOrders();
+    document.getElementById('adminPanel').classList.add('open');
+    if(supabase) fetchAdminOrders();
   };
-  document.getElementById('closeAdmin').onclick = () => adminPanel.classList.remove('open');
+  document.getElementById('closeAdmin').onclick = () => document.getElementById('adminPanel').classList.remove('open');
 
   async function fetchAdminOrders() {
-    const { data, error } = await supabase
-      .from('orders')
-      .select('*')
-      .order('created_at', { ascending: false });
-
+    const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
     if(!error) renderAdmin(data);
   }
 
   function renderAdmin(orders) {
+    const adminBody = document.getElementById('adminBody');
     if(!orders || orders.length === 0) {
       adminBody.innerHTML = `<p style="color:white; text-align:center; grid-column:1/-1;">Aucune commande pour le moment.</p>`;
       return;
@@ -544,47 +965,32 @@
           ${order.items.map(i => `<li>${i.qty}x ${i.name}</li>`).join('')}
         </ul>
         <div class="admin-actions">
-          ${order.statuts === 'received' ? `
-            <button class="admin-btn btn-prep" onclick="updateOrderStatus('${order.id}', 'preparing')">Lancer la prépa</button>
-          ` : order.statuts === 'preparing' ? `
-            <button class="admin-btn btn-ready" onclick="updateOrderStatus('${order.id}', 'ready')">C'est prêt !</button>
-          ` : `
-            <button class="admin-btn btn-done" onclick="archiveOrder('${order.id}')">Terminé (Archiver)</button>
-          `}
+          ${order.statuts === 'received' ? `<button class="admin-btn btn-prep" onclick="updateOrderStatus('${order.id}', 'preparing')">Lancer la prépa</button>`
+          : order.statuts === 'preparing' ? `<button class="admin-btn btn-ready" onclick="updateOrderStatus('${order.id}', 'ready')">C'est prêt !</button>`
+          : `<button class="admin-btn btn-done" onclick="archiveOrder('${order.id}')">Terminé (Archiver)</button>`}
         </div>
       </div>
     `).join('');
   }
 
   window.updateOrderStatus = async (id, newStatus) => {
-    const { error } = await supabase
-      .from('orders')
-      .update({ statuts: newStatus })
-      .eq('id', id);
-      
+    if(!supabase) return;
+    const { error } = await supabase.from('orders').update({ statuts: newStatus }).eq('id', id);
     if(error) alert("Erreur mise à jour : " + error.message);
     else fetchAdminOrders();
   }
 
   window.archiveOrder = async (id) => {
+    if(!supabase) return;
     const { error } = await supabase.from('orders').delete().eq('id', id);
     if(!error) fetchAdminOrders();
   }
 
-  supabase
-    .channel('admin-realtime')
-    .on(
-      'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'orders' },
-      (payload) => {
-        fetchAdminOrders();
-      }
-    )
-    .subscribe();
-
-  // Init
-  renderMenu();
-  updateCart();
+  if(supabase) {
+    supabase.channel('admin-realtime').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, (payload) => {
+      if(document.getElementById('adminPanel').classList.contains('open')) fetchAdminOrders();
+    }).subscribe();
+  }
 </script>
 </body>
 </html>

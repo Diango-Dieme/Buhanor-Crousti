@@ -24,7 +24,8 @@
     :root {
       --ink: #160C06; --paper: #FBF3E6; --cream: #FFF9EE;
       --orange: #E8531F; --orange-deep: #B33A0F; --yellow: #F2B134;
-      --muted: #8A7562; --line: rgba(22, 12, 6, 0.08);
+      --muted: #756250;
+      --line: rgba(22, 12, 6, 0.08);
       --lagoon: #00A8A0; --sun: #FFCB47; --mango: #FF8C42;
     }
     html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
@@ -37,6 +38,10 @@
     h1, h2, h3, h4 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: 0.02em; line-height: 0.9; }
     img { display: block; max-width: 100%; }
     button { font-family: inherit; cursor: pointer; border: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
 
     #js-error-banner { display: none; position: fixed; top: 0; left: 0; right: 0; background: red; color: white; padding: 1rem; z-index: 99999; text-align: center; font-weight: bold; }
 
@@ -53,8 +58,16 @@
     .floating-aura { position: fixed; font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--orange); -webkit-text-stroke: 1.5px var(--ink); text-shadow: 3px 3px 0 var(--yellow); pointer-events: none; z-index: 9999; transform: translate(-50%, -50%) rotate(var(--rot)); animation: floatUp 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem; }
     @keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); } 100% { opacity: 0; transform: translate(-50%, -200%) rotate(var(--rot)) scale(1.5); } }
 
-    .mobile-cart-bar { position: fixed; bottom: 1rem; left: 1rem; right: 1rem; background: var(--ink); color: var(--cream); border-radius: 999px; padding: 0.6rem 0.8rem 0.6rem 1.2rem; display: none; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 90; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1); }
-    .mobile-cart-bar.visible { transform: translateY(0); }
+    .mobile-cart-bar { 
+      position: fixed; bottom: 1rem; left: 1rem; right: 1rem; 
+      background: var(--ink); color: var(--cream); 
+      border-radius: 999px; padding: 0.6rem 0.8rem 0.6rem 1.2rem; 
+      display: flex; align-items: center; justify-content: space-between; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 90; 
+      transform: translateY(150%); opacity: 0; pointer-events: none;
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.3s;
+    }
+    .mobile-cart-bar.visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
     .mobile-cart-info { display: flex; flex-direction: column; line-height: 1.2; }
     .mobile-cart-info span:first-child { font-size: 0.65rem; color: var(--yellow); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; }
     .mobile-cart-info span:last-child { font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; letter-spacing: 0.02em; }
@@ -131,18 +144,14 @@
     
     .card { background: var(--cream); border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--line); transition: 0.4s; min-width: 0; }
     .card:hover { transform: translateY(-8px) rotate(-0.5deg); box-shadow: 0 30px 50px -22px rgba(22, 12, 6, 0.3), 0 0 0 1px var(--orange); border-color: transparent; }
-    
-    /* STYLE POUR LES PLATS "BIENTÔT" */
     .card.coming-soon { opacity: 0.85; }
     .card.coming-soon .card-img img { filter: grayscale(0.5); }
     .card.coming-soon:hover { transform: none; box-shadow: none; border-color: var(--line); }
-    
     .card-img { position: relative; aspect-ratio: 4/3; overflow: hidden; background: linear-gradient(135deg, #F2B134, #E8531F); }
     .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
     .card:hover .card-img img { transform: scale(1.09) rotate(1.5deg); }
     .card-price-tag { position: absolute; bottom: 14px; left: 14px; background: var(--yellow); color: var(--ink); font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; padding: 0.4rem 0.9rem; border-radius: 999px; box-shadow: 2px 2px 0 var(--ink); transform: rotate(-2deg); z-index: 2; transition: 0.3s; }
     .card.coming-soon .card-price-tag { background: var(--muted); color: white; box-shadow: none; }
-    
     .card-badge-soon { position: absolute; top: 12px; right: 12px; background: var(--ink); color: var(--yellow); font-family: 'Bebas Neue', sans-serif; font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 6px; z-index: 2; border: 1px solid var(--yellow); }
 
     .card-body { padding: 1.3rem 1.3rem 0.4rem; flex: 1; }
@@ -152,7 +161,6 @@
     .add-btn { background: var(--ink); color: var(--cream); padding: 0.65rem 1.15rem; border-radius: 999px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: 0.2s; }
     .add-btn:hover { background: var(--orange); transform: scale(1.04); }
     .add-btn svg { width: 14px; height: 14px; stroke: var(--yellow); stroke-width: 2.5; fill: none; }
-    
     .add-btn.disabled { background: var(--paper); color: var(--muted); border: 1px solid var(--line); cursor: not-allowed; }
     .add-btn.disabled:hover { transform: none; background: var(--paper); }
     .add-btn.disabled svg { stroke: var(--muted); }
@@ -211,7 +219,6 @@
     .foot-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; position: relative; }
     .foot-brand .logo { margin-bottom: 1rem; }
     .foot-brand .logo img { height: 80px; width: auto; background: var(--cream); padding: 10px; border-radius: 12px; }
-
     .foot-brand p { color: rgba(255, 249, 238, 0.55); font-size: 0.85rem; max-width: 320px; line-height: 1.7; }
     .foot-col h4 { font-size: 1rem; letter-spacing: 0.15em; color: var(--yellow); margin-bottom: 0.9rem; }
     .foot-col p { font-size: 0.85rem; color: rgba(255, 249, 238, 0.72); margin-bottom: 0.55rem; display: flex; align-items: center; gap: 0.5rem; }
@@ -242,6 +249,7 @@
     .cart-total-row span:last-child { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--ink); }
     .checkout-btn { width: 100%; padding: 1.05rem; background: var(--orange); color: white; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: 0.08em; transition: 0.2s; }
     .checkout-btn:hover { background: var(--ink); transform: translateY(-1px); }
+    .checkout-btn:disabled { background: var(--muted); cursor: not-allowed; }
 
     .tracker-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(251, 243, 230, 0.95); backdrop-filter: blur(5px); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
     .tracker-overlay.open { display: flex; }
@@ -331,11 +339,11 @@
 <header>
   <div class="header-inner">
     <div class="logo" id="secretLogo">
-      <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor Crousti">
+      <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor Crousti" loading="lazy">
     </div>
     <div class="search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
-      <input type="text" id="searchInput" placeholder="Tacos, burger, crêpes...">
+      <input type="text" id="searchInput" placeholder="Tacos, burger, jus...">
     </div>
     <button class="cart-btn" onclick="document.getElementById('cartDrawer').classList.add('open')">
       <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6L4 2H2"/></svg>
@@ -357,7 +365,9 @@
   </div>
   <div class="hero-visual">
     <div class="glow"></div>
-    <div class="plate"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80" alt="Burger signature"></div>
+    <div class="plate">
+      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80" alt="Burger signature" width="600" height="600" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80'">
+    </div>
     <div class="sticker top">Signature</div>
     <div class="sticker bottom">★ Fait maison</div>
   </div>
@@ -387,14 +397,16 @@
   <div class="menu-header">
     <div class="eyebrow">Le menu</div>
     <h2>À croquer maintenant</h2>
-    <p>Des prix honnêtes, des portions généreuses. Découvrez aussi nos futures créations.</p>
+    <p>Des prix honnêtes, des portions généreuses.</p>
   </div>
   <div class="categories" id="categories">
     <button class="cat-btn active" data-cat="Tous">Tous</button>
-    <button class="cat-btn" data-cat="Tacos">Tacos</button>
-    <button class="cat-btn" data-cat="Burger">Burger</button>
+    <button class="cat-btn" data-cat="Burger">Burgers</button>
+    <button class="cat-btn" data-cat="Tacos">French Tacos</button>
     <button class="cat-btn" data-cat="Shawarma">Shawarma</button>
     <button class="cat-btn" data-cat="Frites">Frites</button>
+    <button class="cat-btn" data-cat="Fataya">Fataya</button>
+    <button class="cat-btn" data-cat="Quesadillas">Quesadillas</button>
     <button class="cat-btn" data-cat="Desserts">Desserts</button>
   </div>
   <div class="menu-grid" id="menuGrid"></div>
@@ -403,7 +415,9 @@
 <section class="juice-bar" id="jus">
   <div class="bar-inner">
     <div class="bar-head"><h2 class="bar-title">Le Bar à <span class="sun-word">Jus</span></h2><p class="bar-byline">par <em>Moussa</em></p></div>
-    <div class="bar-hero"><img src="cocktails-coucher-soleil-campement-buhanor-cap-skirring.jpeg" alt="Cocktails au coucher du soleil"></div>
+    <div class="bar-hero">
+      <img src="cocktails-coucher-soleil-campement-buhanor-cap-skirring.jpeg" alt="Cocktails au coucher du soleil" width="800" height="450" loading="lazy">
+    </div>
     <p class="bar-intro">Moussa presse chaque jus à la commande, à partir de fruits frais de saison. Sans additifs. Il marie aussi fruits et légumes pour des cocktails étonnants — selon l'arrivage du jour.</p>
     <div class="bar-notice"><div><strong>Carte évolutive.</strong> Les fruits changent au fil de l'année. Demandez à Moussa le jus du jour.</div></div>
     <div class="bar-section-head"><h3>Jus <em>naturels</em></h3></div>
@@ -422,7 +436,7 @@
   <div class="foot-inner">
     <div class="foot-brand">
       <div class="logo">
-        <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor Crousti">
+        <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor Crousti" loading="lazy">
       </div>
       <p>Fast-food & bar à jus naturels sur la plage de Cap Skirring. Produits frais, préparés minute.</p>
     </div>
@@ -432,12 +446,12 @@
   <div class="foot-bottom">© 2026 Buhanor Crousti · Cap Skirring</div>
 </footer>
 
-<div class="cart-drawer" id="cartDrawer">
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true">
   <div class="cart-backdrop" onclick="document.getElementById('cartDrawer').classList.remove('open')"></div>
   <div class="cart-panel">
     <div class="cart-head">
       <h3>Panier</h3>
-      <button class="close-btn" onclick="document.getElementById('cartDrawer').classList.remove('open')">&times;</button>
+      <button class="close-btn" onclick="document.getElementById('cartDrawer').classList.remove('open')" aria-label="Fermer le panier">&times;</button>
     </div>
     <div class="cart-body" id="cartBody"></div>
     <div class="cart-foot" id="cartFoot" style="display:none;">
@@ -460,7 +474,7 @@
 
 <div class="tracker-overlay" id="trackerOverlay">
   <div class="tracker-content">
-    <button class="tracker-close" id="closeTracker">&times;</button>
+    <button class="tracker-close" id="closeTracker" aria-label="Fermer le suivi">&times;</button>
     <h2 class="tracker-title" id="trackerTitle">Commande Reçue !</h2>
     <p class="tracker-subtitle">Merci <span id="trackerName">Client</span>, on s'occupe de vous !</p>
     <div class="tracker-steps">
@@ -473,10 +487,10 @@
 
 <div class="admin-login-overlay" id="adminLoginOverlay">
   <div class="admin-login-box">
-    <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor">
+    <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor" loading="lazy">
     <h2>Accès Équipe</h2>
     <p>Entre ton code pour accéder au tableau de bord.</p>
-    <input type="password" id="adminPinInput" placeholder="••••" maxlength="10" inputmode="numeric">
+    <input type="password" id="adminPinInput" placeholder="••••" maxlength="15" inputmode="numeric">
     <button class="admin-login-btn" id="adminLoginBtn">Connexion</button>
     <div class="admin-login-error" id="adminLoginError">Code incorrect.</div>
     <button onclick="document.getElementById('adminLoginOverlay').classList.remove('open')" style="background:none; color:var(--muted); margin-top:1rem; text-decoration:underline;">Annuler</button>
@@ -487,7 +501,7 @@
   <div class="admin-head">
     <h2>Commandes en direct</h2>
     <div>
-      <button class="admin-close" onclick="document.getElementById('adminPanel').classList.remove('open')" title="Fermer">&times;</button>
+      <button class="admin-close" onclick="window.closeAdminPanel()" title="Fermer" aria-label="Fermer le panneau admin">&times;</button>
     </div>
   </div>
   <div class="admin-body" id="adminBody"></div>
@@ -511,88 +525,58 @@
     );
   }
 
+  function isShopOpen() {
+    const now = new Date();
+    const hours = now.getHours();
+    return hours >= 11 && hours < 23;
+  }
+
+  let audioCtx = null;
+  function playNotificationSound() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      
+      const osc = audioCtx.createOscillator(); 
+      const gain = audioCtx.createGain();
+      osc.type = 'sine'; 
+      osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.5, audioCtx.currentTime); 
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+      osc.connect(gain); 
+      gain.connect(audioCtx.destination); 
+      osc.start(); 
+      osc.stop(audioCtx.currentTime + 0.3);
+    } catch(e) {}
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('buhanor_cart');
 
-    // =====================================================================
-    // LE MENU MIS A JOUR SELON TON AFFICHE
-    // available: true = Dispo / available: false = Bientôt (Projet futur)
-    // =====================================================================
+    // === IMAGES CORRIGÉES ET VÉRIFIÉES ===
     const MENU = [
-      // --- DISPONIBLES (OUVERTURE) ---
-      { 
-        id: 'french-tacos', 
-        name: 'French Tacos Poulet', 
-        category: 'Tacos', 
-        price: 2000, 
-        available: true, 
-        desc: 'Poulet sauté à la poêle, frites, sauce fromagère, oignons, tomates.', 
-        img: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80' 
-      },
-      { 
-        id: 'burger-classic', 
-        name: 'Burger Classic', 
-        category: 'Burger', 
-        price: 1800, 
-        available: true, 
-        desc: 'Steak haché maison, fromage cheddar, œuf, salade, tomate.', 
-        img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80' 
-      },
-      { 
-        id: 'shawarma', 
-        name: 'Shawarma Poulet', 
-        category: 'Shawarma', 
-        price: 1500, 
-        available: true, 
-        desc: 'Poulet sauté à la poêle, frites, crudités, sauce.', 
-        img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=600&q=80' 
-      },
-      { 
-        id: 'frite', 
-        name: 'Barquette de Frites', 
-        category: 'Frites', 
-        price: 1000, 
-        available: true, 
-        desc: 'Frites fait maison, croustillantes à l\'extérieur et moelleuses à l\'intérieur.', 
-        img: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80' 
-      },
+      // --- DISPONIBLES ---
+      { id: 'burger-classic', name: 'Burger Classic', category: 'Burger', price: 1800, available: true, desc: 'Steak haché maison, fromage cheddar, œuf, salade, tomate.', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80' },
+      { id: 'burger-double-cheese', name: 'Burger Double Cheese', category: 'Burger', price: 2000, available: true, desc: 'Steak haché maison, double fromage cheddar, œuf, salade, tomate.', img: 'https://images.unsplash.com/photo-1586816001966-79b736744398?auto=format&fit=crop&w=600&q=80' },
+      { id: 'burger-double-steak', name: 'Burger Double Steak', category: 'Burger', price: 2500, available: true, desc: 'Double steak haché maison, fromage cheddar, œuf, salade, tomate.', img: 'https://images.unsplash.com/photo-1594212844823-c7d8399a0e02?auto=format&fit=crop&w=600&q=80' },
+      { id: 'burger-royal', name: 'Burger Royal', category: 'Burger', price: 3000, available: true, desc: 'Double steak haché maison, double fromage cheddar, œuf, salade, tomate.', img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=600&q=80' },
+      { id: 'french-tacos', name: 'French Tacos Poulet', category: 'Tacos', price: 2000, available: true, desc: 'Poulet sauté à la poêle, frites, sauce fromagère, oignons, tomates.', img: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=600&q=80' },
+      { id: 'shawarma', name: 'Shawarma Poulet', category: 'Shawarma', price: 1500, available: true, desc: 'Poulet sauté à la poêle, frites, crudités, sauce.', img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=600&q=80' },
+      { id: 'frite', name: 'Barquette de Frites', category: 'Frites', price: 1000, available: true, desc: 'Frites fait maison.', img: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80' },
+      
+      // --- BIENTOT ---
+      { id: 'fataya', name: 'Fataya', category: 'Fataya', price: 1000, available: false, desc: 'Chaussons dorés farcis à la viande hachée, croustillants.', img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80' },
+      { id: 'quesadillas', name: 'Quesadillas', category: 'Quesadillas', price: 1500, available: false, desc: 'Tortillas grillées au beurre, débordantes de fromage fondu, poulet épicé.', img: 'https://images.unsplash.com/photo-1618040996337-56904b7850b9?auto=format&fit=crop&w=600&q=80' },
+      { id: 'poutine', name: 'Frite Poutine', category: 'Frites', price: 2000, available: false, desc: 'Frites croustillantes nappées d\'une sauce brune et fromage fondant.', img: 'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?auto=format&fit=crop&w=600&q=80' },
+      { id: 'crepes', name: 'Mini Crêpes', category: 'Desserts', price: 200, available: false, desc: 'Mini crêpes moelleuses, confiture ou chocolat.', img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=600&q=80' },
 
-      // --- BIENTÔT (PROJETS FUTURS) ---
-      { 
-        id: 'burger-double-cheese', 
-        name: 'Burger Double Cheese', 
-        category: 'Burger', 
-        price: 2000, 
-        available: false, 
-        desc: 'Steak haché maison, double fromage cheddar, œuf, salade, tomate.', 
-        img: 'https://images.unsplash.com/photo-1586816001966-79b736744398?auto=format&fit=crop&w=600&q=80' 
-      },
-      { 
-        id: 'burger-double-steak', 
-        name: 'Burger Double Steak', 
-        category: 'Burger', 
-        price: 2500, 
-        available: false, 
-        desc: 'Double steak haché maison, fromage cheddar, œuf, salade, tomate.', 
-        img: 'https://images.unsplash.com/photo-1594212844823-c7d8399a0e02?auto=format&fit=crop&w=600&q=80' 
-      },
-      { 
-        id: 'burger-royal', 
-        name: 'Burger Royal', 
-        category: 'Burger', 
-        price: 3000, 
-        available: false, 
-        desc: 'Double steak haché maison, double fromage cheddar, œuf, salade, tomate.', 
-        img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=600&q=80' 
-      },
-
-      // --- JUS & DESSERTS ---
+      // --- JUS & COCKTAILS ---
       { id: 'bissap', name: 'Bissap', category: 'Jus', price: 1000, available: true, desc: 'Hibiscus infusé maison. 100% naturel.', img: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=300&q=80' },
       { id: 'bouye', name: 'Bouye', category: 'Jus', price: 1000, available: true, desc: 'Baobab onctueux et rafraîchissant. 100% naturel.', img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=300&q=80' },
       { id: 'orange', name: 'Orange', category: 'Jus', price: 1000, available: true, desc: 'Orange pressée du jour. 100% naturel.', img: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=300&q=80' },
       { id: 'cocktail-carotte-mangue', name: 'Carotte-Mangue', category: 'Cocktail', price: 1000, available: true, virgin: true, desc: 'Carotte pressée, mangue fraîche et trait d\'orange.', img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=300&q=80' },
-      { id: 'cocktail-rhum-soleil', name: 'Rhum Soleil', category: 'Cocktail', price: 1000, available: true, alcohol: true, desc: 'Rhum, mangue fraîche, fruit de la passion et gingembre. 18+.', img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=300&q=80' },
-      { id: 'crepes', name: 'Mini Crêpes', category: 'Desserts', price: 200, available: true, desc: 'Mini crêpes moelleuses, confiture ou chocolat.', img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=600&q=80' }
+      { id: 'cocktail-rhum-soleil', name: 'Rhum Soleil', category: 'Cocktail', price: 1000, available: true, alcohol: true, desc: 'Rhum, mangue fraîche, fruit de la passion et gingembre. 18+.', img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=300&q=80' }
     ];
 
     let cart = [];
@@ -608,6 +592,7 @@
     let isAdminAuthenticated = false;
     let adminPollingInterval = null;
     let clientPollingInterval = null;
+    let lastSoundPlayedTime = 0;
 
     document.getElementById('auraCount').textContent = auraScore;
 
@@ -638,70 +623,73 @@
       localStorage.setItem('buhanor_cart_ids', JSON.stringify(cart.map(i => ({ id: i.id, qty: i.qty }))));
     }
 
+    // AJOUT DE ONERROR POUR SECOURIR LES IMAGES CASSÉES
+    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80'; // Burger générique par défaut
+
     window.renderMenu = function() {
+      const s = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
+      
       const filtered = MENU.filter(i => {
         if (i.category === 'Jus' || i.category === 'Cocktail') return false;
-        const s = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
         return (activeCategory === 'Tous' || i.category === activeCategory) && (i.name.toLowerCase().includes(s) || i.desc.toLowerCase().includes(s));
       });
 
       menuGrid.innerHTML = filtered.map(item => {
         const inCart = cart.find(i => i.id === item.id);
-        
-        // GESTION DE L'AFFICHAGE "BIENTÔT"
         const cardClass = item.available ? 'card' : 'card coming-soon';
         const badgeSoon = item.available ? '' : '<span class="card-badge-soon">Bientôt</span>';
         
         let actionBtn = '';
         if (!item.available) {
-          // Bouton désactivé si pas dispo
-          actionBtn = `<button class="add-btn disabled" disabled><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg> Bientôt</button>`;
+          actionBtn = `<button class="add-btn disabled" disabled aria-label="Bientôt disponible"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg> Bientôt</button>`;
         } else if (inCart) {
-          // Contrôle de quantité si dispo
-          actionBtn = `<div class="qty-ctrl"><button onclick="window.changeQty('${item.id}', -1)">−</button><span class="num">${inCart.qty}</span><button class="plus" onclick="window.changeQty('${item.id}', 1)">+</button></div>`;
+          actionBtn = `<div class="qty-ctrl"><button onclick="window.changeQty('${item.id}', -1)" aria-label="Retirer">−</button><span class="num">${inCart.qty}</span><button class="plus" onclick="window.changeQty('${item.id}', 1)" aria-label="Ajouter">+</button></div>`;
         } else {
-          // Bouton ajouter normal
-          actionBtn = `<button class="add-btn" onclick="window.addToCart('${item.id}', event)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Ajouter</button>`;
+          actionBtn = `<button class="add-btn" onclick="window.addToCart('${item.id}', event)" aria-label="Ajouter au panier"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Ajouter</button>`;
         }
 
         return `
           <div class="${cardClass}">
             <div class="card-img">
-              <img src="${item.img}" alt="${item.name}">
+              <img src="${item.img}" alt="${item.name}" loading="lazy" width="400" height="300" onerror="this.src='${FALLBACK_IMG}'">
               ${badgeSoon}
               <span class="card-price-tag">${item.price} FCFA</span>
             </div>
             <div class="card-body"><h3>${item.name}</h3><p>${item.desc}</p></div>
-            <div class="card-foot">
-              ${actionBtn}
-            </div>
+            <div class="card-foot">${actionBtn}</div>
           </div>`;
       }).join('');
+      
+      window.renderJuiceBar(s);
     };
 
-    window.renderJuiceBar = function() {
-      const jus = MENU.filter(i => i.category === 'Jus');
-      const cocktails = MENU.filter(i => i.category === 'Cocktail');
+    window.renderJuiceBar = function(searchStr = '') {
+      const s = searchStr.toLowerCase();
+      const jus = MENU.filter(i => i.category === 'Jus' && (i.name.toLowerCase().includes(s) || i.desc.toLowerCase().includes(s)));
+      const cocktails = MENU.filter(i => i.category === 'Cocktail' && (i.name.toLowerCase().includes(s) || i.desc.toLowerCase().includes(s)));
       
       const buildHTML = (arr) => arr.map(item => {
         const inCart = cart.find(i => i.id === item.id);
         let badge = item.virgin ? '<span class="juice-badge virgin">Sans alcool</span>' : item.alcohol ? '<span class="juice-badge alcohol">18+</span>' : '';
         return `
           <div class="juice-card">
-            <div class="juice-card-img"><img src="${item.img}" alt="${item.name}">${badge}</div>
+            <div class="juice-card-img">
+              <img src="${item.img}" alt="${item.name}" loading="lazy" width="300" height="200" onerror="this.src='${FALLBACK_IMG}'">
+              ${badge}
+            </div>
             <div class="juice-card-body">
               <h4 class="juice-card-title">${item.name}</h4><p class="juice-card-desc">${item.desc}</p>
               <div class="juice-card-foot">
                 <span class="juice-price">${item.price} FCFA</span>
-                ${inCart ? `<div class="bar-qty"><button onclick="window.changeQty('${item.id}', -1)">−</button><span>${inCart.qty}</span><button onclick="window.changeQty('${item.id}', 1)">+</button></div>`
-                : `<button class="bar-add" onclick="window.addToCart('${item.id}', event)">+</button>`}
+                ${inCart ? `<div class="bar-qty"><button onclick="window.changeQty('${item.id}', -1)" aria-label="Retirer">−</button><span>${inCart.qty}</span><button onclick="window.changeQty('${item.id}', 1)" aria-label="Ajouter">+</button></div>`
+                : `<button class="bar-add" onclick="window.addToCart('${item.id}', event)" aria-label="Ajouter">+</button>`}
               </div>
             </div>
           </div>`;
       }).join('');
 
-      jusGrid.innerHTML = buildHTML(jus);
-      cocktailGrid.innerHTML = buildHTML(cocktails);
+      jusGrid.innerHTML = buildHTML(jus) || '<p style="color:var(--muted); grid-column:1/-1; text-align:center;">Aucun jus trouvé.</p>';
+      cocktailGrid.innerHTML = buildHTML(cocktails) || '<p style="color:var(--muted); grid-column:1/-1; text-align:center;">Aucun cocktail trouvé.</p>';
     };
 
     window.updateCartUI = function() {
@@ -732,15 +720,15 @@
           if(!prod) return '';
           return `
           <div style="display:flex; align-items:center; gap:0.8rem; border-bottom:1px solid var(--line); padding-bottom:0.5rem;">
-            <img src="${prod.img}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;">
+            <img src="${prod.img}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;" loading="lazy" onerror="this.src='${FALLBACK_IMG}'">
             <div style="flex:1;">
               <h4 style="font-family:'Bebas Neue'; font-size:1.1rem;">${prod.name}</h4>
               <div style="color:var(--orange); font-weight:800; font-size:0.85rem;">${prod.price * item.qty} F</div>
             </div>
             <div class="qty-ctrl" style="width:90px;">
-              <button onclick="window.changeQty('${item.id}', -1)">−</button>
+              <button onclick="window.changeQty('${item.id}', -1)" aria-label="Retirer">−</button>
               <span style="font-weight:800;">${item.qty}</span>
-              <button class="plus" onclick="window.changeQty('${item.id}', 1)">+</button>
+              <button class="plus" onclick="window.changeQty('${item.id}', 1)" aria-label="Ajouter">+</button>
             </div>
           </div>
         `}).join('');
@@ -749,17 +737,21 @@
         cartBody.innerHTML = `<p style="text-align:center;color:var(--muted);margin-top:2rem;">Votre panier est vide.</p>`;
       }
       window.renderMenu();
-      window.renderJuiceBar();
     };
 
     window.addToCart = function(id, event) {
       const prod = MENU.find(p => p.id === id);
       if (!prod) return;
       
-      // Sécurité : On ne peut pas ajouter un plat "Bientôt"
       if (!prod.available) {
-        alert("Ce plat sera bientôt disponible ! Restez connectés.");
+        alert("Ce plat sera bientôt disponible !");
         return;
+      }
+
+      if (prod.alcohol) {
+        if (!confirm("Ce produit contient de l'alcool. Confirmez-vous avoir 18 ans ou plus ?")) {
+          return;
+        }
       }
 
       const existing = cart.find(i => i.id === id);
@@ -813,11 +805,16 @@
     });
 
     document.getElementById('checkoutBtn').onclick = async (e) => {
+      if (!isShopOpen()) {
+        alert("Le fast-food est actuellement fermé. Nous ouvrons tous les jours de 11h à 23h.");
+        return;
+      }
+
       const name = document.getElementById('clientName').value.trim();
       const loc = document.getElementById('clientLocation').value.trim();
 
       if (!name || !loc) {
-        alert("Oups ! N'oublie pas d'indiquer ton prénom et où tu te trouves sur la plage pour qu'on puisse te livrer.");
+        alert("Oups ! N'oublie pas d'indiquer ton prénom et où tu te trouves sur la plage.");
         return;
       }
 
@@ -852,6 +849,17 @@
         clientPollingInterval = setInterval(async () => {
           if (!currentOrderId || !supabase) return;
           const { data: status, error: err } = await supabase.rpc('get_order_status', { order_id: currentOrderId });
+          
+          if (!err && !status) {
+            clearInterval(clientPollingInterval);
+            localStorage.removeItem('buhanor_current_order');
+            currentOrderId = null;
+            document.getElementById('trackerTitle').textContent = "Commande terminée";
+            document.getElementById('deliveryText').textContent = "Votre commande a été servie. Merci !";
+            document.getElementById('closeTracker').style.display = 'flex';
+            return;
+          }
+
           if (!err && status) {
             window.updateTrackerUI(status);
             if (status === 'ready') clearInterval(clientPollingInterval);
@@ -860,7 +868,7 @@
 
       } catch (err) {
         if (err.message === 'TypeError: Failed to fetch' || err.message.includes('fetch')) {
-          alert("Problème de connexion réseau. Vérifie que ton projet Supabase n'est pas en pause et réessaie.");
+          alert("Problème de connexion réseau. Vérifie ta connexion.");
         } else {
           alert("Impossible d'envoyer la commande :\n" + err.message);
         }
@@ -888,13 +896,21 @@
 
     if (currentOrderId && supabase) {
       supabase.rpc('get_order_status', { order_id: currentOrderId }).then(({data, error}) => {
-        if (data && data !== 'ready') {
+        if (!error && !data) {
+          localStorage.removeItem('buhanor_current_order');
+          currentOrderId = null;
+        } else if (data && data !== 'ready') {
           document.getElementById('trackerOverlay').classList.add('open');
           window.updateTrackerUI(data);
           if(clientPollingInterval) clearInterval(clientPollingInterval);
           clientPollingInterval = setInterval(async () => {
             const { data: status } = await supabase.rpc('get_order_status', { order_id: currentOrderId });
-            if (status) {
+            if (!status) {
+              clearInterval(clientPollingInterval);
+              localStorage.removeItem('buhanor_current_order');
+              currentOrderId = null;
+              document.getElementById('trackerOverlay').classList.remove('open');
+            } else {
               window.updateTrackerUI(status);
               if (status === 'ready') clearInterval(clientPollingInterval);
             }
@@ -930,10 +946,16 @@
       if (!pin) return;
       
       adminLoginBtn.textContent = "Vérification..."; adminLoginBtn.disabled = true;
+      adminLoginError.style.display = 'none';
 
       try {
         const { data, error } = await supabase.rpc('get_admin_orders', { admin_pin: pin });
         if (error) {
+          if (error.message.includes('incorrect')) {
+            adminLoginError.textContent = "Code incorrect.";
+          } else {
+            adminLoginError.textContent = "Erreur réseau. Réessayez.";
+          }
           adminLoginError.style.display = 'block';
         } else {
           adminPin = pin; isAdminAuthenticated = true;
@@ -947,25 +969,24 @@
           }, 10000);
         }
       } catch (err) {
-        adminLoginError.textContent = "Erreur de connexion."; adminLoginError.style.display = 'block';
+        adminLoginError.textContent = "Erreur réseau."; adminLoginError.style.display = 'block';
       } finally {
         adminLoginBtn.textContent = "Connexion"; adminLoginBtn.disabled = false;
       }
     };
 
-    function playNotificationSound() {
-      try {
-        const context = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = context.createOscillator(); const gain = context.createGain();
-        osc.type = 'sine'; osc.frequency.setValueAtTime(800, context.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1200, context.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.5, context.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.3);
-        osc.connect(gain); gain.connect(context.destination); osc.start(); osc.stop(context.currentTime + 0.3);
-      } catch(e) {}
-    }
+    window.closeAdminPanel = function() {
+      document.getElementById('adminPanel').classList.remove('open');
+      if (adminPollingInterval) {
+        clearInterval(adminPollingInterval);
+        adminPollingInterval = null;
+      }
+    };
 
     function renderAdmin(orders) {
       let soundPlayed = false;
+      const now = Date.now();
+
       document.getElementById('adminBody').innerHTML = orders.map(order => {
         let cardClass = order.statuts === 'preparing' ? 'status-preparing' : order.statuts === 'ready' ? 'status-ready' : '';
         
@@ -973,9 +994,10 @@
         const safeLocation = escapeHTML(order.location);
         const safeTotal = Number(order.total);
 
-        if (order.statuts === 'received' && !soundPlayed) {
+        if (order.statuts === 'received' && !soundPlayed && (now - lastSoundPlayedTime > 15000)) {
           playNotificationSound();
           soundPlayed = true;
+          lastSoundPlayedTime = now;
         }
         
         return `
@@ -993,7 +1015,7 @@
 
                 return `
                 <li style="display:flex; align-items:center; gap:0.8rem; margin-bottom:0.5rem;">
-                  ${prodImg ? `<img src="${prodImg}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; background:#eee;">` : ''}
+                  ${prodImg ? `<img src="${prodImg}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; background:#eee;" loading="lazy" onerror="this.src='${FALLBACK_IMG}'">` : ''}
                   <span><strong>${safeQty}x</strong> ${prodName}</span>
                 </li>
               `}).join('')}
@@ -1010,7 +1032,7 @@
     window.updateOrderStatus = async (id, newStatus) => {
       if(!supabase || !adminPin) return;
       const { error } = await supabase.rpc('update_order_status', { admin_pin: adminPin, order_id: id, new_status: newStatus });
-      if(error) alert("Erreur de mise à jour : " + error.message);
+      if(error) alert("Erreur : " + error.message);
       else window.fetchAdminOrders();
     };
 

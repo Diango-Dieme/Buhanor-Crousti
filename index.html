@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Buhanor Crousti · Commande</title>
   
+  <!-- SEO & PWA -->
+  <meta name="description" content="Commandez en 15 secondes sur la plage de Cap Skirring. Burgers, French Tacos, Jus naturels par Moussa.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Buhanor">
@@ -24,8 +26,7 @@
     :root {
       --ink: #160C06; --paper: #FBF3E6; --cream: #FFF9EE;
       --orange: #E8531F; --orange-deep: #B33A0F; --yellow: #F2B134;
-      --muted: #756250;
-      --line: rgba(22, 12, 6, 0.08);
+      --muted: #756250; --line: rgba(22, 12, 6, 0.08);
       --lagoon: #00A8A0; --sun: #FFCB47; --mango: #FF8C42;
     }
     html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
@@ -38,10 +39,6 @@
     h1, h2, h3, h4 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: 0.02em; line-height: 0.9; }
     img { display: block; max-width: 100%; }
     button { font-family: inherit; cursor: pointer; border: none; }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-    }
 
     #js-error-banner { display: none; position: fixed; top: 0; left: 0; right: 0; background: red; color: white; padding: 1rem; z-index: 99999; text-align: center; font-weight: bold; }
 
@@ -269,6 +266,7 @@
     .step-text p { font-size: 0.8rem; color: var(--muted); }
     @keyframes pulseIcon { 0% { box-shadow: 0 0 0 0 rgba(232, 83, 31, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(232, 83, 31, 0); } 100% { box-shadow: 0 0 0 0 rgba(232, 83, 31, 0); } }
 
+    /* ===== ADMIN / ESPACE ÉQUIPE ===== */
     .admin-login-overlay { position: fixed; inset: 0; z-index: 400; background: var(--ink); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
     .admin-login-overlay.open { display: flex; }
     .admin-login-box { background: white; padding: 2rem; border-radius: 20px; max-width: 400px; width: 100%; text-align: center; }
@@ -301,15 +299,69 @@
     .btn-ready { background: var(--lagoon); }
     .btn-done { background: var(--muted); }
 
-    @media (max-width: 960px) { .hero { grid-template-columns: 1fr; text-align: center; } .hero-tag, .hero p { margin-left: auto; margin-right: auto; } .hero-actions { justify-content: center; } .hero-visual { max-width: 420px; margin: 0 auto; } .promesse { grid-template-columns: 1fr; } .promesse-item + .promesse-item { border-left: none; border-top: 1px solid var(--line); } .apero-inner { grid-template-columns: 1fr; text-align: center; gap: 1.5rem; } .stamp { margin: 0 auto; } .apero-days { justify-content: center; } .apero p { margin-left: auto; margin-right: auto; } .foot-inner { grid-template-columns: 1fr; text-align: center; gap: 1.5rem; } .foot-brand .logo { justify-content: center; } .foot-col p { justify-content: center; } .search { display: none; } .bar-hero { aspect-ratio: 4 / 3; } }
-    @media (max-width: 560px) { 
-      .logo img { height: 60px; } 
-      .cart-btn span:not(.cart-count) { display: none; } 
-      .menu-grid, .juice-grid { grid-template-columns: 1fr; } 
-      .bar-title { font-size: 3rem; } 
-      .aura-widget { bottom: 5rem; padding: 0.4rem 0.8rem; font-size: 1rem; } 
-      .foot-brand .logo img { height: 60px; }
-    }
+    /* ===== ESPACE ÉQUIPE (v3) ===== */
+    input, textarea { -webkit-user-select: text; user-select: text; }
+    .foot-bottom a { color: inherit; opacity: .55; text-decoration: underline; margin-left: .8rem; }
+    @media (max-width: 960px) { .mobile-cart-bar { display: flex; } }
+    .staff-box { max-height: 92vh; overflow-y: auto; }
+    .staff-box input[type=text], .staff-box input[type=email], .staff-box input[type=password] { font-size: 1rem; text-align: left; letter-spacing: normal; padding: .85rem 1rem; }
+    .staff-switch { display: flex; gap: .4rem; margin-bottom: 1rem; background: var(--paper); padding: .25rem; border-radius: 999px; }
+    .staff-switch button { flex: 1; padding: .5rem; border-radius: 999px; background: transparent; font-weight: 700; color: var(--muted); }
+    .staff-switch button.active { background: var(--ink); color: var(--cream); }
+    .staff-link-btn { background: none; color: var(--muted); margin-top: .8rem; text-decoration: underline; font-size: .85rem; }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; overflow: hidden; flex-shrink: 0; background: var(--orange); }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar.sm { width: 40px; height: 40px; }
+    .avatar.big { width: 96px; height: 96px; font-size: 3rem; margin: 0 auto 1rem; }
+    .staff-me { display: flex; align-items: center; gap: .7rem; }
+    .me-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--yellow); line-height: 1; }
+    .me-role { font-size: .7rem; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .08em; }
+    .staff-actions { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; justify-content: flex-end; }
+    .svc-btn { padding: .5rem .9rem; border-radius: 999px; font-weight: 700; font-size: .75rem; color: white; }
+    .svc-btn.on { background: var(--lagoon); }
+    .svc-btn.off { background: #8a3b1c; }
+    .svc-btn.ghost { background: rgba(255,255,255,.12); }
+    .admin-head { align-items: center; gap: 1rem; flex-wrap: wrap; padding: 1rem 1.25rem; }
+    .admin-tabs { display: flex; gap: .4rem; padding: .6rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,.1); align-items: center; overflow-x: auto; }
+    .admin-tabs button { padding: .5rem 1rem; border-radius: 999px; background: rgba(255,255,255,.08); color: white; font-weight: 700; font-size: .8rem; white-space: nowrap; }
+    .admin-tabs button.active { background: var(--yellow); color: var(--ink); }
+    .tab-badge { background: var(--orange); color: white; border-radius: 999px; padding: 0 .45rem; margin-left: .3rem; font-size: .7rem; }
+    .net-warn { color: #ffb4a0; font-size: .75rem; margin-left: auto; white-space: nowrap; }
+    .admin-meta { font-size: .75rem; color: var(--muted); }
+    .admin-cancel { background: none; color: #c0392b; font-size: .75rem; font-weight: 700; text-decoration: underline; padding: .4rem; }
+    .staff-empty { color: rgba(255,255,255,.7); }
+    .team-card { background: white; color: var(--ink); border-radius: 16px; padding: 1rem; display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; }
+    .team-info { flex: 1; min-width: 140px; }
+    .team-info b { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: .02em; }
+    .team-info small { display: block; color: var(--muted); font-size: .72rem; word-break: break-all; }
+    .chip { display: inline-block; font-size: .62rem; font-weight: 800; padding: .1rem .5rem; border-radius: 999px; background: var(--line); margin-left: .3rem; vertical-align: middle; }
+    .chip.active { background: #d8f3f1; color: #006b66; }
+    .chip.pending { background: #fff0c9; color: #8a6200; }
+    .chip.revoked { background: #fde0d8; color: #a22; }
+    .team-actions { display: flex; gap: .4rem; width: 100%; }
+    .mini-btn { flex: 1; padding: .45rem .6rem; border-radius: 8px; font-size: .75rem; font-weight: 700; color: white; }
+    .mini-ok { background: var(--lagoon); } .mini-no { background: var(--muted); } .mini-del { background: #c0392b; }
+    .hist-bar { display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 1rem; }
+    .hist-bar label { font-size: .8rem; display: flex; flex-direction: column; gap: .2rem; }
+    .hist-bar input { padding: .5rem; border-radius: 8px; border: none; }
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .stat { background: rgba(255,255,255,.08); border-radius: 12px; padding: 1rem; font-size: .8rem; }
+    .stat b { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--yellow); letter-spacing: .02em; }
+    .hist-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .hist-cols > div { background: rgba(255,255,255,.06); border-radius: 12px; padding: 1rem; font-size: .85rem; }
+    .hist-cols h4 { font-size: 1.1rem; color: var(--yellow); margin-bottom: .5rem; }
+    .hist-wrap { overflow-x: auto; }
+    .hist-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+    .hist-table th, .hist-table td { padding: .5rem; border-bottom: 1px solid rgba(255,255,255,.1); text-align: left; white-space: nowrap; }
+    .avatar-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: .4rem; margin-bottom: .8rem; }
+    .av-opt { font-size: 1.4rem; padding: .35rem; border-radius: 10px; background: var(--paper); border: 2px solid transparent; }
+    .av-opt.sel { border-color: var(--orange); }
+    .color-row { display: flex; gap: .5rem; justify-content: center; margin-bottom: .8rem; }
+    .col-opt { width: 28px; height: 28px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 1px var(--line); }
+    .col-opt.sel { box-shadow: 0 0 0 3px var(--ink); }
+    .photo-btn { display: inline-block; padding: .5rem 1rem; border-radius: 999px; background: var(--paper); font-weight: 700; font-size: .8rem; cursor: pointer; margin-bottom: 1rem; }
+    .staff-chip { position: fixed; right: 1rem; bottom: 5.5rem; z-index: 85; display: none; align-items: center; gap: .4rem; background: var(--ink); color: var(--yellow); padding: .6rem 1rem; border-radius: 999px; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: .04em; border: 2px solid var(--yellow); box-shadow: 4px 4px 0 var(--orange); }
+    .staff-chip.alert { background: var(--orange); color: white; border-color: white; animation: auraPulse .6s infinite alternate; }
   </style>
 </head>
 <body>
@@ -339,11 +391,11 @@
 <header>
   <div class="header-inner">
     <div class="logo" id="secretLogo">
-      <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor Crousti" loading="lazy">
+      <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor Crousti">
     </div>
     <div class="search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
-      <input type="text" id="searchInput" placeholder="Tacos, burger, jus...">
+      <input type="text" id="searchInput" placeholder="Tacos, burger, crêpes...">
     </div>
     <button class="cart-btn" onclick="document.getElementById('cartDrawer').classList.add('open')">
       <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6L4 2H2"/></svg>
@@ -365,9 +417,7 @@
   </div>
   <div class="hero-visual">
     <div class="glow"></div>
-    <div class="plate">
-      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80" alt="Burger signature" width="600" height="600" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80'">
-    </div>
+    <div class="plate"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80" alt="Burger signature" loading="lazy" width="600" height="600" onerror="this.src='https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80'"></div>
     <div class="sticker top">Signature</div>
     <div class="sticker bottom">★ Fait maison</div>
   </div>
@@ -397,7 +447,7 @@
   <div class="menu-header">
     <div class="eyebrow">Le menu</div>
     <h2>À croquer maintenant</h2>
-    <p>Des prix honnêtes, des portions généreuses.</p>
+    <p>Découvrez nos plats disponibles et nos futures créations.</p>
   </div>
   <div class="categories" id="categories">
     <button class="cat-btn active" data-cat="Tous">Tous</button>
@@ -415,9 +465,7 @@
 <section class="juice-bar" id="jus">
   <div class="bar-inner">
     <div class="bar-head"><h2 class="bar-title">Le Bar à <span class="sun-word">Jus</span></h2><p class="bar-byline">par <em>Moussa</em></p></div>
-    <div class="bar-hero">
-      <img src="cocktails-coucher-soleil-campement-buhanor-cap-skirring.jpeg" alt="Cocktails au coucher du soleil" width="800" height="450" loading="lazy">
-    </div>
+    <div class="bar-hero"><img src="cocktails-coucher-soleil-campement-buhanor-cap-skirring.jpeg" alt="Cocktails au coucher du soleil" loading="lazy" width="800" height="450"></div>
     <p class="bar-intro">Moussa presse chaque jus à la commande, à partir de fruits frais de saison. Sans additifs. Il marie aussi fruits et légumes pour des cocktails étonnants — selon l'arrivage du jour.</p>
     <div class="bar-notice"><div><strong>Carte évolutive.</strong> Les fruits changent au fil de l'année. Demandez à Moussa le jus du jour.</div></div>
     <div class="bar-section-head"><h3>Jus <em>naturels</em></h3></div>
@@ -443,22 +491,22 @@
     <div class="foot-col"><h4>Nous trouver</h4><p>📍 Plage de Cap Skirring</p><p>🕒 Tous les jours · 11h – 23h</p></div>
     <div class="foot-col"><h4>Contact</h4><p>📞 +221 76 153 49 94</p></div>
   </div>
-  <div class="foot-bottom">© 2026 Buhanor Crousti · Cap Skirring</div>
+  <div class="foot-bottom">© 2026 Buhanor Crousti · Cap Skirring <a href="#" id="staffLink">Espace équipe</a></div>
 </footer>
 
-<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true">
+<div class="cart-drawer" id="cartDrawer">
   <div class="cart-backdrop" onclick="document.getElementById('cartDrawer').classList.remove('open')"></div>
   <div class="cart-panel">
     <div class="cart-head">
       <h3>Panier</h3>
-      <button class="close-btn" onclick="document.getElementById('cartDrawer').classList.remove('open')" aria-label="Fermer le panier">&times;</button>
+      <button class="close-btn" onclick="document.getElementById('cartDrawer').classList.remove('open')">&times;</button>
     </div>
     <div class="cart-body" id="cartBody"></div>
     <div class="cart-foot" id="cartFoot" style="display:none;">
       <div class="checkout-form" id="checkoutForm">
-        <div><label>Votre prénom</label><input type="text" id="clientName" placeholder="Ex: Amadou"></div>
+        <div><label>Votre prénom</label><input type="text" id="clientName" placeholder="Ex: Amadou" maxlength="50"></div>
         <div>
-          <label>Où êtes-vous ?</label><input type="text" id="clientLocation" placeholder="Ex: Transat 4">
+          <label>Où êtes-vous ?</label><input type="text" id="clientLocation" placeholder="Ex: Transat 4" maxlength="100">
           <div class="quick-tags" id="quickTags">
             <button type="button" class="quick-tag" data-loc="Transats face à la mer">Transats</button>
             <button type="button" class="quick-tag" data-loc="Sous la paillote">Paillote</button>
@@ -474,7 +522,7 @@
 
 <div class="tracker-overlay" id="trackerOverlay">
   <div class="tracker-content">
-    <button class="tracker-close" id="closeTracker" aria-label="Fermer le suivi">&times;</button>
+    <button class="tracker-close" id="closeTracker">&times;</button>
     <h2 class="tracker-title" id="trackerTitle">Commande Reçue !</h2>
     <p class="tracker-subtitle">Merci <span id="trackerName">Client</span>, on s'occupe de vous !</p>
     <div class="tracker-steps">
@@ -485,26 +533,63 @@
   </div>
 </div>
 
-<div class="admin-login-overlay" id="adminLoginOverlay">
-  <div class="admin-login-box">
-    <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor" loading="lazy">
-    <h2>Accès Équipe</h2>
-    <p>Entre ton code pour accéder au tableau de bord.</p>
-    <input type="password" id="adminPinInput" placeholder="••••" maxlength="15" inputmode="numeric">
-    <button class="admin-login-btn" id="adminLoginBtn">Connexion</button>
-    <div class="admin-login-error" id="adminLoginError">Code incorrect.</div>
-    <button onclick="document.getElementById('adminLoginOverlay').classList.remove('open')" style="background:none; color:var(--muted); margin-top:1rem; text-decoration:underline;">Annuler</button>
+<!-- ===== ESPACE ÉQUIPE ===== -->
+<button class="staff-chip" id="staffChip"><span id="chipText">👤 Espace équipe</span></button>
+
+<div class="admin-login-overlay" id="staffOverlay">
+  <div class="admin-login-box staff-box">
+    <img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor">
+    <h2>Espace équipe</h2>
+    <div id="staffAuthView">
+      <div class="staff-switch"><button type="button" id="tabLogin" class="active">Connexion</button><button type="button" id="tabSignup">Créer mon compte</button></div>
+      <input type="text" id="staffName" placeholder="Ton prénom" maxlength="30" style="display:none" autocomplete="nickname">
+      <input type="email" id="staffEmail" placeholder="Email" autocomplete="username">
+      <input type="password" id="staffPass" placeholder="Mot de passe" autocomplete="current-password">
+      <button class="admin-login-btn" id="staffSubmit">Connexion</button>
+    </div>
+    <div id="staffStateView" style="display:none">
+      <p id="staffStateMsg"></p>
+      <button class="admin-login-btn" id="staffRefreshBtn">Vérifier à nouveau</button>
+    </div>
+    <div class="admin-login-error" id="staffError"></div>
+    <button type="button" id="staffCancel" class="staff-link-btn">Fermer</button>
+    <button type="button" id="staffLogout2" class="staff-link-btn" style="display:none">Se déconnecter</button>
+  </div>
+</div>
+
+<div class="admin-login-overlay" id="profileOverlay" style="z-index:500">
+  <div class="admin-login-box staff-box">
+    <h2>Mon profil</h2>
+    <div id="profilePreview"></div>
+    <input type="text" id="profileName" maxlength="30" placeholder="Prénom">
+    <div class="avatar-grid" id="avatarGrid"></div>
+    <div class="color-row" id="colorRow"></div>
+    <label class="photo-btn">📷 Utiliser ma photo<input type="file" id="avatarFile" accept="image/*" hidden></label>
+    <button class="admin-login-btn" id="profileSave">Enregistrer</button>
+    <div class="admin-login-error" id="profileError"></div>
+    <button type="button" id="profileCancel" class="staff-link-btn">Annuler</button>
   </div>
 </div>
 
 <div class="admin-panel" id="adminPanel">
   <div class="admin-head">
-    <h2>Commandes en direct</h2>
-    <div>
-      <button class="admin-close" onclick="window.closeAdminPanel()" title="Fermer" aria-label="Fermer le panneau admin">&times;</button>
+    <div class="staff-me" id="staffMe"></div>
+    <div class="staff-actions">
+      <button class="svc-btn off" id="serviceBtn">Mode service : OFF</button>
+      <button class="svc-btn ghost" id="profileBtn">Profil</button>
+      <button class="svc-btn ghost" id="logoutBtn">Quitter</button>
+      <button class="admin-close" id="adminCloseBtn" title="Fermer">&times;</button>
     </div>
   </div>
+  <div class="admin-tabs" id="adminTabs">
+    <button data-tab="orders" class="active">Commandes<span id="pendingBadge" class="tab-badge" style="display:none">0</span></button>
+    <button data-tab="team">Équipe<span id="teamBadge" class="tab-badge" style="display:none">0</span></button>
+    <button data-tab="history" id="tabHistory" style="display:none">Historique</button>
+    <span class="net-warn" id="netWarn" style="display:none">⚠ Connexion perdue</span>
+  </div>
   <div class="admin-body" id="adminBody"></div>
+  <div class="admin-body" id="teamBody" style="display:none"></div>
+  <div class="admin-body" id="historyBody" style="display:none"></div>
 </div>
 
 <script>
@@ -525,38 +610,10 @@
     );
   }
 
-  function isShopOpen() {
-    const now = new Date();
-    const hours = now.getHours();
-    return hours >= 11 && hours < 23;
-  }
-
-  let audioCtx = null;
-  function playNotificationSound() {
-    try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      
-      const osc = audioCtx.createOscillator(); 
-      const gain = audioCtx.createGain();
-      osc.type = 'sine'; 
-      osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-      gain.gain.setValueAtTime(0.5, audioCtx.currentTime); 
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-      osc.connect(gain); 
-      gain.connect(audioCtx.destination); 
-      osc.start(); 
-      osc.stop(audioCtx.currentTime + 0.3);
-    } catch(e) {}
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('buhanor_cart');
 
-    // === IMAGES CORRIGÉES ET VÉRIFIÉES ===
     const MENU = [
-      // --- DISPONIBLES ---
       { id: 'burger-classic', name: 'Burger Classic', category: 'Burger', price: 1800, available: true, desc: 'Steak haché maison, fromage cheddar, œuf, salade, tomate.', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80' },
       { id: 'burger-double-cheese', name: 'Burger Double Cheese', category: 'Burger', price: 2000, available: true, desc: 'Steak haché maison, double fromage cheddar, œuf, salade, tomate.', img: 'https://images.unsplash.com/photo-1586816001966-79b736744398?auto=format&fit=crop&w=600&q=80' },
       { id: 'burger-double-steak', name: 'Burger Double Steak', category: 'Burger', price: 2500, available: true, desc: 'Double steak haché maison, fromage cheddar, œuf, salade, tomate.', img: 'https://images.unsplash.com/photo-1594212844823-c7d8399a0e02?auto=format&fit=crop&w=600&q=80' },
@@ -565,13 +622,11 @@
       { id: 'shawarma', name: 'Shawarma Poulet', category: 'Shawarma', price: 1500, available: true, desc: 'Poulet sauté à la poêle, frites, crudités, sauce.', img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=600&q=80' },
       { id: 'frite', name: 'Barquette de Frites', category: 'Frites', price: 1000, available: true, desc: 'Frites fait maison.', img: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80' },
       
-      // --- BIENTOT ---
       { id: 'fataya', name: 'Fataya', category: 'Fataya', price: 1000, available: false, desc: 'Chaussons dorés farcis à la viande hachée, croustillants.', img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80' },
       { id: 'quesadillas', name: 'Quesadillas', category: 'Quesadillas', price: 1500, available: false, desc: 'Tortillas grillées au beurre, débordantes de fromage fondu, poulet épicé.', img: 'https://images.unsplash.com/photo-1618040996337-56904b7850b9?auto=format&fit=crop&w=600&q=80' },
       { id: 'poutine', name: 'Frite Poutine', category: 'Frites', price: 2000, available: false, desc: 'Frites croustillantes nappées d\'une sauce brune et fromage fondant.', img: 'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?auto=format&fit=crop&w=600&q=80' },
       { id: 'crepes', name: 'Mini Crêpes', category: 'Desserts', price: 200, available: false, desc: 'Mini crêpes moelleuses, confiture ou chocolat.', img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=600&q=80' },
 
-      // --- JUS & COCKTAILS ---
       { id: 'bissap', name: 'Bissap', category: 'Jus', price: 1000, available: true, desc: 'Hibiscus infusé maison. 100% naturel.', img: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=300&q=80' },
       { id: 'bouye', name: 'Bouye', category: 'Jus', price: 1000, available: true, desc: 'Baobab onctueux et rafraîchissant. 100% naturel.', img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=300&q=80' },
       { id: 'orange', name: 'Orange', category: 'Jus', price: 1000, available: true, desc: 'Orange pressée du jour. 100% naturel.', img: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=300&q=80' },
@@ -588,18 +643,14 @@
     let activeCategory = 'Tous';
     let auraScore = parseInt(localStorage.getItem('buhanor_aura')) || 0;
     let currentOrderId = localStorage.getItem('buhanor_current_order');
-    let adminPin = null; 
-    let isAdminAuthenticated = false;
-    let adminPollingInterval = null;
     let clientPollingInterval = null;
-    let lastSoundPlayedTime = 0;
 
     document.getElementById('auraCount').textContent = auraScore;
 
     let supabase = null;
     try {
       if (window.supabase) {
-        supabase = window.supabase.createClient('https://qwibaiifvplewvmbezbu.supabase.co', 'sb_publishable_D3Xu5YdZh-ST3vyniiPF0Q_nhjFPIah');
+        supabase = window.supabase.createClient('https://qwibaiifvp1ewvmebzu.supabase.co', 'sb_publishable_D3Xu5YdZh-ST3vyniiPF0Q_nhjFPIah');
       }
     } catch(e) { console.log("Supabase non chargé."); }
 
@@ -623,12 +674,8 @@
       localStorage.setItem('buhanor_cart_ids', JSON.stringify(cart.map(i => ({ id: i.id, qty: i.qty }))));
     }
 
-    // AJOUT DE ONERROR POUR SECOURIR LES IMAGES CASSÉES
-    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80'; // Burger générique par défaut
-
     window.renderMenu = function() {
       const s = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
-      
       const filtered = MENU.filter(i => {
         if (i.category === 'Jus' || i.category === 'Cocktail') return false;
         return (activeCategory === 'Tous' || i.category === activeCategory) && (i.name.toLowerCase().includes(s) || i.desc.toLowerCase().includes(s));
@@ -641,17 +688,17 @@
         
         let actionBtn = '';
         if (!item.available) {
-          actionBtn = `<button class="add-btn disabled" disabled aria-label="Bientôt disponible"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg> Bientôt</button>`;
+          actionBtn = `<button class="add-btn disabled" disabled><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg> Bientôt</button>`;
         } else if (inCart) {
-          actionBtn = `<div class="qty-ctrl"><button onclick="window.changeQty('${item.id}', -1)" aria-label="Retirer">−</button><span class="num">${inCart.qty}</span><button class="plus" onclick="window.changeQty('${item.id}', 1)" aria-label="Ajouter">+</button></div>`;
+          actionBtn = `<div class="qty-ctrl"><button onclick="window.changeQty('${item.id}', -1)">−</button><span class="num">${inCart.qty}</span><button class="plus" onclick="window.changeQty('${item.id}', 1)">+</button></div>`;
         } else {
-          actionBtn = `<button class="add-btn" onclick="window.addToCart('${item.id}', event)" aria-label="Ajouter au panier"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Ajouter</button>`;
+          actionBtn = `<button class="add-btn" onclick="window.addToCart('${item.id}', event)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Ajouter</button>`;
         }
 
         return `
           <div class="${cardClass}">
             <div class="card-img">
-              <img src="${item.img}" alt="${item.name}" loading="lazy" width="400" height="300" onerror="this.src='${FALLBACK_IMG}'">
+              <img src="${item.img}" alt="${item.name}" loading="lazy" width="400" height="300" onerror="this.src='https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80'">
               ${badgeSoon}
               <span class="card-price-tag">${item.price} FCFA</span>
             </div>
@@ -659,7 +706,6 @@
             <div class="card-foot">${actionBtn}</div>
           </div>`;
       }).join('');
-      
       window.renderJuiceBar(s);
     };
 
@@ -673,16 +719,13 @@
         let badge = item.virgin ? '<span class="juice-badge virgin">Sans alcool</span>' : item.alcohol ? '<span class="juice-badge alcohol">18+</span>' : '';
         return `
           <div class="juice-card">
-            <div class="juice-card-img">
-              <img src="${item.img}" alt="${item.name}" loading="lazy" width="300" height="200" onerror="this.src='${FALLBACK_IMG}'">
-              ${badge}
-            </div>
+            <div class="juice-card-img"><img src="${item.img}" alt="${item.name}" loading="lazy" width="300" height="200" onerror="this.src='https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=300&q=80'">${badge}</div>
             <div class="juice-card-body">
               <h4 class="juice-card-title">${item.name}</h4><p class="juice-card-desc">${item.desc}</p>
               <div class="juice-card-foot">
                 <span class="juice-price">${item.price} FCFA</span>
-                ${inCart ? `<div class="bar-qty"><button onclick="window.changeQty('${item.id}', -1)" aria-label="Retirer">−</button><span>${inCart.qty}</span><button onclick="window.changeQty('${item.id}', 1)" aria-label="Ajouter">+</button></div>`
-                : `<button class="bar-add" onclick="window.addToCart('${item.id}', event)" aria-label="Ajouter">+</button>`}
+                ${inCart ? `<div class="bar-qty"><button onclick="window.changeQty('${item.id}', -1)">−</button><span>${inCart.qty}</span><button onclick="window.changeQty('${item.id}', 1)">+</button></div>`
+                : `<button class="bar-add" onclick="window.addToCart('${item.id}', event)">+</button>`}
               </div>
             </div>
           </div>`;
@@ -720,15 +763,15 @@
           if(!prod) return '';
           return `
           <div style="display:flex; align-items:center; gap:0.8rem; border-bottom:1px solid var(--line); padding-bottom:0.5rem;">
-            <img src="${prod.img}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;" loading="lazy" onerror="this.src='${FALLBACK_IMG}'">
+            <img src="${prod.img}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=300&q=80'">
             <div style="flex:1;">
               <h4 style="font-family:'Bebas Neue'; font-size:1.1rem;">${prod.name}</h4>
               <div style="color:var(--orange); font-weight:800; font-size:0.85rem;">${prod.price * item.qty} F</div>
             </div>
             <div class="qty-ctrl" style="width:90px;">
-              <button onclick="window.changeQty('${item.id}', -1)" aria-label="Retirer">−</button>
+              <button onclick="window.changeQty('${item.id}', -1)">−</button>
               <span style="font-weight:800;">${item.qty}</span>
-              <button class="plus" onclick="window.changeQty('${item.id}', 1)" aria-label="Ajouter">+</button>
+              <button class="plus" onclick="window.changeQty('${item.id}', 1)">+</button>
             </div>
           </div>
         `}).join('');
@@ -805,11 +848,6 @@
     });
 
     document.getElementById('checkoutBtn').onclick = async (e) => {
-      if (!isShopOpen()) {
-        alert("Le fast-food est actuellement fermé. Nous ouvrons tous les jours de 11h à 23h.");
-        return;
-      }
-
       const name = document.getElementById('clientName').value.trim();
       const loc = document.getElementById('clientLocation').value.trim();
 
@@ -849,26 +887,15 @@
         clientPollingInterval = setInterval(async () => {
           if (!currentOrderId || !supabase) return;
           const { data: status, error: err } = await supabase.rpc('get_order_status', { order_id: currentOrderId });
-          
-          if (!err && !status) {
-            clearInterval(clientPollingInterval);
-            localStorage.removeItem('buhanor_current_order');
-            currentOrderId = null;
-            document.getElementById('trackerTitle').textContent = "Commande terminée";
-            document.getElementById('deliveryText').textContent = "Votre commande a été servie. Merci !";
-            document.getElementById('closeTracker').style.display = 'flex';
-            return;
-          }
-
           if (!err && status) {
             window.updateTrackerUI(status);
-            if (status === 'ready') clearInterval(clientPollingInterval);
+            if (status === 'ready' || status === 'cancelled') clearInterval(clientPollingInterval);
           }
         }, 10000);
 
       } catch (err) {
         if (err.message === 'TypeError: Failed to fetch' || err.message.includes('fetch')) {
-          alert("Problème de connexion réseau. Vérifie ta connexion.");
+          alert("Problème de connexion réseau.");
         } else {
           alert("Impossible d'envoyer la commande :\n" + err.message);
         }
@@ -882,6 +909,12 @@
       s1.className = 'step'; s2.className = 'step'; s3.className = 'step';
       if(status === 'received') s1.classList.add('active');
       else if(status === 'preparing') { s1.classList.add('done'); s2.classList.add('active'); }
+      else if(status === 'cancelled') {
+        document.getElementById('trackerTitle').textContent = 'Commande annulée';
+        document.getElementById('deliveryText').textContent = 'Contacte-nous si besoin.';
+        document.getElementById('closeTracker').style.display = 'flex';
+        localStorage.removeItem('buhanor_current_order'); currentOrderId = null;
+      }
       else if(status === 'ready') { 
         s1.classList.add('done'); 
         s2.classList.add('done'); 
@@ -896,23 +929,15 @@
 
     if (currentOrderId && supabase) {
       supabase.rpc('get_order_status', { order_id: currentOrderId }).then(({data, error}) => {
-        if (!error && !data) {
-          localStorage.removeItem('buhanor_current_order');
-          currentOrderId = null;
-        } else if (data && data !== 'ready') {
+        if (data && data !== 'ready') {
           document.getElementById('trackerOverlay').classList.add('open');
           window.updateTrackerUI(data);
           if(clientPollingInterval) clearInterval(clientPollingInterval);
           clientPollingInterval = setInterval(async () => {
             const { data: status } = await supabase.rpc('get_order_status', { order_id: currentOrderId });
-            if (!status) {
-              clearInterval(clientPollingInterval);
-              localStorage.removeItem('buhanor_current_order');
-              currentOrderId = null;
-              document.getElementById('trackerOverlay').classList.remove('open');
-            } else {
+            if (status) {
               window.updateTrackerUI(status);
-              if (status === 'ready') clearInterval(clientPollingInterval);
+              if (status === 'ready' || status === 'cancelled') clearInterval(clientPollingInterval);
             }
           }, 10000);
         } else if (data === 'ready') {
@@ -922,131 +947,499 @@
       });
     }
 
-    let clickCount = 0;
-    let clickTimer = null;
-    const secretLogo = document.getElementById('secretLogo');
-    const adminLoginOverlay = document.getElementById('adminLoginOverlay');
-    const adminPanel = document.getElementById('adminPanel');
-    const adminPinInput = document.getElementById('adminPinInput');
-    const adminLoginBtn = document.getElementById('adminLoginBtn');
-    const adminLoginError = document.getElementById('adminLoginError');
+    // =====================================================================
+    // ESPACE ÉQUIPE
+    // =====================================================================
+    const $ = (id) => document.getElementById(id);
+    const baseTitle = document.title;
+    const EMOJIS = ['🍔','🌮','🍟','🥤','🍹','🔥','⭐','🦁','🌴','🐙','😎','👑'];
+    const COLORS = ['#E8531F','#00A8A0','#F2B134','#B33A0F','#6C4AB6','#2E7D32'];
+    const AV_RE = /^e:(.{1,8})\|(#[0-9A-Fa-f]{6})$/u;
 
-    secretLogo.addEventListener('click', () => {
-      clickCount++;
-      if (clickCount === 1) clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
-      if (clickCount === 3) {
-        clearTimeout(clickTimer); clickCount = 0;
-        adminPinInput.value = ''; adminLoginError.style.display = 'none';
-        adminLoginOverlay.classList.add('open'); adminPinInput.focus();
-      }
-    });
+    let me = null;
+    let adminOrders = [];
+    let knownIds = new Set();
+    let firstLoad = true;
+    let pollTimer = null, pollTick = 0, failCount = 0;
+    let alarmTimer = null, audioCtx = null, wakeLock = null;
+    let serviceOn = localStorage.getItem('buhanor_service') === '1';
+    let panelOpen = false, currentTab = 'orders';
+    let teamCache = [], authMode = 'login', draftAvatar = null;
 
-    adminLoginBtn.onclick = async () => {
-      const pin = adminPinInput.value.trim();
-      if (!pin) return;
-      
-      adminLoginBtn.textContent = "Vérification..."; adminLoginBtn.disabled = true;
-      adminLoginError.style.display = 'none';
-
-      try {
-        const { data, error } = await supabase.rpc('get_admin_orders', { admin_pin: pin });
-        if (error) {
-          if (error.message.includes('incorrect')) {
-            adminLoginError.textContent = "Code incorrect.";
-          } else {
-            adminLoginError.textContent = "Erreur réseau. Réessayez.";
-          }
-          adminLoginError.style.display = 'block';
-        } else {
-          adminPin = pin; isAdminAuthenticated = true;
-          adminLoginOverlay.classList.remove('open');
-          adminPanel.classList.add('open');
-          renderAdmin(data);
-          
-          if (adminPollingInterval) clearInterval(adminPollingInterval);
-          adminPollingInterval = setInterval(() => {
-            if (isAdminAuthenticated) window.fetchAdminOrders();
-          }, 10000);
-        }
-      } catch (err) {
-        adminLoginError.textContent = "Erreur réseau."; adminLoginError.style.display = 'block';
-      } finally {
-        adminLoginBtn.textContent = "Connexion"; adminLoginBtn.disabled = false;
-      }
-    };
-
-    window.closeAdminPanel = function() {
-      document.getElementById('adminPanel').classList.remove('open');
-      if (adminPollingInterval) {
-        clearInterval(adminPollingInterval);
-        adminPollingInterval = null;
-      }
-    };
-
-    function renderAdmin(orders) {
-      let soundPlayed = false;
-      const now = Date.now();
-
-      document.getElementById('adminBody').innerHTML = orders.map(order => {
-        let cardClass = order.statuts === 'preparing' ? 'status-preparing' : order.statuts === 'ready' ? 'status-ready' : '';
-        
-        const safeName = escapeHTML(order.name);
-        const safeLocation = escapeHTML(order.location);
-        const safeTotal = Number(order.total);
-
-        if (order.statuts === 'received' && !soundPlayed && (now - lastSoundPlayedTime > 15000)) {
-          playNotificationSound();
-          soundPlayed = true;
-          lastSoundPlayedTime = now;
-        }
-        
-        return `
-          <div class="admin-card ${cardClass}">
-            <div class="admin-card-header">
-              <h3>${safeName}</h3>
-              <span>${safeTotal} F</span>
-            </div>
-            <div class="admin-location">📍 ${safeLocation}</div>
-            <ul class="admin-items">
-              ${order.items.map(i => {
-                const prodName = i.name ? escapeHTML(i.name) : (MENU.find(m => m.id === i.id)?.name || 'Article inconnu');
-                const prodImg = i.img ? escapeHTML(i.img) : (MENU.find(m => m.id === i.id)?.img || '');
-                const safeQty = Number(i.qty);
-
-                return `
-                <li style="display:flex; align-items:center; gap:0.8rem; margin-bottom:0.5rem;">
-                  ${prodImg ? `<img src="${prodImg}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; background:#eee;" loading="lazy" onerror="this.src='${FALLBACK_IMG}'">` : ''}
-                  <span><strong>${safeQty}x</strong> ${prodName}</span>
-                </li>
-              `}).join('')}
-            </ul>
-            <div class="admin-actions">
-              ${order.statuts === 'received' ? `<button class="admin-btn btn-prep" onclick="window.updateOrderStatus('${order.id}', 'preparing')">Lancer prépa</button>` : ''}
-              ${order.statuts === 'preparing' ? `<button class="admin-btn btn-ready" onclick="window.updateOrderStatus('${order.id}', 'ready')">C'est prêt !</button>` : ''}
-              ${order.statuts === 'ready' ? `<button class="admin-btn btn-done" onclick="window.archiveOrder('${order.id}')">Terminer et archiver</button>` : ''}
-            </div>
-          </div>`;
-      }).join('') || "<p style='color:white;'>Aucune commande.</p>";
+    function showErr(el, msg) { el.textContent = msg || ''; el.style.display = msg ? 'block' : 'none'; }
+    function isSuper() { return !!me && me.role === 'super_admin'; }
+    function frAuthError(m) {
+      m = String(m || '');
+      if (/invalid login/i.test(m)) return 'Email ou mot de passe incorrect.';
+      if (/already registered/i.test(m)) return 'Ce compte existe déjà : connecte-toi.';
+      if (/at least/i.test(m)) return 'Mot de passe trop court.';
+      if (/rate limit|too many/i.test(m)) return 'Trop de tentatives, réessaie dans un moment.';
+      if (/valid email|invalid email/i.test(m)) return 'Email invalide.';
+      return m;
     }
 
-    window.updateOrderStatus = async (id, newStatus) => {
-      if(!supabase || !adminPin) return;
-      const { error } = await supabase.rpc('update_order_status', { admin_pin: adminPin, order_id: id, new_status: newStatus });
-      if(error) alert("Erreur : " + error.message);
-      else window.fetchAdminOrders();
-    };
+    function avatarHTML(av, cls) {
+      cls = cls || '';
+      if (av && av.indexOf('data:image/') === 0) return '<div class="avatar ' + cls + '"><img src="' + escapeHTML(av) + '" alt=""></div>';
+      let emoji = '🙂', color = '#E8531F';
+      const m = AV_RE.exec(av || '');
+      if (m) { emoji = m[1]; color = m[2]; }
+      return '<div class="avatar ' + cls + '" style="background:' + color + '">' + escapeHTML(emoji) + '</div>';
+    }
 
+    function ensureAudio() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+      } catch (e) {}
+    }
+    ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (me) ensureAudio(); }, { passive: true }));
+
+    function beep() {
+      try {
+        ensureAudio(); if (!audioCtx) return;
+        const t = audioCtx.currentTime;
+        [[880, 0], [1175, 0.18]].forEach(([f, d]) => {
+          const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+          o.type = 'sine'; o.frequency.value = f;
+          g.gain.setValueAtTime(0.0001, t + d);
+          g.gain.exponentialRampToValueAtTime(0.6, t + d + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.16);
+          o.connect(g); g.connect(audioCtx.destination);
+          o.start(t + d); o.stop(t + d + 0.18);
+        });
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      } catch (e) {}
+    }
+
+    async function setWakeLock(on) {
+      try {
+        if (on && 'wakeLock' in navigator && document.visibilityState === 'visible' && !wakeLock) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          wakeLock.addEventListener('release', () => { wakeLock = null; });
+        } else if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+      } catch (e) {}
+    }
+
+    function notifyNew(o) {
+      try {
+        if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
+          new Notification('Nouvelle commande', { body: o.name + ' · ' + o.location + ' · ' + Number(o.total) + ' F' });
+        }
+      } catch (e) {}
+    }
+
+    function updateChip(pending) {
+      const chip = $('staffChip');
+      if (!me || panelOpen) { chip.style.display = 'none'; return; }
+      chip.style.display = 'flex';
+      chip.classList.toggle('alert', serviceOn && pending > 0);
+      $('chipText').textContent = serviceOn ? (pending > 0 ? '🔔 ' + pending + ' en attente' : '✅ Service ON') : '👤 Espace équipe';
+    }
+
+    function updateAlarm() {
+      const pending = adminOrders.filter(o => o.statuts === 'received').length;
+      if (me && serviceOn && pending > 0) {
+        if (!alarmTimer) { beep(); alarmTimer = setInterval(beep, 4000); }
+        document.title = '🔔 (' + pending + ') ' + baseTitle;
+      } else {
+        if (alarmTimer) { clearInterval(alarmTimer); alarmTimer = null; }
+        document.title = baseTitle;
+      }
+      const b = $('pendingBadge'); b.style.display = pending ? 'inline-block' : 'none'; b.textContent = pending;
+      updateChip(pending);
+    }
+
+    function setService(on) {
+      serviceOn = on;
+      localStorage.setItem('buhanor_service', on ? '1' : '0');
+      const btn = $('serviceBtn');
+      btn.className = 'svc-btn ' + (on ? 'on' : 'off');
+      btn.textContent = on ? 'Mode service : ON' : 'Mode service : OFF';
+      if (on) {
+        ensureAudio(); setWakeLock(true);
+        try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch (e) {}
+      } else { setWakeLock(false); }
+      ensurePolling();
+      if (on && me) fetchOrders();
+      updateAlarm();
+    }
+
+    function ensurePolling() {
+      const need = !!me && (serviceOn || panelOpen);
+      if (need && !pollTimer) pollTimer = setInterval(pollOnce, 8000);
+      if (!need && pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+    function pollOnce() {
+      pollTick++;
+      fetchOrders();
+      if (me && pollTick % 4 === 1) loadTeam(true);
+    }
+
+    function handleRpcError(error) {
+      if (/refus/i.test(error.message || '')) {
+        alert('Ton accès à l\'espace équipe a été retiré ou a expiré.');
+        resetStaffState();
+        return;
+      }
+      failCount++;
+      $('netWarn').style.display = (failCount >= 2 || !navigator.onLine) ? 'inline' : 'none';
+    }
+
+    async function fetchOrders() {
+      if (!supabase || !me) return;
+      const { data, error } = await supabase.rpc('get_admin_orders');
+      if (error) { handleRpcError(error); return; }
+      failCount = 0; $('netWarn').style.display = 'none';
+      const list = Array.isArray(data) ? data : [];
+      list.forEach(o => {
+        if (!knownIds.has(o.id)) {
+          if (!firstLoad && o.statuts === 'received') notifyNew(o);
+          knownIds.add(o.id);
+        }
+      });
+      firstLoad = false;
+      adminOrders = list;
+      renderAdmin(list);
+      updateAlarm();
+    }
+
+    function minutesAgo(iso) {
+      const m = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
+      return m < 1 ? "à l'instant" : 'il y a ' + m + ' min';
+    }
+
+    function renderAdmin(orders) {
+      $('adminBody').innerHTML = orders.map(order => {
+        const cardClass = order.statuts === 'preparing' ? 'status-preparing' : order.statuts === 'ready' ? 'status-ready' : '';
+        const items = Array.isArray(order.items) ? order.items : [];
+        const meta = [minutesAgo(order.created_at)];
+        if (order.prep_by) meta.push('prépa : ' + escapeHTML(order.prep_by));
+        if (order.ready_by) meta.push('prêt : ' + escapeHTML(order.ready_by));
+        const id = escapeHTML(order.id);
+        return '<div class="admin-card ' + cardClass + '">' +
+          '<div class="admin-card-header"><h3>' + escapeHTML(order.name) + '</h3><span>' + Number(order.total) + ' F</span></div>' +
+          '<div class="admin-location">📍 ' + escapeHTML(order.location) + '</div>' +
+          '<div class="admin-meta">' + meta.join(' · ') + '</div>' +
+          '<ul class="admin-items">' + items.map(i => {
+            const prodName = i.name ? escapeHTML(i.name) : (MENU.find(m => m.id === i.id)?.name || 'Article inconnu');
+            const prodImg = i.img ? escapeHTML(i.img) : (MENU.find(m => m.id === i.id)?.img || '');
+            return '<li style="display:flex; align-items:center; gap:0.8rem; margin-bottom:0.5rem;">' +
+              (prodImg ? '<img src="' + prodImg + '" style="width:40px; height:40px; border-radius:8px; object-fit:cover; background:#eee;" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=300&q=80\'">' : '') +
+              '<span><strong>' + Number(i.qty) + 'x</strong> ' + prodName + '</span></li>';
+          }).join('') + '</ul>' +
+          '<div class="admin-actions">' +
+            (order.statuts === 'received' ? '<button class="admin-btn btn-prep" onclick="window.updateOrderStatus(\'' + id + '\', \'preparing\')">Lancer prépa</button>' : '') +
+            (order.statuts === 'received' || order.statuts === 'preparing' ? '<button class="admin-btn btn-ready" onclick="window.updateOrderStatus(\'' + id + '\', \'ready\')">C\'est prêt !</button>' : '') +
+            (order.statuts === 'ready' ? '<button class="admin-btn btn-done" onclick="window.archiveOrder(\'' + id + '\')">Terminer et archiver</button>' : '') +
+          '</div>' +
+          '<button class="admin-cancel" onclick="window.cancelOrder(\'' + id + '\')">Annuler cette commande</button>' +
+        '</div>';
+      }).join('') || "<p class='staff-empty'>Aucune commande en cours.</p>";
+    }
+
+    window.updateOrderStatus = async (id, st) => {
+      const { error } = await supabase.rpc('update_order_status', { order_id: id, new_status: st });
+      if (error) alert('Erreur : ' + error.message);
+      fetchOrders();
+    };
     window.archiveOrder = async (id) => {
-      if(!supabase || !adminPin) return;
-      const { error } = await supabase.rpc('delete_admin_order', { admin_pin: adminPin, order_id: id });
-      if(!error) window.fetchAdminOrders();
+      const { error } = await supabase.rpc('archive_order', { order_id: id });
+      if (error) alert('Erreur : ' + error.message);
+      fetchOrders();
+    };
+    window.cancelOrder = async (id) => {
+      if (!confirm('Annuler cette commande ? Le client sera prévenu.')) return;
+      const { error } = await supabase.rpc('cancel_order', { order_id: id });
+      if (error) alert('Erreur : ' + error.message);
+      fetchOrders();
     };
 
-    window.fetchAdminOrders = async function() {
-      if(!supabase || !adminPin) return;
-      const { data, error } = await supabase.rpc('get_admin_orders', { admin_pin: adminPin });
-      if(!error) renderAdmin(data);
+    async function loadTeam(silent) {
+      if (!supabase || !me) return;
+      const { data, error } = await supabase.rpc('list_staff');
+      if (error) { if (!silent) $('teamBody').innerHTML = '<p class="staff-empty">Erreur : ' + escapeHTML(error.message) + '</p>'; return; }
+      teamCache = Array.isArray(data) ? data : [];
+      const pend = isSuper() ? teamCache.filter(x => x.status === 'pending').length : 0;
+      const tb = $('teamBadge'); tb.style.display = pend ? 'inline-block' : 'none'; tb.textContent = pend;
+      if (currentTab === 'team') renderTeam();
+    }
+
+    function renderTeam() {
+      const sup = isSuper();
+      const statusLabel = { active: 'Actif', pending: 'En attente', revoked: 'Révoqué' };
+      $('teamBody').innerHTML = teamCache.map(x => {
+        const id = escapeHTML(x.id);
+        const mine = me && x.id === me.id;
+        let actions = '';
+        if (sup && x.role !== 'super_admin') {
+          actions = '<div class="team-actions">' +
+            (x.status !== 'active' ? '<button class="mini-btn mini-ok" onclick="window.staffAction(\'' + id + '\', \'approve\')">Valider</button>' : '') +
+            (x.status === 'active' ? '<button class="mini-btn mini-no" onclick="window.staffAction(\'' + id + '\', \'revoke\')">Révoquer</button>' : '') +
+            '<button class="mini-btn mini-del" onclick="window.staffAction(\'' + id + '\', \'delete\')">Supprimer</button></div>';
+        }
+        return '<div class="team-card">' + avatarHTML(x.avatar) +
+          '<div class="team-info"><b>' + escapeHTML(x.display_name) + (mine ? ' (toi)' : '') + '</b>' +
+          '<span class="chip">' + (x.role === 'super_admin' ? 'Super admin' : 'Admin') + '</span>' +
+          (sup ? '<span class="chip ' + escapeHTML(x.status) + '">' + (statusLabel[x.status] || '') + '</span>' : '') +
+          (x.email ? '<small>' + escapeHTML(x.email) + '</small>' : '') + '</div>' + actions + '</div>';
+      }).join('') || "<p class='staff-empty'>Aucun membre.</p>";
+    }
+
+    window.staffAction = async (id, act) => {
+      if (act === 'delete' && !confirm("Supprimer ce membre ? Il pourra refaire une demande d'accès.")) return;
+      if (act === 'revoke' && !confirm("Retirer l'accès à ce membre ?")) return;
+      const r = act === 'delete'
+        ? await supabase.rpc('delete_staff', { p_id: id })
+        : await supabase.rpc('set_staff_status', { p_id: id, p_status: act === 'approve' ? 'active' : 'revoked' });
+      if (r.error) alert('Erreur : ' + r.error.message);
+      loadTeam();
     };
+
+    function initHistory() {
+      if ($('histFrom')) return;
+      $('historyBody').innerHTML =
+        '<div class="hist-bar"><label>Du <input type="date" id="histFrom"></label><label>au <input type="date" id="histTo"></label><button class="svc-btn on" id="histGo">Afficher</button></div><div id="histOut"></div>';
+      const today = new Date().toISOString().slice(0, 10);
+      $('histFrom').value = today; $('histTo').value = today;
+      $('histGo').onclick = loadHistory;
+      loadHistory();
+    }
+
+    async function loadHistory() {
+      const out = $('histOut');
+      out.innerHTML = '<p class="staff-empty">Chargement…</p>';
+      const { data, error } = await supabase.rpc('get_order_history', { p_from: $('histFrom').value, p_to: $('histTo').value });
+      if (error) { out.innerHTML = '<p class="staff-empty">Erreur : ' + escapeHTML(error.message) + '</p>'; return; }
+      const rows = Array.isArray(data) ? data : [];
+      const valid = rows.filter(o => o.statuts !== 'cancelled');
+      const cancelled = rows.length - valid.length;
+      const total = valid.reduce((a, o) => a + Number(o.total || 0), 0);
+      const avg = valid.length ? Math.round(total / valid.length) : 0;
+      const items = {}, byStaff = {};
+      valid.forEach(o => {
+        (Array.isArray(o.items) ? o.items : []).forEach(i => { const n = i.name || i.id; items[n] = (items[n] || 0) + Number(i.qty || 0); });
+        if (o.ready_by) byStaff[o.ready_by] = (byStaff[o.ready_by] || 0) + 1;
+      });
+      const top = Object.entries(items).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      const staffRank = Object.entries(byStaff).sort((a, b) => b[1] - a[1]);
+      const fmt = (n) => Number(n).toLocaleString('fr-FR');
+      const stLabel = { received: 'Reçue', preparing: 'En prépa', ready: 'Prête', cancelled: 'Annulée' };
+      out.innerHTML =
+        '<div class="stat-row">' +
+          '<div class="stat"><b>' + valid.length + '</b>commandes</div>' +
+          '<div class="stat"><b>' + fmt(total) + ' F</b>total des commandes</div>' +
+          '<div class="stat"><b>' + fmt(avg) + ' F</b>panier moyen</div>' +
+          '<div class="stat"><b>' + cancelled + '</b>annulées</div>' +
+        '</div>' +
+        '<div class="hist-cols">' +
+          '<div><h4>Top articles</h4>' + (top.map(t => escapeHTML(t[0]) + ' : <strong>' + t[1] + '</strong>').join('<br>') || '—') + '</div>' +
+          '<div><h4>Commandes prêtes par</h4>' + (staffRank.map(t => escapeHTML(t[0]) + ' : <strong>' + t[1] + '</strong>').join('<br>') || '—') + '</div>' +
+        '</div>' +
+        '<div class="hist-wrap"><table class="hist-table"><thead><tr><th>Date</th><th>Client</th><th>Lieu</th><th>Total</th><th>Statut</th><th>Prépa</th><th>Prêt</th></tr></thead><tbody>' +
+        rows.map(o => '<tr><td>' + new Date(o.created_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '</td>' +
+          '<td>' + escapeHTML(o.name) + '</td><td>' + escapeHTML(o.location) + '</td><td>' + fmt(o.total) + ' F</td>' +
+          '<td>' + (stLabel[o.statuts] || escapeHTML(o.statuts)) + '</td><td>' + escapeHTML(o.prep_by || '—') + '</td><td>' + escapeHTML(o.ready_by || '—') + '</td></tr>').join('') +
+        '</tbody></table></div>' + (rows.length >= 1000 ? '<p class="staff-empty">Affichage limité aux 1000 dernières commandes de la période.</p>' : '');
+    }
+
+    function switchTab(t) {
+      currentTab = t;
+      document.querySelectorAll('#adminTabs button[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+      $('adminBody').style.display = t === 'orders' ? '' : 'none';
+      $('teamBody').style.display = t === 'team' ? '' : 'none';
+      $('historyBody').style.display = t === 'history' ? '' : 'none';
+      if (t === 'team') { renderTeam(); loadTeam(); }
+      if (t === 'history') initHistory();
+    }
+    $('adminTabs').addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-tab]');
+      if (b) switchTab(b.dataset.tab);
+    });
+
+    function openPanel() {
+      panelOpen = true;
+      $('adminPanel').classList.add('open');
+      ensurePolling(); switchTab(currentTab); fetchOrders(); loadTeam(true); updateChip(0);
+    }
+    function closePanel() {
+      panelOpen = false;
+      $('adminPanel').classList.remove('open');
+      ensurePolling(); updateAlarm();
+    }
+    $('adminCloseBtn').onclick = closePanel;
+    $('staffChip').onclick = openPanel;
+    $('serviceBtn').onclick = () => setService(!serviceOn);
+
+    function renderMe() {
+      $('staffMe').innerHTML = avatarHTML(me.avatar, 'sm') +
+        '<div><div class="me-name">' + escapeHTML(me.display_name) + '</div><div class="me-role">' + (isSuper() ? 'Super admin' : 'Admin') + '</div></div>';
+      $('tabHistory').style.display = isSuper() ? '' : 'none';
+    }
+
+    function renderProfileUI() {
+      $('profilePreview').innerHTML = avatarHTML(draftAvatar, 'big');
+      const cur = AV_RE.exec(draftAvatar || '');
+      const curE = cur ? cur[1] : null, curC = cur ? cur[2] : COLORS[0];
+      $('avatarGrid').innerHTML = EMOJIS.map(e => '<button type="button" class="av-opt ' + (e === curE ? 'sel' : '') + '" data-e="' + e + '">' + e + '</button>').join('');
+      $('colorRow').innerHTML = COLORS.map(c => '<button type="button" class="col-opt ' + (c === curC ? 'sel' : '') + '" data-c="' + c + '" style="background:' + c + '"></button>').join('');
+    }
+    function openProfile() {
+      draftAvatar = me.avatar || ('e:🔥|' + COLORS[0]);
+      $('profileName').value = me.display_name;
+      showErr($('profileError'), '');
+      renderProfileUI();
+      $('profileOverlay').classList.add('open');
+    }
+    $('profileBtn').onclick = openProfile;
+    $('profileCancel').onclick = () => $('profileOverlay').classList.remove('open');
+    $('avatarGrid').addEventListener('click', (e) => {
+      const b = e.target.closest('.av-opt'); if (!b) return;
+      const cur = AV_RE.exec(draftAvatar || '');
+      draftAvatar = 'e:' + b.dataset.e + '|' + (cur ? cur[2] : COLORS[0]);
+      renderProfileUI();
+    });
+    $('colorRow').addEventListener('click', (e) => {
+      const b = e.target.closest('.col-opt'); if (!b) return;
+      const cur = AV_RE.exec(draftAvatar || '');
+      draftAvatar = 'e:' + (cur ? cur[1] : '🔥') + '|' + b.dataset.c;
+      renderProfileUI();
+    });
+    $('avatarFile').onchange = (ev) => {
+      const f = ev.target.files[0]; if (!f) return;
+      const rd = new FileReader();
+      rd.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+          const side = Math.min(img.width, img.height);
+          c.getContext('2d').drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, 128, 128);
+          draftAvatar = c.toDataURL('image/jpeg', 0.75);
+          renderProfileUI();
+        };
+        img.onerror = () => showErr($('profileError'), 'Image illisible.');
+        img.src = rd.result;
+      };
+      rd.readAsDataURL(f);
+      ev.target.value = '';
+    };
+    $('profileSave').onclick = async () => {
+      const name = $('profileName').value.trim();
+      if (!name) return showErr($('profileError'), 'Indique ton prénom.');
+      const { error } = await supabase.rpc('update_my_profile', { p_name: name, p_avatar: draftAvatar });
+      if (error) return showErr($('profileError'), error.message);
+      const r = await supabase.rpc('my_staff');
+      if (r.data) { me = r.data; renderMe(); }
+      $('profileOverlay').classList.remove('open');
+      if (currentTab === 'team') loadTeam();
+    };
+
+    function openStaffOverlay(view, msg) {
+      $('staffAuthView').style.display = view === 'auth' ? 'block' : 'none';
+      $('staffStateView').style.display = view === 'state' ? 'block' : 'none';
+      $('staffLogout2').style.display = view === 'state' ? 'inline-block' : 'none';
+      if (view === 'state') $('staffStateMsg').textContent = msg || '';
+      showErr($('staffError'), '');
+      $('staffOverlay').classList.add('open');
+    }
+    function setAuthMode(m) {
+      authMode = m;
+      $('tabLogin').classList.toggle('active', m === 'login');
+      $('tabSignup').classList.toggle('active', m === 'signup');
+      $('staffName').style.display = m === 'signup' ? 'block' : 'none';
+      $('staffSubmit').textContent = m === 'login' ? 'Connexion' : 'Envoyer ma demande';
+      $('staffPass').autocomplete = m === 'login' ? 'current-password' : 'new-password';
+    }
+    $('tabLogin').onclick = () => setAuthMode('login');
+    $('tabSignup').onclick = () => setAuthMode('signup');
+    $('staffCancel').onclick = () => $('staffOverlay').classList.remove('open');
+
+    $('staffLink').addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (!supabase) return alert('Connexion impossible pour le moment.');
+      if (me) return openPanel();
+      let session = null;
+      try { session = (await supabase.auth.getSession()).data.session; } catch (err) {}
+      if (session) enterStaff(); else { setAuthMode('login'); openStaffOverlay('auth'); }
+    });
+
+    $('staffSubmit').onclick = async () => {
+      const email = $('staffEmail').value.trim(), pass = $('staffPass').value, name = $('staffName').value.trim();
+      const err = $('staffError'); showErr(err, '');
+      if (!supabase) return showErr(err, 'Connexion impossible.');
+      if (!email || !pass) return showErr(err, 'Email et mot de passe requis.');
+      if (authMode === 'signup' && !name) return showErr(err, 'Indique ton prénom.');
+      const btn = $('staffSubmit'); btn.disabled = true;
+      try {
+        const res = authMode === 'login'
+          ? await supabase.auth.signInWithPassword({ email, password: pass })
+          : await supabase.auth.signUp({ email, password: pass, options: { data: { display_name: name } } });
+        if (res.error) return showErr(err, frAuthError(res.error.message));
+        if (!res.data.session) return showErr(err, 'Compte créé. Confirme ton email puis connecte-toi.');
+        $('staffPass').value = '';
+        await enterStaff(name);
+      } catch (ex) { showErr(err, 'Erreur réseau, réessaie.'); }
+      finally { btn.disabled = false; }
+    };
+
+    async function enterStaff(nameHint) {
+      let r = await supabase.rpc('my_staff');
+      if (r.error) { openStaffOverlay('auth'); return showErr($('staffError'), 'Erreur : ' + r.error.message); }
+      if (!r.data) {
+        let metaName = '';
+        try { const u = (await supabase.auth.getSession()).data.session.user; metaName = (u.user_metadata && u.user_metadata.display_name) || ''; } catch (ex) {}
+        const q = await supabase.rpc('request_access', { p_name: nameHint || metaName || '' });
+        if (q.error) { openStaffOverlay('auth'); return showErr($('staffError'), 'Erreur : ' + q.error.message); }
+        r = await supabase.rpc('my_staff');
+      }
+      const prof = r.data;
+      if (!prof) { openStaffOverlay('auth'); return showErr($('staffError'), 'Profil introuvable.'); }
+      if (prof.status === 'pending') return openStaffOverlay('state', 'Demande envoyée. Le super admin doit valider ton accès, puis reviens ici.');
+      if (prof.status === 'revoked') return openStaffOverlay('state', "Ton accès a été retiré. Contacte le super admin.");
+      me = prof;
+      $('staffOverlay').classList.remove('open');
+      afterLogin();
+      openPanel();
+    }
+    $('staffRefreshBtn').onclick = () => enterStaff();
+    $('staffLogout2').onclick = () => doLogout();
+
+    function afterLogin() {
+      failCount = 0; firstLoad = true; knownIds = new Set();
+      renderMe();
+      setService(serviceOn);
+      loadTeam(true);
+    }
+
+    function resetStaffState() {
+      me = null; adminOrders = []; knownIds = new Set(); firstLoad = true;
+      setWakeLock(false); closePanel(); updateAlarm();
+      $('staffOverlay').classList.remove('open'); $('profileOverlay').classList.remove('open');
+    }
+    async function doLogout() {
+      try { await supabase.auth.signOut(); } catch (e) {}
+      resetStaffState();
+    }
+    $('logoutBtn').onclick = doLogout;
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && me) {
+        if (serviceOn) setWakeLock(true);
+        ensureAudio();
+        if (pollTimer) fetchOrders();
+      }
+    });
+    window.addEventListener('online', () => { if (me && pollTimer) fetchOrders(); });
+
+    (async () => {
+      if (!supabase) return;
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (!data.session) return;
+        const r = await supabase.rpc('my_staff');
+        if (r.data && r.data.status === 'active') { me = r.data; afterLogin(); }
+      } catch (e) {}
+    })();
 
     window.renderMenu();
     window.renderJuiceBar();

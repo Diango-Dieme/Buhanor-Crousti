@@ -647,10 +647,14 @@
 
     document.getElementById('auraCount').textContent = auraScore;
 
+    // ⚠️ URL SUPABASE CORRIGÉE (vp1e -> vple, bzu -> bezbu)
     let supabase = null;
     try {
       if (window.supabase) {
-        supabase = window.supabase.createClient('https://qwibaiifvp1ewvmebzu.supabase.co', 'sb_publishable_D3Xu5YdZh-ST3vyniiPF0Q_nhjFPIah');
+        supabase = window.supabase.createClient(
+          'https://qwibaiifvplewvmbezbu.supabase.co',
+          'sb_publishable_D3Xu5YdZh-ST3vyniiPF0Q_nhjFPIah'
+        );
       }
     } catch(e) { console.log("Supabase non chargé."); }
 

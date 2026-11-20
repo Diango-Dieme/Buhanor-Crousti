@@ -24,7 +24,6 @@
   --muted:#756250;--line:rgba(22,12,6,0.08);
   --lagoon:#00A8A0;--sun:#FFCB47;--mango:#FF8C42;
   --emerald:#10B981;--sapphire:#0EA5E9;--amber:#F59E0B;
-  --wa:#25D366;
   --glass:rgba(251,243,230,0.85);
   --spring:cubic-bezier(0.34,1.56,0.64,1);
 }
@@ -41,7 +40,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .marquee-track span::before{content:'✦';color:var(--orange)}
 @keyframes scrollM{to{transform:translateX(-50%)}}
 
-.aura-widget{position:fixed;bottom:5rem;left:1rem;background:var(--ink);color:var(--yellow);padding:0.6rem 1.2rem;border-radius:999px;font-family:'Bebas Neue';font-size:1.1rem;border:2px solid var(--yellow);box-shadow:4px 4px 0 var(--orange);z-index:80;display:flex;align-items:center;gap:0.5rem;transition:transform 0.2s}
+.aura-widget{position:fixed;bottom:4.5rem;left:1rem;background:var(--ink);color:var(--yellow);padding:0.6rem 1.2rem;border-radius:999px;font-family:'Bebas Neue';font-size:1.1rem;border:2px solid var(--yellow);box-shadow:4px 4px 0 var(--orange);z-index:80;display:flex;align-items:center;gap:0.5rem;transition:transform 0.2s}
 .aura-widget.pulse{animation:auraPulse 0.3s ease-out}
 @keyframes auraPulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
 .aura-widget svg{width:16px;height:16px;fill:var(--yellow)}
@@ -50,23 +49,29 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 /* ===== HEADER ===== */
 header{position:sticky;top:0;z-index:50;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.header-inner{max-width:1280px;margin:0 auto;padding:0.5rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.logo{display:flex;align-items:center;cursor:pointer}
+.header-inner{max-width:1280px;margin:0 auto;padding:0.5rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem}
+.logo{display:flex;align-items:center;cursor:pointer;flex-shrink:0}
 .logo img{height:60px;width:auto;object-fit:contain;transition:transform 0.2s var(--spring);border-radius:8px}
 .logo:active img{transform:scale(0.94)}
+
 .header-mid{flex:1;display:flex;justify-content:center;min-width:0}
-.status-badge{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem 0.85rem;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:0.02em;backdrop-filter:blur(12px);transition:all 0.4s var(--spring);white-space:nowrap}
-.status-badge.open{background:rgba(16,185,129,0.12);color:#059669;border:1px solid rgba(16,185,129,0.3)}
-.status-badge.closing{background:rgba(245,158,11,0.12);color:#B45309;border:1px solid rgba(245,158,11,0.3)}
-.status-badge.closed{background:rgba(232,83,31,0.1);color:var(--orange-deep);border:1px solid rgba(232,83,31,0.25)}
-.status-badge .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
-.status-badge.open .dot{animation:pulseDot 2s infinite}
-@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.5)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+.header-track-btn{display:inline-flex;align-items:center;gap:0.4rem;background:var(--ink);color:var(--yellow);padding:0.6rem 1.1rem;border-radius:999px;font-weight:700;font-size:0.8rem;border:1.5px solid var(--yellow);box-shadow:2px 2px 0 var(--orange);transition:transform 0.2s var(--spring);white-space:nowrap}
+.header-track-btn:active{transform:scale(0.94)}
+.header-track-btn svg{width:1rem;height:1rem;fill:currentColor}
 
 .cart-btn{display:flex;align-items:center;gap:0.5rem;background:var(--ink);color:var(--cream);padding:0.65rem 1rem;border-radius:999px;font-weight:700;font-size:0.82rem;transition:transform 0.2s var(--spring);flex-shrink:0}
 .cart-btn:active{transform:scale(0.94)}
 .cart-btn svg{width:1rem;height:1rem;stroke:currentColor;fill:none;stroke-width:2}
 .cart-count{background:var(--orange);color:white;border-radius:999px;min-width:20px;height:20px;padding:0 6px;font-size:0.68rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+/* ===== STATUS FLOTTANT ===== */
+.status-badge{position:fixed;bottom:1rem;left:1rem;z-index:85;display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 0.9rem;border-radius:999px;font-size:0.72rem;font-weight:700;letter-spacing:0.02em;backdrop-filter:blur(12px);transition:all 0.4s var(--spring);white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.status-badge.open{background:rgba(16,185,129,0.15);color:#059669;border:1.5px solid rgba(16,185,129,0.4)}
+.status-badge.closing{background:rgba(245,158,11,0.15);color:#B45309;border:1.5px solid rgba(245,158,11,0.4)}
+.status-badge.closed{background:rgba(232,83,31,0.1);color:var(--orange-deep);border:1.5px solid rgba(232,83,31,0.3)}
+.status-badge .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.status-badge.open .dot{animation:pulseDot 2s infinite}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.5)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
 
 /* ===== HERO ===== */
 .hero{max-width:1280px;margin:0 auto;padding:3rem 1rem 4rem;display:grid;grid-template-columns:1.05fr 1fr;gap:2rem;align-items:center;position:relative;overflow:hidden}
@@ -97,7 +102,7 @@ header{position:sticky;top:0;z-index:50;background:var(--glass);backdrop-filter:
 .promesse-item h4{font-size:1.15rem;color:var(--ink);margin-bottom:0.1rem}
 .promesse-item p{font-size:0.78rem;color:var(--muted);line-height:1.4}
 
-/* ===== APERO SECTION ===== */
+/* ===== APERO ===== */
 .apero{background:var(--ink);color:var(--cream);padding:4.5rem 1.5rem;position:relative;overflow:hidden;margin-top:2rem}
 .apero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(242,177,52,0.15) 1px,transparent 1px);background-size:24px 24px;opacity:0.5;pointer-events:none}
 .apero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:3rem;align-items:center;position:relative;z-index:1}
@@ -112,13 +117,13 @@ header{position:sticky;top:0;z-index:50;background:var(--glass);backdrop-filter:
 .apero-days{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1.4rem}
 .apero-day{border:1.5px solid var(--yellow);color:var(--yellow);padding:0.35rem 1rem;border-radius:999px;font-family:'Bebas Neue';letter-spacing:0.1em;font-size:0.9rem}
 
-/* ===== MENU SECTION ===== */
+/* ===== MENU ===== */
 .menu-section{max-width:1280px;margin:0 auto;padding:4rem 1rem 3rem}
 .section-head{text-align:center;margin-bottom:2rem}
 .section-head .eyebrow{font-family:'Bebas Neue';font-size:0.95rem;letter-spacing:0.25em;color:var(--orange);margin-bottom:0.5rem}
 .section-head h2{font-size:clamp(2.5rem,5.5vw,4.5rem);color:var(--ink);margin-bottom:0.8rem}
 .section-head p{color:var(--muted);font-size:0.95rem;max-width:560px;margin:0 auto}
-.categories{display:flex;gap:0.6rem;padding:0.5rem 0 2rem;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.categories{display:flex;gap:0.6rem;padding:0.5rem 0 2rem;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
 .categories::-webkit-scrollbar{display:none}
 .cat-btn{background:transparent;border:1.5px solid var(--line);color:var(--ink);padding:0.6rem 1.3rem;border-radius:999px;font-weight:600;font-size:0.82rem;transition:0.25s var(--spring);white-space:nowrap;flex-shrink:0}
 .cat-btn.active{background:var(--ink);border-color:var(--ink);color:var(--yellow)}
@@ -189,7 +194,7 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
 .foot-col p{font-size:0.85rem;color:rgba(255,249,238,0.72);margin-bottom:0.55rem;display:flex;align-items:center;gap:0.5rem}
 .foot-bottom{max-width:1280px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,249,238,0.08);text-align:center;font-size:0.75rem;color:rgba(255,249,238,0.4);position:relative}
 
-/* ===== PANIER PREMIUM (BOTTOM SHEET) ===== */
+/* ===== PANIER PREMIUM ===== */
 .cart-drawer{position:fixed;inset:0;z-index:100;display:none}
 .cart-drawer.open{display:block}
 .cart-backdrop{position:absolute;inset:0;background:rgba(22,12,6,0.6);backdrop-filter:blur(6px);opacity:0;transition:opacity 0.3s}
@@ -201,7 +206,7 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
 .cart-head h3{font-size:1.8rem}
 .close-btn{width:34px;height:34px;border-radius:50%;background:var(--paper);font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--spring)}
 .close-btn:active{transform:scale(0.9) rotate(90deg)}
-.cart-body{flex:1;overflow-y:auto;padding:1rem 1.2rem 0;display:flex;flex-direction:column;gap:1rem;-webkit-overflow-scrolling:touch}
+.cart-body{flex:1;overflow-y:auto;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:1rem;-webkit-overflow-scrolling:touch}
 .cart-section{display:flex;flex-direction:column;gap:0.6rem}
 .cart-section-title{font-size:0.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.2rem}
 .cart-item{display:flex;align-items:center;gap:0.7rem;padding:0.6rem;background:white;border-radius:14px;border:1px solid var(--line)}
@@ -211,9 +216,10 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
 .cart-item-info .price{color:var(--orange);font-weight:800;font-size:0.8rem}
 
 /* Toggle livraison */
-.delivery-toggle{display:grid;grid-template-columns:1fr 1fr;background:var(--paper);padding:0.35rem;border-radius:16px;position:relative;border:1px solid var(--line)}
-.delivery-toggle::before{content:'';position:absolute;top:0.35rem;left:0.35rem;width:calc(50% - 0.35rem);height:calc(100% - 0.7rem);background:var(--ink);border-radius:12px;transition:transform 0.4s var(--spring);z-index:0}
-.delivery-toggle[data-mode="delivery"]::before{transform:translateX(100%)}
+.delivery-toggle{display:grid;grid-template-columns:1fr 1fr;background:var(--paper);padding:0.35rem;border-radius:16px;position:relative;border:1px solid var(--line);margin-bottom:0.8rem}
+.delivery-toggle::before{content:'';position:absolute;top:0.35rem;left:0.35rem;width:calc(50% - 0.35rem);height:calc(100% - 0.7rem);background:var(--ink);border-radius:12px;transition:transform 0.4s var(--spring),opacity 0.3s;z-index:0;opacity:0}
+.delivery-toggle[data-mode="takeaway"]::before{transform:translateX(0);opacity:1}
+.delivery-toggle[data-mode="delivery"]::before{transform:translateX(100%);opacity:1}
 .delivery-opt{padding:0.85rem 0.5rem;border-radius:12px;text-align:center;font-weight:700;font-size:0.85rem;color:var(--muted);transition:color 0.3s;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:0.15rem}
 .delivery-opt.active{color:var(--cream)}
 
@@ -223,7 +229,7 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
 .sauce-chip.active{background:var(--orange);border-color:var(--orange);color:white}
 
 /* Form */
-.form-field{display:flex;flex-direction:column;gap:0.35rem}
+.form-field{display:flex;flex-direction:column;gap:0.35rem;margin-bottom:0.6rem}
 .form-field label{font-weight:700;font-size:0.8rem;color:var(--ink)}
 .form-field input{width:100%;padding:0.85rem 1rem;border-radius:14px;border:1.5px solid var(--line);background:white;font-family:inherit;font-size:0.95rem;outline:none;transition:0.2s}
 .form-field input:focus{border-color:var(--orange)}
@@ -292,10 +298,13 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
 .tracker-pill.visible{display:flex;transform:translateX(-50%) translateY(0)}
 .tracker-pill .live-dot{width:6px;height:6px;border-radius:50%;background:var(--yellow);animation:pulseDot 1.6s infinite}
 
-/* ===== CHAT FAB ===== */
-.chat-fab{position:fixed;bottom:calc(5.5rem + env(safe-area-inset-bottom));right:1rem;width:54px;height:54px;border-radius:50%;background:var(--wa);color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(37,211,102,0.4);z-index:85;transition:transform 0.2s var(--spring)}
-.chat-fab:active{transform:scale(0.9)}
-.chat-fab svg{width:26px;height:26px;fill:white}
+/* ===== FAB GROUP (TRACK & CHAT) ===== */
+.fab-group{position:fixed;bottom:1rem;right:1rem;display:flex;gap:0.6rem;z-index:85}
+.fab{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform 0.2s var(--spring)}
+.fab:active{transform:scale(0.9)}
+.fab svg{width:22px;height:22px;fill:currentColor}
+.fab-track{background:var(--ink);color:var(--yellow);border:2px solid var(--yellow);box-shadow:3px 3px 0 var(--orange)}
+.fab-chat{background:var(--lagoon);color:white;border:2px solid var(--cream);box-shadow:3px 3px 0 var(--ink)}
 
 /* Chat sheet */
 .chat-sheet{position:fixed;inset:0;z-index:210;display:none;align-items:flex-end;justify-content:center;background:rgba(22,12,6,0.6);backdrop-filter:blur(6px)}
@@ -303,17 +312,17 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
 .chat-box{background:var(--cream);width:100%;max-width:440px;border-radius:24px 24px 0 0;padding:1.2rem;animation:slideUp 0.4s var(--spring);display:flex;flex-direction:column}
 .chat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
 .chat-head-left{display:flex;align-items:center;gap:0.7rem}
-.chat-avatar{width:42px;height:42px;border-radius:50%;background:var(--wa);color:white;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.chat-avatar{width:42px;height:42px;border-radius:50%;background:var(--lagoon);color:white;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
 .chat-head h3{font-size:1.3rem;line-height:1}
-.chat-head p{font-size:0.72rem;color:var(--wa);font-weight:600}
+.chat-head p{font-size:0.72rem;color:var(--lagoon);font-weight:600}
 .chat-quick-title{font-size:0.72rem;font-weight:800;color:var(--muted);margin:0.6rem 0 0.3rem}
 .chat-quick{background:white;border:1.5px solid var(--line);border-radius:12px;padding:0.7rem 0.9rem;font-size:0.82rem;font-weight:600;text-align:left;margin-bottom:0.4rem}
 .chat-input-row{display:flex;gap:0.4rem;margin-top:0.6rem}
 .chat-input-row input{flex:1;padding:0.8rem;border-radius:999px;border:1.5px solid var(--line);outline:none}
-.chat-send{width:44px;height:44px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center}
+.chat-send{width:44px;height:44px;border-radius:50%;background:var(--lagoon);display:flex;align-items:center;justify-content:center}
 .chat-send svg{width:20px;height:20px;fill:white}
 
-/* ===== REVIEW MODAL ===== */
+/* ===== REVIEW ===== */
 .review-modal{position:fixed;inset:0;z-index:220;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(22,12,6,0.7);backdrop-filter:blur(8px)}
 .review-modal.open{display:flex}
 .review-box{background:var(--cream);max-width:400px;width:100%;border-radius:26px;padding:1.5rem;text-align:center;animation:slideUp 0.5s var(--spring)}
@@ -329,6 +338,16 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
 .review-submit{width:100%;padding:1rem;background:var(--orange);color:white;border-radius:999px;font-family:'Bebas Neue';font-size:1.15rem}
 .review-skip{background:none;color:var(--muted);font-size:0.8rem;margin-top:0.7rem;text-decoration:underline}
 
+/* ===== FIND ORDER ===== */
+.find-order-modal{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(22,12,6,0.7);backdrop-filter:blur(8px)}
+.find-order-modal.open{display:flex}
+.find-order-box{background:var(--cream);max-width:380px;width:100%;border-radius:26px;padding:1.5rem;text-align:center;animation:slideUp 0.5s var(--spring)}
+.find-order-box h3{font-family:'Bebas Neue';font-size:2rem;margin-bottom:0.5rem}
+.find-order-box p{color:var(--muted);font-size:0.85rem;margin-bottom:1.2rem}
+.find-order-box input{width:100%;padding:0.85rem;border-radius:14px;border:1.5px solid var(--line);margin-bottom:1rem;text-align:center;font-size:1.1rem;outline:none}
+.find-order-box button{width:100%;padding:1rem;background:var(--orange);color:white;border-radius:999px;font-family:'Bebas Neue';font-size:1.15rem;margin-bottom:0.5rem}
+.find-order-box button.cancel{background:none;color:var(--muted);font-size:0.8rem;text-decoration:underline;padding:0.5rem}
+
 /* ===== MOBILE CART BAR ===== */
 .mobile-cart{position:fixed;bottom:calc(1rem + env(safe-area-inset-bottom));left:1rem;right:1rem;background:var(--ink);color:var(--cream);border-radius:999px;padding:0.55rem 0.55rem 0.55rem 1.1rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 10px 25px rgba(0,0,0,0.4);z-index:90;transform:translateY(150%);opacity:0;transition:0.4s var(--spring)}
 .mobile-cart.visible{transform:translateY(0);opacity:1}
@@ -336,7 +355,7 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
 .mobile-cart-info span:last-child{font-family:'Bebas Neue';font-size:1.05rem}
 .mobile-cart-btn{background:var(--orange);color:white;padding:0.5rem 1rem;border-radius:999px;font-family:'Bebas Neue';font-size:0.92rem}
 
-/* ===== ADMIN & RESPONSIVE ===== */
+/* ===== ADMIN ===== */
 .admin-login{position:fixed;inset:0;z-index:400;background:var(--ink);display:none;align-items:center;justify-content:center;padding:2rem}
 .admin-login.open{display:flex}
 .admin-login-box{background:white;padding:2rem;border-radius:20px;max-width:380px;width:100%;text-align:center}
@@ -388,7 +407,8 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
 @media(max-width:560px){
   .logo img{height:44px}
   .cart-btn span:not(.cart-count){display:none}
-  .status-badge{font-size:0.62rem;padding:0.3rem 0.6rem}
+  .header-track-btn span{display:none}
+  .header-track-btn{padding:0.6rem 0.8rem}
   .menu-grid,.juice-grid{grid-template-columns:1fr 1fr;gap:0.8rem}
   .card-body h3{font-size:1.3rem}
   .card-body p{font-size:0.7rem}
@@ -414,7 +434,10 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
   <div class="header-inner">
     <div class="logo" id="secretLogo"><img src="Logo%20buhanor%20crousti.jpg" alt="Buhanor" loading="lazy"></div>
     <div class="header-mid">
-      <div class="status-badge closed" id="statusBadge"><span class="dot"></span><span id="statusText">…</span></div>
+      <button class="header-track-btn" id="headerTrackBtn">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        <span>Suivi</span>
+      </button>
     </div>
     <button class="cart-btn" id="openCartBtn">
       <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6L4 2H2"/></svg>
@@ -423,6 +446,10 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
     </button>
   </div>
 </header>
+
+<div class="status-badge closed" id="statusBadge">
+  <span class="dot"></span><span id="statusText">…</span>
+</div>
 
 <section class="hero">
   <div>
@@ -525,45 +552,54 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
       <h3>Panier</h3>
       <button class="close-btn" id="closeCartBtn">×</button>
     </div>
+    
+    <!-- BODY : Articles -->
     <div class="cart-body" id="cartBody"></div>
+    
+    <!-- FOOT : Mode, Form, Total, Checkout -->
     <div class="cart-foot" id="cartFoot" style="display:none">
-      <div class="delivery-toggle" id="deliveryToggle" data-mode="takeaway">
-        <button class="delivery-opt active" data-mode="takeaway"><span class="ico">🏖️</span>Sur place</button>
+      
+      <!-- 1. Choix du mode -->
+      <div class="delivery-toggle" id="deliveryToggle" data-mode="">
+        <button class="delivery-opt" data-mode="takeaway"><span class="ico">🏖️</span>Sur place</button>
         <button class="delivery-opt" data-mode="delivery"><span class="ico">🛵</span>Livraison</button>
       </div>
 
-      <div class="cart-section" style="margin-top:0.8rem">
-        <div class="cart-section-title">🌶️ Sauces (optionnel)</div>
-        <div class="sauce-grid" id="sauceGrid">
-          <button class="sauce-chip" data-sauce="Mayonnaise">Mayonnaise</button>
-          <button class="sauce-chip" data-sauce="Piment fort">🌶️ Piment</button>
-          <button class="sauce-chip" data-sauce="Ketchup">Ketchup</button>
+      <!-- 2. Formulaire (s'ouvre après le choix) -->
+      <div class="checkout-form-wrap" id="checkoutFormWrap" style="display:none; margin-bottom:0.8rem;">
+        <div class="cart-section">
+          <div class="cart-section-title">Vos infos</div>
+          <div class="form-field">
+            <label>Prénom *</label>
+            <input type="text" id="clientName" placeholder="Ex: Amadou" autocomplete="given-name">
+          </div>
+          <div class="form-field">
+            <label>Téléphone *</label>
+            <input type="tel" id="clientPhone" placeholder="77 000 00 00" inputmode="tel" autocomplete="tel">
+          </div>
+          <div class="form-field" id="locationField" style="display:none">
+            <label>Lieu / Repère *</label>
+            <input type="text" id="clientLocation" placeholder="Ex: Transat 4, face au bar">
+            <div class="quick-tags" id="quickTags">
+              <button type="button" class="quick-tag" data-loc="Transats face à la mer">Transats</button>
+              <button type="button" class="quick-tag" data-loc="Sous la paillote">Paillote</button>
+              <button type="button" class="quick-tag" data-loc="Grande table">Grande table</button>
+            </div>
+            <button type="button" class="geoloc-btn" id="geolocBtn">📍 Me localiser</button>
+          </div>
+        </div>
+        
+        <div class="cart-section" style="margin-top:0.8rem">
+          <div class="cart-section-title">🌶️ Sauces (optionnel)</div>
+          <div class="sauce-grid" id="sauceGrid">
+            <button class="sauce-chip" data-sauce="Mayonnaise">Mayonnaise</button>
+            <button class="sauce-chip" data-sauce="Piment fort">🌶️ Piment</button>
+            <button class="sauce-chip" data-sauce="Ketchup">Ketchup</button>
+          </div>
         </div>
       </div>
 
-      <div class="cart-section" style="margin-top:0.8rem">
-        <div class="cart-section-title">Vos infos</div>
-        <div class="form-field">
-          <label>Prénom *</label>
-          <input type="text" id="clientName" placeholder="Ex: Amadou" autocomplete="given-name">
-        </div>
-        <div class="form-field">
-          <label>Téléphone *</label>
-          <input type="tel" id="clientPhone" placeholder="77 000 00 00" inputmode="tel" autocomplete="tel">
-        </div>
-        <div class="form-field" id="locationField" style="display:none">
-          <label>Lieu / Repère *</label>
-          <input type="text" id="clientLocation" placeholder="Ex: Transat 4">
-          <div class="quick-tags" id="quickTags">
-            <button type="button" class="quick-tag" data-loc="Transats face à la mer">Transats</button>
-            <button type="button" class="quick-tag" data-loc="Sous la paillote">Paillote</button>
-            <button type="button" class="quick-tag" data-loc="Grande table">Grande table</button>
-          </div>
-          <button type="button" class="geoloc-btn" id="geolocBtn">📍 Me localiser</button>
-        </div>
-      </div>
-    </div>
-    <div class="cart-foot" id="cartFoot2" style="display:none;border-top:1px solid var(--line);box-shadow:none;padding-top:0.7rem">
+      <!-- 3. Total & Checkout -->
       <div class="cart-total-row"><span>Total</span><span id="cartTotal">0 FCFA</span></div>
       <button class="checkout-btn" id="checkoutBtn">Commander</button>
       <div class="checkout-note" id="closedNote" style="display:none"></div>
@@ -571,7 +607,7 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
   </div>
 </div>
 
-<!-- TRACKER -->
+<!-- TRACKER OVERLAY -->
 <div class="tracker" id="trackerOverlay">
   <div class="tracker-card">
     <button class="tracker-close" id="trackerClose">×</button>
@@ -600,18 +636,24 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
   </div>
 </div>
 
-<!-- PILL -->
+<!-- PILULE FLOTTANTE SUIVI -->
 <div class="tracker-pill" id="trackerPill">
   <span class="pill-emoji" id="pillEmoji">🔥</span>
   <span class="pill-txt" id="pillTxt">En préparation…</span>
   <span class="live-dot"></span>
 </div>
 
-<!-- CHAT FAB -->
-<button class="chat-fab" id="chatFab">
-  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM7 9h10v2H7V9zm6 5H7v-2h6v2zm4-6H7V6h10v2z"/></svg>
-</button>
+<!-- FAB GROUP (SUIVI & CHAT) -->
+<div class="fab-group">
+  <button class="fab fab-track" id="trackFab" aria-label="Suivi de commande">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+  </button>
+  <button class="fab fab-chat" id="chatFab" aria-label="Discuter avec nous">
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM7 9h10v2H7V9zm6 5H7v-2h6v2zm4-6H7V6h10v2z"/></svg>
+  </button>
+</div>
 
+<!-- CHAT SHEET -->
 <div class="chat-sheet" id="chatSheet">
   <div class="chat-box">
     <div class="chat-head">
@@ -632,7 +674,7 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
   </div>
 </div>
 
-<!-- REVIEW -->
+<!-- REVIEW MODAL -->
 <div class="review-modal" id="reviewModal">
   <div class="review-box">
     <h2 class="review-title">Merci !</h2>
@@ -648,6 +690,17 @@ footer::before{content:'';position:absolute;inset:0;background-image:radial-grad
     <textarea class="review-comment" id="reviewComment" placeholder="Un petit mot ? (optionnel)"></textarea>
     <button class="review-submit" id="reviewSubmit">Envoyer</button>
     <button class="review-skip" id="reviewSkip">Plus tard</button>
+  </div>
+</div>
+
+<!-- FIND ORDER MODAL -->
+<div class="find-order-modal" id="findOrderModal">
+  <div class="find-order-box">
+    <h3>Retrouver ma commande</h3>
+    <p>Entre ton numéro de téléphone</p>
+    <input type="tel" id="findPhone" placeholder="77 000 00 00">
+    <button id="findOrderBtn">Rechercher</button>
+    <button class="cancel" id="closeFindModal">Annuler</button>
   </div>
 </div>
 
@@ -705,7 +758,7 @@ const MENU = [
 let cart = [];
 let activeCat = 'Tous';
 let currentOrder = null;
-let deliveryMode = 'takeaway';
+let deliveryMode = null;
 let selectedSauces = [];
 let geoCoords = null;
 let adminPin = null, adminPoll = null, trackerPoll = null, trackerMinimized = false;
@@ -843,7 +896,7 @@ function updateCartUI() {
   } else mc.classList.remove('visible');
 
   if (cart.length > 0) {
-    $('cartFoot').style.display = 'block'; $('cartFoot2').style.display = 'block';
+    $('cartFoot').style.display = 'block';
     const items = cart.map(it => {
       const p = MENU.find(m => m.id === it.id);
       if (!p) return '';
@@ -855,8 +908,15 @@ function updateCartUI() {
     }).join('');
     $('cartBody').innerHTML = `<div class="cart-section"><div class="cart-section-title">🛒 ${count} article${count>1?'s':''}</div>${items}</div>`;
   } else {
-    $('cartFoot').style.display = 'none'; $('cartFoot2').style.display = 'none';
+    $('cartFoot').style.display = 'none';
     $('cartBody').innerHTML = `<div style="text-align:center;padding:3rem 1rem;color:var(--muted)"><div style="font-size:3rem;margin-bottom:1rem">🛒</div><p>Votre panier est vide</p></div>`;
+    
+    // Reset du mode de livraison quand le panier est vide
+    deliveryMode = null;
+    $('deliveryToggle').dataset.mode = "";
+    document.querySelectorAll('.delivery-opt').forEach(b => b.classList.remove('active'));
+    $('checkoutFormWrap').style.display = 'none';
+    $('locationField').style.display = 'none';
   }
   refreshStatus();
 }
@@ -865,6 +925,7 @@ function setMode(mode) {
   deliveryMode = mode;
   $('deliveryToggle').dataset.mode = mode;
   document.querySelectorAll('.delivery-opt').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  $('checkoutFormWrap').style.display = 'block';
   $('locationField').style.display = mode === 'delivery' ? 'flex' : 'none';
   vib(10);
 }
@@ -879,13 +940,31 @@ function initSauces() {
   });
 }
 
+function openTracking() {
+  if (currentOrder) {
+    trackerMinimized = false;
+    $('trackerOverlay').classList.add('open');
+    $('trackerPill').classList.remove('visible');
+    if (supabase) {
+      supabase.rpc('get_order_status', { order_id: currentOrder.id }).then(({data}) => {
+        if (data) showTracker(data);
+      });
+    }
+  } else {
+    $('findOrderModal').classList.add('open');
+  }
+}
+
 async function checkout() {
+  if (!deliveryMode) return toast('Choisis Sur place ou Livraison', 'warn');
+  
   const name = $('clientName').value.trim(), phone = $('clientPhone').value.trim();
   const loc = deliveryMode === 'delivery' ? $('clientLocation').value.trim() : 'Sur place';
   if (!name) return toast('Indique ton prénom 😊', 'warn');
   if (!phone || phone.replace(/\D/g,'').length < 9) return toast('Numéro invalide', 'warn');
   if (deliveryMode === 'delivery' && !loc) return toast('Indique ton repère', 'warn');
   if (!supabase) return toast('Erreur connexion', 'error');
+  
   const status = getStatus();
   if (!status.open && !confirm('⏸ Restaurant fermé.\n' + status.txt + '\n\nPrécommander ?')) return;
 
@@ -1111,6 +1190,35 @@ document.addEventListener('DOMContentLoaded', () => {
   $('closeCartBtn').addEventListener('click', closeCart);
   $('cartBackdrop').addEventListener('click', closeCart);
 
+  $('headerTrackBtn').addEventListener('click', openTracking);
+  $('trackFab').addEventListener('click', openTracking);
+
+  $('findOrderBtn').addEventListener('click', async () => {
+    const phone = $('findPhone').value.trim();
+    if (!phone) return toast('Entre ton numéro', 'warn');
+    if (!supabase) return;
+    $('findOrderBtn').textContent = 'Recherche...';
+    try {
+      const { data, error } = await supabase.rpc('get_latest_order_by_phone', { client_phone: phone });
+      if (data && data.length > 0) {
+        const order = data[0];
+        currentOrder = { id: order.id, phone, name: order.name, mode: order.delivery_type, createdAt: new Date(order.created_at).getTime() };
+        localStorage.setItem('buhanor_order', JSON.stringify(currentOrder));
+        localStorage.setItem('buhanor_phone', phone);
+        $('findOrderModal').classList.remove('open');
+        showTracker(order.statuts);
+        startTrackerPolling();
+      } else {
+        toast('Aucune commande trouvée', 'error');
+      }
+    } catch(e) {
+      toast('Erreur', 'error');
+    } finally {
+      $('findOrderBtn').textContent = 'Rechercher';
+    }
+  });
+  $('closeFindModal').addEventListener('click', () => $('findOrderModal').classList.remove('open'));
+
   $('deliveryToggle').addEventListener('click', (e) => {
     const b = e.target.closest('.delivery-opt'); if (b) setMode(b.dataset.mode);
   });
@@ -1132,9 +1240,6 @@ document.addEventListener('DOMContentLoaded', () => {
   $('chatFab').addEventListener('click', () => $('chatSheet').classList.add('open'));
   $('chatClose').addEventListener('click', () => $('chatSheet').classList.remove('open'));
   $('chatSheet').addEventListener('click', (e) => { if (e.target === $('chatSheet')) $('chatSheet').classList.remove('open'); });
-  $('chatBody')?.addEventListener('click', (e) => {
-    const q = e.target.closest('.chat-quick'); if (q) { window.open(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(q.dataset.msg)}`, '_blank'); $('chatSheet').classList.remove('open'); }
-  });
   document.querySelector('.chat-box').addEventListener('click', (e) => {
     const q = e.target.closest('.chat-quick'); if (q) { window.open(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(q.dataset.msg)}`, '_blank'); $('chatSheet').classList.remove('open'); }
   });

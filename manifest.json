@@ -1,0 +1,39 @@
+{
+  "name": "Buhanor Crousti · Cap Skirring",
+  "short_name": "Buhanor",
+  "description": "Fast-food & bar à jus naturels sur la plage de Cap Skirring.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FBF3E6",
+  "theme_color": "#160C06",
+  "scope": "/",
+  "lang": "fr",
+  "categories": ["food", "shopping"],
+  "icons": [
+    {
+      "src": "/Logo%20buhanor%20crousti.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/Logo%20buhanor%20crousti.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Commander",
+      "url": "/#menu",
+      "description": "Voir le menu et commander"
+    },
+    {
+      "name": "Ma commande",
+      "url": "/#tracker",
+      "description": "Suivre ma commande en cours"
+    }
+  ]
+}

@@ -1079,7 +1079,7 @@ function startTrackerPolling() {
     if (!currentOrder || !supabase) return;
     try {
       const { data, error } = await supabase.rpc('get_order_status', { order_id: currentOrder.id });
-      if (error) return; // Correctif 2 : Ne pas effacer la commande sur erreur réseau
+      if (error) return; // Ne pas effacer la commande sur erreur réseau
       if (!data) { clearOrder(); return; }
       showTracker(data);
     } catch(e){}
@@ -1166,11 +1166,17 @@ function renderAdmin(orders) {
   $('adminBody').innerHTML = orders.map(o => {
     const items = (o.items || []).map(i => {
       const n = i.name || (MENU.find(m=>m.id===i.id)?.name) || '?';
-      return `<li><strong>${Number(i.qty) || 0}x</strong> ${esc(n)}</li>`; // Correctif 1 : XSS/Type quantité
+      return `<li><strong>${Number(i.qty) || 0}x</strong> ${esc(n)}</li>`;
     }).join('');
     const sauces = (o.sauces && o.sauces.length) ? `<div style="font-size:0.75rem;color:var(--mango);font-weight:600">🌶️ ${o.sauces.map(s=>esc(s)).join(' · ')}</div>` : '';
     const phone = o.phone ? `<div style="font-size:0.78rem">📞 <a href="tel:${esc(o.phone)}" style="color:var(--orange)">${esc(o.phone)}</a></div>` : '';
     const mode = o.delivery_type === 'delivery' ? '🛵 Livraison' : '🏖️ Sur place';
+    
+    // Ajout du lien Google Maps si les coordonnées existent
+    const mapLink = (o.delivery_lat && o.delivery_lng) 
+      ? `<a href="https://www.google.com/maps?q=${Number(o.delivery_lat)},${Number(o.delivery_lng)}" target="_blank" rel="noopener" style="color:var(--lagoon);font-size:0.75rem;font-weight:700;margin-top:0.2rem;display:inline-block;text-decoration:underline">🗺️ Ouvrir la carte</a>` 
+      : '';
+
     let actions = '';
     if (o.statuts === 'received') actions = `<button class="admin-btn btn-prep" data-status="preparing" data-id="${o.id}">🔥 En prépa</button>`;
     else if (o.statuts === 'preparing') actions = `<button class="admin-btn btn-ready" data-status="ready" data-id="${o.id}">✅ Prêt</button>`;
@@ -1180,6 +1186,7 @@ function renderAdmin(orders) {
     return `<div class="admin-card s-${o.statuts}">
       <div class="admin-card-h"><h3>${esc(o.name)}</h3><span>${Number(o.total)} F</span></div>
       <div class="admin-loc">${mode} · ${esc(o.location || '')}</div>
+      ${mapLink}
       ${phone}${sauces}
       <ul class="admin-items">${items}</ul>
       <div class="admin-actions">${actions}</div>
@@ -1201,17 +1208,25 @@ async function archiveOrder(id) {
   await supabase.rpc('delete_admin_order', { admin_pin: adminPin, order_id: id }); fetchAdmin();
 }
 
+// Géolocalisation corrigée
 async function geolocate() {
   if (!navigator.geolocation) return toast('Géolocalisation indisponible', 'warn');
-  const btn = $('geolocBtn'); btn.classList.add('loading'); btn.textContent = '📍 Localisation…';
+  const btn = $('geolocBtn');
+  btn.disabled = true; btn.textContent = '📍 Localisation…';
   navigator.geolocation.getCurrentPosition(
     (pos) => {
-      geoCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      $('clientLocation').value = `📍 GPS (${geoCoords.lat.toFixed(4)}, ${geoCoords.lng.toFixed(4)})`;
-      btn.classList.remove('loading'); btn.textContent = '✅ Localisé !'; toast('Position enregistrée', 'success'); vib(20);
+      geoCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy) };
+      $('clientLocation').value = `📍 GPS ±${geoCoords.acc} m (${geoCoords.lat.toFixed(5)}, ${geoCoords.lng.toFixed(5)})`;
+      btn.disabled = false; btn.textContent = '✅ Localisé !';
+      toast('Position enregistrée', 'success'); vib(20);
     },
-    () => { btn.classList.remove('loading'); btn.textContent = '📍 Me localiser'; toast('Localisation impossible', 'warn'); },
-    { enableHighAccuracy:true, timeout:10000 }
+    (err) => {
+      btn.disabled = false; btn.textContent = '📍 Me localiser';
+      toast(err.code === 1 ? 'Autorise la localisation dans ton navigateur'
+          : err.code === 3 ? 'Délai dépassé, réessaie ou écris ton repère'
+          : 'Localisation impossible, écris ton repère', 'warn');
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
   );
 }
 
@@ -1279,10 +1294,20 @@ document.addEventListener('DOMContentLoaded', () => {
   $('quickTags').addEventListener('click', (e) => {
     const t = e.target.closest('.quick-tag'); if (!t) return;
     document.querySelectorAll('.quick-tag').forEach(x => x.classList.remove('active'));
-    t.classList.add('active'); $('clientLocation').value = t.dataset.loc;
+    t.classList.add('active');
+    geoCoords = null; // Correctif : annule les coordonnées périmées
+    $('clientLocation').value = t.dataset.loc;
   });
 
   $('geolocBtn').addEventListener('click', geolocate);
+
+  // Correctif : si le client tape à la main, on supprime les anciennes coordonnées
+  $('clientLocation').addEventListener('input', () => {
+    geoCoords = null;
+    $('geolocBtn').textContent = '📍 Me localiser';
+    $('geolocBtn').disabled = false;
+  });
+
   $('checkoutBtn').addEventListener('click', checkout);
 
   $('trackerClose').addEventListener('click', hideTracker);
